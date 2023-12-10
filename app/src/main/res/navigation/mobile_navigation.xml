@@ -7,25 +7,17 @@
 
     <fragment
         android:id="@+id/splash_fragment"
-        android:name="com.harian.closer.share.location.ui.splash.SplashFragment"
+        android:name="com.harian.closer.share.location.presentation.ui.splash.SplashFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_splash" />
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splash_fragment_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.harian.closer.share.location.ui.home.HomeFragment"
+        android:name="com.harian.closer.share.location.presentation.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.harian.closer.share.location.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.harian.closer.share.location.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 </navigation>
