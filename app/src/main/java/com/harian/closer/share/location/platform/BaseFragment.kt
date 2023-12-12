@@ -1,4 +1,4 @@
-package com.bkplus.hitranslator.app.platform
+package com.harian.closer.share.location.platform
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,19 +7,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.harian.closer.share.location.databinding.FragmentHomeBinding
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
-    private var isViewCreated = false
+    private var _binding: T? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (isViewCreated) return binding.root;
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        isViewCreated = true
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return binding.root
     }
 
@@ -37,4 +36,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected open fun setupUI() {}
     protected open fun setupData() {}
     protected open fun setupListener() {}
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

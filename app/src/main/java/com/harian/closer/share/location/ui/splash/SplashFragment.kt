@@ -1,21 +1,22 @@
 package com.harian.closer.share.location.ui.splash
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.harian.closer.share.location.R
 import com.harian.closer.share.location.databinding.FragmentSplashBinding
+import com.harian.closer.share.location.platform.BaseFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class SplashFragment : Fragment() {
-    private var _binding: FragmentSplashBinding? = null
-    private val binding: FragmentSplashBinding get() = _binding!!
+class SplashFragment : BaseFragment<FragmentSplashBinding>() {
+    override val layoutId: Int
+        get() = R.layout.fragment_splash
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSplashBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun setupUI() {
+        super.setupUI()
+        lifecycleScope.launch {
+            delay(5000)
+            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+        }
     }
 }
