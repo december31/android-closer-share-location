@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 @Suppress("UNCHECKED_CAST")
-class SharePrefs (private val context: Context) {
+class SharedPrefs (context: Context) {
     companion object {
         private const val PREF = "MyAppPrefName"
         private const val PREF_TOKEN = "user_token"

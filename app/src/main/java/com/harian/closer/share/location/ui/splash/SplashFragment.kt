@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.harian.closer.share.location.R
 import com.harian.closer.share.location.databinding.FragmentSplashBinding
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -16,7 +17,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
         super.setupUI()
         lifecycleScope.launch {
             delay(5000)
-            findNavController().navigate(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+            findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
         }
     }
 }

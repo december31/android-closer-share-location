@@ -8,9 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.harian.closer.share.location.utils.Constants
-import com.harian.closer.share.location.utils.ContextUtils
-import java.util.Locale
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 

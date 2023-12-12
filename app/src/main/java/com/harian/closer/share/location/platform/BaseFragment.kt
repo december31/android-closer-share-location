@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.harian.closer.share.location.databinding.FragmentHomeBinding
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
-    private var _binding: T? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +29,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
     protected abstract val layoutId: Int
-    protected lateinit var binding: T
+    private var _binding: T? = null
+    protected val binding: T get() = _binding!!
 
     protected open fun setupUI() {}
     protected open fun setupData() {}

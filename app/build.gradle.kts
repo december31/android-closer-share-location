@@ -85,8 +85,9 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 
     val navVersion = "2.7.5"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
