@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CommonEditText">
+        <item name="android:paddingHorizontal">20dp</item>
+        <item name="android:paddingVertical">14dp</item>
+        <item name="android:fontFamily">@font/circular_std_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/bg_rounded</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:backgroundTint">@color/field_background</item>
+        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+</resources>

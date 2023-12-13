@@ -14,4 +14,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_text_ok">Ok</string>
+    <string name="closer">Closer</string>
+    <string name="welcome">Welcome</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="login">Login</string>
+    <string name="or_log_in_by">or LOG IN by</string>
+    <string name="don_t_have_account">Don\'t have account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="verification">VERIFICATION</string>
+    <string name="a_message_with_verification_code_was_sent_to_your_mobile_phone">A message with verification code was sent to your mobile phone.</string>
 </resources>

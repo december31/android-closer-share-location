@@ -17,7 +17,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
         super.setupUI()
         lifecycleScope.launch {
             delay(5000)
-            findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
+            findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
         }
     }
 }

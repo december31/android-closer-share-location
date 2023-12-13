@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.harian.closer.share.location"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
@@ -101,7 +101,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpLoggingVersion")
 
     // coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
 }
