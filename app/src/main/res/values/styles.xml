@@ -10,6 +10,7 @@
         <item name="android:layout_marginTop">20dp</item>
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:backgroundTint">@color/field_background</item>
+        <item name="android:animateLayoutChanges">true</item>
         <item name="android:textColorHint">@color/hint</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

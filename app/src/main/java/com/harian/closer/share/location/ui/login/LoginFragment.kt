@@ -4,7 +4,6 @@ import com.harian.closer.share.location.R
 import com.harian.closer.share.location.databinding.FragmentLoginBinding
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.ui.login.state.LoginState
-import com.harian.closer.share.location.ui.login.state.ResendOTPState
 import com.harian.closer.share.location.ui.login.state.ResetPasswordState
 import com.harian.closer.share.location.ui.login.state.SignUpState
 import com.harian.closer.share.location.ui.login.state.State
@@ -16,11 +15,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     fun getBinding() = binding
 
-    private var loginState: State = LoginState(this)
-    val resendOTPState: State = ResendOTPState(this)
-    val resetPasswordState: State = ResetPasswordState(this)
+    var loginState: State = LoginState(this)
+    val enterEmailState: State = ResetPasswordState.EnterEmailState(this)
+    val setNewPasswordState: State = ResetPasswordState.SetNewPasswordState(this)
     val signUpState: State = SignUpState(this)
-    val verificationSignUpState: State = VerificationState(this)
+    val verificationState: State = VerificationState(this)
 
     private var state: State = loginState
 
