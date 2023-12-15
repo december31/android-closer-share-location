@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
+    private var toast: Toast? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +37,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected open fun setupUI() {}
     protected open fun setupData() {}
     protected open fun setupListener() {}
+
+    fun showToast(message: String, length: Int = Toast.LENGTH_SHORT) {
+        toast?.cancel()
+        toast = Toast.makeText(context, message, length)
+        toast?.show()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

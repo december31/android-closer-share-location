@@ -37,7 +37,7 @@ android {
             buildConfigField(
                 "String",
                 "API_BASE_URL",
-                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/api/v1\""
+                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/api/v1/\""
             )
         }
 
@@ -45,7 +45,7 @@ android {
             buildConfigField(
                 "String",
                 "API_BASE_URL",
-                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/api/v1\""
+                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/api/v1/\""
             )
         }
     }
@@ -99,6 +99,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpLoggingVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")

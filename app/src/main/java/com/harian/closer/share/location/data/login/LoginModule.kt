@@ -13,19 +13,17 @@ import javax.inject.Singleton
 
 @Module(includes = [NetworkModule::class])
 @InstallIn(SingletonComponent::class)
-class LoginModule {
+object LoginModule {
 
-    @Singleton
     @Provides
-    fun provideLoginApi(retrofit: Retrofit) : LoginApi {
+    @Singleton
+    fun provideLoginApi(retrofit: Retrofit): LoginApi {
         return retrofit.create(LoginApi::class.java)
     }
 
-    @Singleton
     @Provides
-    fun provideLoginRepository(loginApi: LoginApi) : LoginRepository {
+    @Singleton
+    fun provideLoginRepository(loginApi: LoginApi): LoginRepository {
         return LoginRepositoryImpl(loginApi)
     }
-
-
 }

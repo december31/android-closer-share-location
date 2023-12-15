@@ -2,22 +2,28 @@ package com.harian.closer.share.location.platform
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.harian.closer.share.location.data.common.utils.Token
 
 @Suppress("UNCHECKED_CAST")
-class SharedPrefs (context: Context) {
+class SharedPrefs(context: Context) {
     companion object {
         private const val PREF = "MyAppPrefName"
         private const val PREF_TOKEN = "user_token"
+        private const val PREF_REFRESH_TOKEN = "user_refresh_token"
     }
 
-    private val sharedPref: SharedPreferences = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+    private val sharedPref: SharedPreferences =
+        context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
 
-    fun saveToken(token: String){
-        put(PREF_TOKEN, token)
+    fun saveToken(token: Token?) {
+        if (token != null) {
+            put(PREF_TOKEN, token.accessToken)
+            put(PREF_REFRESH_TOKEN, token.refreshToken)
+        }
     }
 
-    fun getToken() : String {
+    fun getToken(): String {
         return get(PREF_TOKEN, String::class.java)
     }
 

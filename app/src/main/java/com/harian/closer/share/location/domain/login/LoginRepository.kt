@@ -8,5 +8,5 @@ import com.harian.closer.share.location.domain.login.entity.LoginEntity
 import kotlinx.coroutines.flow.Flow
 
 interface LoginRepository {
-    suspend fun login(loginRequest: LoginRequest) : Flow<BaseResult<LoginEntity, WrappedResponse<LoginResponse>>>
+    suspend fun login(loginRequest: LoginRequest): Flow<BaseResult<LoginEntity, WrappedResponse<LoginResponse>>>
 }
