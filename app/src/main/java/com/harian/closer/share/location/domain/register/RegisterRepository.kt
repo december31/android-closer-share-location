@@ -8,5 +8,5 @@ import com.harian.closer.share.location.domain.register.entity.RegisterEntity
 import kotlinx.coroutines.flow.Flow
 
 interface RegisterRepository {
-    suspend fun register(registerRequest: RegisterRequest) : Flow<BaseResult<RegisterEntity, WrappedResponse<RegisterResponse>>>
+    suspend fun register(registerRequest: RegisterRequest): Flow<BaseResult<RegisterEntity, WrappedResponse<RegisterResponse>>>
 }

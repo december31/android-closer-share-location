@@ -13,16 +13,17 @@ import javax.inject.Singleton
 
 @Module(includes = [NetworkModule::class])
 @InstallIn(SingletonComponent::class)
-class RegisterModule {
-    @Singleton
+object RegisterModule {
+
     @Provides
-    fun provideRegisterApi(retrofit: Retrofit) : RegisterApi {
+    @Singleton
+    fun provideRegisterApi(retrofit: Retrofit): RegisterApi {
         return retrofit.create(RegisterApi::class.java)
     }
 
-    @Singleton
     @Provides
-    fun provideRegisterRepository(registerApi: RegisterApi) : RegisterRepository {
+    @Singleton
+    fun provideRegisterRepository(registerApi: RegisterApi): RegisterRepository {
         return RegisterRepositoryImpl(registerApi)
     }
 }

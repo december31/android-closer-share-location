@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.ui.home
+package com.harian.closer.share.location.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

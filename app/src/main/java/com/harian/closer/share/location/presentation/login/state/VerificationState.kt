@@ -1,7 +1,7 @@
-package com.harian.closer.share.location.ui.login.state
+package com.harian.closer.share.location.presentation.login.state
 
 import com.harian.closer.share.location.R
-import com.harian.closer.share.location.ui.login.LoginFragment
+import com.harian.closer.share.location.presentation.login.LoginFragment
 import com.harian.closer.share.location.utils.extension.goneAllChildView
 import com.harian.closer.share.location.utils.extension.visible
 
@@ -18,21 +18,21 @@ class VerificationState (private val fragment: LoginFragment): State{
             edtConfirmCode.visible()
             tvNotReceiveCode.visible()
             imgBottomDecorator.visible()
-            btnLogin.setText(R.string.verify)
-            btnLogin.visible()
+            callToActionBtn.setText(R.string.verify)
+            callToActionBtn.visible()
         }
     }
 
     override fun setupListener() {
         fragment.getBinding().apply {
-            btnLogin.setOnClickListener {
+            callToActionBtn.setOnClickListener {
 
             }
             tvNotReceiveCode.setOnClickListener {
 
             }
             tvBack.setOnClickListener {
-                fragment.setState(fragment.signUpState)
+                fragment.setState(fragment.registerState)
             }
         }
     }

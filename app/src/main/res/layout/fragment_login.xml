@@ -105,6 +105,12 @@
                 style="@style/CommonEditText" />
 
             <EditText
+                android:id="@+id/edt_name"
+                android:hint="@string/your_name"
+                android:inputType="text"
+                style="@style/CommonEditText" />
+
+            <EditText
                 android:id="@+id/edt_password"
                 style="@style/CommonEditText"
                 android:inputType="textPassword"
@@ -150,19 +156,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/btn_login"
-                android:text="@string/login"
-                android:textAllCaps="true"
-                android:background="@drawable/bg_rounded_gradient"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:fontFamily="@font/circular_std_medium"
-                android:textSize="16sp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_marginTop="40dp"
-                android:paddingVertical="14dp"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/call_to_action_btn"
+                    android:text=""
+                    android:textAllCaps="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@drawable/bg_rounded_gradient"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/circular_std_medium"
+                    android:textSize="16sp"
+                    android:paddingVertical="14dp"
+                    android:layout_height="wrap_content" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/loading_animation"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    app:lottie_rawRes="@raw/white_dot_loading"
+                    android:scaleType="centerCrop"
+                    android:paddingBottom="14dp"
+                    app:layout_constraintTop_toTopOf="@id/call_to_action_btn"
+                    app:layout_constraintBottom_toBottomOf="@id/call_to_action_btn"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/tv_back"
@@ -172,7 +199,7 @@
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/circular_std_medium"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_or_login_by"
@@ -242,7 +269,7 @@
                 android:layout_marginTop="60dp"
                 android:visibility="visible"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

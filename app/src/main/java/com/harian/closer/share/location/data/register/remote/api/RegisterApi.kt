@@ -7,7 +7,8 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
+
 interface RegisterApi {
     @POST("auth/register")
-    suspend fun register(@Body registerRequest: RegisterRequest) : Response<WrappedResponse<RegisterResponse>>
+    suspend fun register(@Body registerRequest: RegisterRequest): Response<WrappedResponse<RegisterResponse>>
 }

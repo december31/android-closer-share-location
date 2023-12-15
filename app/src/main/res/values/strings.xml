@@ -36,4 +36,8 @@
     <string name="set_new_password">SET NEW PASSWORD</string>
     <string name="type_your_new_password">Type your new password</string>
     <string name="back"><u>back</u></string>
+    <string name="password_invalid_warning">Your password must be at least 8 characters</string>
+    <string name="please_enter_a_valid_email">Please enter a valid email!!</string>
+    <string name="your_name">Username</string>
+    <string name="login_successful">Login successful</string>
 </resources>
