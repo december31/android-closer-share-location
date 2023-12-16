@@ -7,14 +7,17 @@ import com.harian.closer.share.location.data.login.remote.dto.LoginRequest
 import com.harian.closer.share.location.data.login.remote.dto.LoginResponse
 import com.harian.closer.share.location.data.register.remote.dto.RegisterRequest
 import com.harian.closer.share.location.data.register.remote.dto.RegisterResponse
+import com.harian.closer.share.location.data.request.otp.remote.dto.RequestOtpRequest
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.login.entity.LoginEntity
 import com.harian.closer.share.location.domain.login.usecase.LoginUseCase
 import com.harian.closer.share.location.domain.register.entity.RegisterEntity
 import com.harian.closer.share.location.domain.register.usecase.RegisterUseCase
+import com.harian.closer.share.location.domain.request.api.usecase.RequestOtpUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -24,11 +27,12 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
+    private val requestOtpUseCase: RequestOtpUseCase,
     private val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<UIState>(UIState.Init)
-    val state: MutableStateFlow<UIState> = _state
+    private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
+    val state: StateFlow<FunctionState> = _state
 
     fun login(loginRequest: LoginRequest) {
         viewModelScope.launch {
@@ -37,13 +41,17 @@ class LoginViewModel @Inject constructor(
                     showLoading()
                 }
                 .catch {
+                    it.printStackTrace()
                     hideLoading()
                 }
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> state.value = UIState.ErrorLogin(baseResult.rawResponse)
-                        is BaseResult.Success -> state.value = UIState.SuccessLogin(baseResult.data)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorLogin(baseResult.rawResponse)
+                        is BaseResult.Success -> {
+                            sharedPrefs.saveToken(baseResult.data.token)
+                            _state.value = FunctionState.SuccessLogin(baseResult.data)
+                        }
                     }
                 }
         }
@@ -56,33 +64,59 @@ class LoginViewModel @Inject constructor(
                     showLoading()
                 }
                 .catch {
+                    it.printStackTrace()
                     hideLoading()
                 }
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> state.value = UIState.ErrorRegister(baseResult.rawResponse)
-                        is BaseResult.Success -> state.value = UIState.SuccessRegister(baseResult.data)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorRegister(baseResult.rawResponse)
+                        is BaseResult.Success -> {
+                            sharedPrefs.saveToken(baseResult.data.token)
+                            _state.value = FunctionState.SuccessRegister(baseResult.data)
+                        }
+                    }
+                }
+        }
+    }
+
+    fun requestOtp(requestOtpRequest: RequestOtpRequest) {
+        viewModelScope.launch {
+            requestOtpUseCase.execute(requestOtpRequest)
+                .onStart {
+                    showLoading()
+                }
+                .catch {
+                    it.printStackTrace()
+                    hideLoading()
+                }
+                .collect { baseResult ->
+                    hideLoading()
+                    when (baseResult) {
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorRequestOtp(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessRequestOtp
                     }
                 }
         }
     }
 
     private fun showLoading() {
-        _state.value = UIState.IsLoading(true)
+        _state.value = FunctionState.IsLoading(true)
     }
 
     private fun hideLoading() {
-        _state.value = UIState.IsLoading(false)
+        _state.value = FunctionState.IsLoading(false)
     }
 
-    sealed class UIState {
-        data object Init : UIState()
-        data class IsLoading(val isLoading: Boolean) : UIState()
-        data class SuccessLogin(val loginEntity: LoginEntity) : UIState()
-        data class ErrorLogin(val rawResponse: WrappedResponse<LoginResponse>) : UIState()
-        data class SuccessRegister(val loginEntity: RegisterEntity) : UIState()
-        data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>) : UIState()
+    sealed class FunctionState {
+        data object Init : FunctionState()
+        data class IsLoading(val isLoading: Boolean) : FunctionState()
+        data class SuccessLogin(val loginEntity: LoginEntity) : FunctionState()
+        data class ErrorLogin(val rawResponse: WrappedResponse<LoginResponse>) : FunctionState()
+        data class SuccessRegister(val loginEntity: RegisterEntity) : FunctionState()
+        data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>) : FunctionState()
+        data object SuccessRequestOtp : FunctionState()
+        data class ErrorRequestOtp(val rawResponse: WrappedResponse<Unit>) : FunctionState()
     }
 
 }

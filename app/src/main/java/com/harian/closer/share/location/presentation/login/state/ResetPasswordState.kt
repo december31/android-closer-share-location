@@ -35,7 +35,6 @@ class ResetPasswordState {
             }
         }
     }
-
     class SetNewPasswordState(private val fragment: LoginFragment): State {
         override fun setupUI() {
             fragment.getBinding().apply {
@@ -57,7 +56,42 @@ class ResetPasswordState {
         }
 
         override fun setupListener() {
+            fragment.getBinding().apply {
+                callToActionBtn.setOnClickListener {
+                }
+            }
+        }
+    }
+    class VerificationState (private val fragment: LoginFragment): State{
+        override fun setupUI() {
+            fragment.getBinding().apply {
+                loginContainer.goneAllChildView()
 
+                tvBack.visible()
+                tvTitle.visible()
+                tvTitle.setText(R.string.verification)
+                tvDescription.visible()
+                tvDescription.setText(R.string.a_message_with_verification_code_was_sent_to_your_mobile_phone)
+                edtConfirmationCode.visible()
+                tvNotReceiveCode.visible()
+                imgBottomDecorator.visible()
+                callToActionBtn.setText(R.string.verify)
+                callToActionBtn.visible()
+            }
+        }
+
+        override fun setupListener() {
+            fragment.getBinding().apply {
+                callToActionBtn.setOnClickListener {
+                    fragment.register()
+                }
+                tvNotReceiveCode.setOnClickListener {
+
+                }
+                tvBack.setOnClickListener {
+                    fragment.setState(fragment.enterEmailState)
+                }
+            }
         }
     }
 }

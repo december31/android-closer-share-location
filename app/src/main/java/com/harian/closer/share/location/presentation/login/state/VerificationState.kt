@@ -15,7 +15,7 @@ class VerificationState (private val fragment: LoginFragment): State{
             tvTitle.setText(R.string.verification)
             tvDescription.visible()
             tvDescription.setText(R.string.a_message_with_verification_code_was_sent_to_your_mobile_phone)
-            edtConfirmCode.visible()
+            edtConfirmationCode.visible()
             tvNotReceiveCode.visible()
             imgBottomDecorator.visible()
             callToActionBtn.setText(R.string.verify)
@@ -26,7 +26,7 @@ class VerificationState (private val fragment: LoginFragment): State{
     override fun setupListener() {
         fragment.getBinding().apply {
             callToActionBtn.setOnClickListener {
-
+                fragment.register()
             }
             tvNotReceiveCode.setOnClickListener {
 

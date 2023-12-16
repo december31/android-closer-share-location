@@ -13,4 +13,5 @@
     <color name="text_blue">#5252C7</color>
     <color name="primary_background">#F1F1FE</color>
     <color name="text_primary">#242424</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -126,7 +126,7 @@
                 android:drawableEnd="@drawable/ic_eye" />
 
             <EditText
-                android:id="@+id/edt_confirm_code"
+                android:id="@+id/edt_confirmation_code"
                 style="@style/CommonEditText"
                 android:visibility="visible"
                 android:inputType="number"
@@ -163,7 +163,7 @@
 
                 <TextView
                     android:id="@+id/call_to_action_btn"
-                    android:text=""
+                    tools:text="Login"
                     android:textAllCaps="true"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@drawable/bg_rounded_gradient"
@@ -182,6 +182,7 @@
                     app:lottie_rawRes="@raw/white_dot_loading"
                     android:scaleType="centerCrop"
                     android:paddingBottom="14dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@id/call_to_action_btn"
                     app:layout_constraintBottom_toBottomOf="@id/call_to_action_btn"
                     app:lottie_autoPlay="true"

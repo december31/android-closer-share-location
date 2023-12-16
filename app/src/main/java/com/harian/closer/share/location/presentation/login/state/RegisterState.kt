@@ -34,7 +34,7 @@ class RegisterState (private val fragment: LoginFragment): State{
                 fragment.setState(fragment.loginState)
             }
             callToActionBtn.setOnClickListener {
-                fragment.register()
+                fragment.requestOtpForRegister()
             }
         }
     }
