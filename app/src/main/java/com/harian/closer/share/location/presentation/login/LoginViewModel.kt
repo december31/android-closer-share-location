@@ -5,12 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.login.remote.dto.LoginRequest
 import com.harian.closer.share.location.data.login.remote.dto.LoginResponse
+import com.harian.closer.share.location.data.refresh.token.remote.dto.RefreshTokenResponse
 import com.harian.closer.share.location.data.register.remote.dto.RegisterRequest
 import com.harian.closer.share.location.data.register.remote.dto.RegisterResponse
 import com.harian.closer.share.location.data.request.otp.remote.dto.RequestOtpRequest
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.login.entity.LoginEntity
 import com.harian.closer.share.location.domain.login.usecase.LoginUseCase
+import com.harian.closer.share.location.domain.refresh.token.entity.RefreshTokenEntity
+import com.harian.closer.share.location.domain.refresh.token.usecase.RefreshTokenUseCase
 import com.harian.closer.share.location.domain.register.entity.RegisterEntity
 import com.harian.closer.share.location.domain.register.usecase.RegisterUseCase
 import com.harian.closer.share.location.domain.request.api.usecase.RequestOtpUseCase
@@ -19,6 +22,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +32,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
     private val requestOtpUseCase: RequestOtpUseCase,
+    private val refreshTokenUseCase: RefreshTokenUseCase,
     private val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
@@ -100,6 +105,28 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun refreshToken() {
+        viewModelScope.launch {
+            refreshTokenUseCase.execute()
+                .onStart {
+
+                }
+                .catch {
+                    it.printStackTrace()
+                    _state.value = FunctionState.ErrorRefreshToken(null)
+                }
+                .collect { baseResult ->
+                    when (baseResult) {
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorRefreshToken(baseResult.rawResponse)
+                        is BaseResult.Success -> {
+                            sharedPrefs.saveToken(baseResult.data.token)
+                            _state.value = FunctionState.SuccessRefreshToken(baseResult.data)
+                        }
+                    }
+                }
+        }
+    }
+
     private fun showLoading() {
         _state.value = FunctionState.IsLoading(true)
     }
@@ -117,6 +144,7 @@ class LoginViewModel @Inject constructor(
         data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>) : FunctionState()
         data object SuccessRequestOtp : FunctionState()
         data class ErrorRequestOtp(val rawResponse: WrappedResponse<Unit>) : FunctionState()
+        data class SuccessRefreshToken(val refreshTokenEntity: RefreshTokenEntity) : FunctionState()
+        data class ErrorRefreshToken(val rawResponse: WrappedResponse<RefreshTokenResponse>?) : FunctionState()
     }
-
 }

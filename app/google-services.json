@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "157523026264",
+    "project_id": "closer-share-location",
+    "storage_bucket": "closer-share-location.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157523026264:android:a5de3e273e01501652c52d",
+        "android_client_info": {
+          "package_name": "com.harian.software.closer.share.location"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeuG0ecFkQE1ff5QbTEQ6w-MTxxd_fEWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

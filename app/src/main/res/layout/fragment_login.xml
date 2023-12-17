@@ -101,6 +101,7 @@
                 android:id="@+id/edt_email"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress"
                 android:layout_marginTop="0dp"
                 style="@style/CommonEditText" />
 
@@ -113,6 +114,7 @@
             <EditText
                 android:id="@+id/edt_password"
                 style="@style/CommonEditText"
+                android:autofillHints="password"
                 android:inputType="textPassword"
                 android:hint="@string/password"
                 android:drawableEnd="@drawable/ic_eye" />
@@ -120,7 +122,7 @@
             <EditText
                 android:id="@+id/edt_confirm_password"
                 style="@style/CommonEditText"
-                android:visibility="visible"
+                android:autofillHints="password"
                 android:inputType="textPassword"
                 android:hint="@string/confirm_password"
                 android:drawableEnd="@drawable/ic_eye" />

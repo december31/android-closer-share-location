@@ -1,5 +1,10 @@
 package com.harian.closer.share.location.presentation.login
 
+import android.annotation.SuppressLint
+import android.text.method.PasswordTransformationMethod
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -9,13 +14,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.harian.closer.share.location.R
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.login.remote.dto.LoginRequest
 import com.harian.closer.share.location.data.register.remote.dto.RegisterRequest
 import com.harian.closer.share.location.data.register.remote.dto.RegisterResponse
 import com.harian.closer.share.location.data.request.otp.remote.dto.RequestOtpRequest
-import com.harian.closer.share.location.databinding.FragmentLoginBinding
+import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.login.state.LoginState
 import com.harian.closer.share.location.presentation.login.state.RegisterState
@@ -24,16 +28,23 @@ import com.harian.closer.share.location.presentation.login.state.State
 import com.harian.closer.share.location.presentation.login.state.VerificationState
 import com.harian.closer.share.location.utils.extension.isEmail
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
+import com.harian.software.closer.share.location.R
+import com.harian.software.closer.share.location.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.net.HttpURLConnection
+import javax.inject.Inject
 import kotlin.system.exitProcess
+
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override val layoutId: Int
         get() = R.layout.fragment_login
+
+    @Inject
+    lateinit var appManager: AppManager
 
     private val viewModel by viewModels<LoginViewModel>()
 
@@ -56,14 +67,43 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun setupListener() {
         super.setupListener()
         state.setupListener()
+        setClickRightIconEditText(binding.edtPassword)
+        setClickRightIconEditText(binding.edtConfirmPassword)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun setClickRightIconEditText(editText: EditText) {
+        editText.apply {
+            setOnTouchListener(OnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    if (event.rawX >= right - totalPaddingEnd) {
+                        transformationMethod = if (transformationMethod == null) PasswordTransformationMethod() else null
+                        setCompoundDrawablesWithIntrinsicBounds(
+                            0,
+                            0,
+                            if (transformationMethod == null) R.drawable.ic_eye
+                            else R.drawable.ic_eye_closed,
+                            0
+                        )
+                        return@OnTouchListener true
+                    }
+                }
+                false
+            })
+        }
+
     }
 
     private fun handleOnBackPressed() {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                activity?.finishAffinity()
-                exitProcess(0)
+                if (appManager.isBackPressFinish) {
+                    activity?.finishAffinity()
+                    exitProcess(0)
+                } else {
+                    showToast(getString(R.string.press_back_again_to_quit))
+                }
             }
         })
     }
@@ -80,6 +120,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     is LoginViewModel.FunctionState.ErrorRegister -> handleErrorRegister(state.rawResponse)
                     is LoginViewModel.FunctionState.ErrorRequestOtp -> handleErrorRequestOtp()
                     is LoginViewModel.FunctionState.SuccessRequestOtp -> handleSuccessRequestOtp()
+                    else -> Unit
                 }
             }
             .launchIn(lifecycleScope)
