@@ -1,7 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -10,12 +12,14 @@ android {
 
     defaultConfig {
         applicationId = "com.harian.closer.share.location"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        flavorDimensions += versionName!!
     }
 
     buildTypes {
@@ -27,6 +31,25 @@ android {
             )
         }
     }
+
+    productFlavors {
+        create("appDev") {
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/api/v1/\""
+            )
+        }
+
+        create("appProduct") {
+            buildConfigField(
+                "String",
+                "API_BASE_URL",
+                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/api/v1/\""
+            )
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -37,6 +60,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
     kapt {
         correctErrorTypes = true
@@ -61,6 +85,24 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
+
+    val navVersion = "2.7.5"
+    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+
+    // http
+    val retrofitVersion = "2.9.0"
+    val okhttpLoggingVersion = "4.11.0"
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okhttpLoggingVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
 }

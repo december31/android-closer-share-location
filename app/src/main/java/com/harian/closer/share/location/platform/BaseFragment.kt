@@ -1,25 +1,24 @@
-package com.bkplus.hitranslator.app.platform
+package com.harian.closer.share.location.platform
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
-    private var isViewCreated = false
+    private var toast: Toast? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (isViewCreated) return binding.root;
-        binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        isViewCreated = true
+        _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         return binding.root
     }
 
@@ -32,9 +31,21 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
     protected abstract val layoutId: Int
-    protected lateinit var binding: T
+    private var _binding: T? = null
+    protected val binding: T get() = _binding!!
 
     protected open fun setupUI() {}
     protected open fun setupData() {}
     protected open fun setupListener() {}
+
+    fun showToast(message: String, length: Int = Toast.LENGTH_SHORT) {
+        toast?.cancel()
+        toast = Toast.makeText(context, message, length)
+        toast?.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

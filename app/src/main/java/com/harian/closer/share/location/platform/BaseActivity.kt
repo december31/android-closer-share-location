@@ -8,9 +8,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.harian.closer.share.location.utils.Constants
-import com.harian.closer.share.location.utils.ContextUtils
-import java.util.Locale
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
@@ -38,14 +35,14 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context?) {
         newBase?.let { ctx ->
-            val preferences = BasePrefers.initPrefs(ctx)
-            val locale = preferences.locale ?: Constants.en
+//            val preferences = BasePrefers.initPrefs(ctx)
+//            val locale = preferences.locale ?: Constants.en
 
-            locale.let {
-                val locale1 = Locale.forLanguageTag(it)
-                val localeUpdatedContext = ContextUtils.updateLocale(ctx, locale1)
-                super.attachBaseContext(localeUpdatedContext)
-            }
+//            locale.let {
+//                val locale1 = Locale.forLanguageTag(it)
+//                val localeUpdatedContext = ContextUtils.updateLocale(ctx, locale1)
+//                super.attachBaseContext(localeUpdatedContext)
+//            }
         }
     }
 

@@ -13,4 +13,37 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_text_ok">Ok</string>
+    <string name="closer">Closer</string>
+    <string name="welcome">Welcome</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">FORGOT PASSWORD</string>
+    <string name="login">Login</string>
+    <string name="or_log_in_by">or LOG IN by</string>
+    <string name="don_t_have_account">Don\'t have account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="verification">VERIFICATION</string>
+    <string name="a_message_with_verification_code_was_sent_to_your_mobile_phone">A message with verification code was sent to your mobile phone.</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="don_t_receive_the_code">Don\'t receive the code</string>
+    <string name="type_verification_code">Type verification code</string>
+    <string name="verify">VERIFY</string>
+    <string name="type_your_email">TYPE YOUR EMAIL</string>
+    <string name="we_will_send_you_instruction_on_how_to_reset_your_password">We will send you instruction on how to reset your password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="send">Send</string>
+    <string name="set_new_password">SET NEW PASSWORD</string>
+    <string name="type_your_new_password">Type your new password</string>
+    <string name="back"><u>back</u></string>
+    <string name="password_invalid_warning">Your password must be at least 8 characters</string>
+    <string name="please_enter_a_valid_email">Please enter a valid email!!</string>
+    <string name="your_name">Username</string>
+    <string name="login_successful">Login successful</string>
+    <string name="an_otp_is_being_sent_to_you_please_check_spam_email">An otp is being sent to you, please check spam email</string>
+    <string name="something_go_wrong_please_try_again">Something go wrong, please try again</string>
+    <string name="login_failed_wrong_password">Login failed: wrong password</string>
+    <string name="register_successful">Register successful</string>
+    <string name="register_failed_please_check_your_otp">Register failed, please check your OTP</string>
+    <string name="an_account_has_already_registered_with_this_email_please_use_another">An account has already registered with this email, please use another</string>
 </resources>
