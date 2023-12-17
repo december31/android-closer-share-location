@@ -1,7 +1,6 @@
 package com.harian.closer.share.location.data.login.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.harian.closer.share.location.data.common.utils.Token
 
 data class LoginResponse(
     @SerializedName("id") val id: Int?,

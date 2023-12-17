@@ -1,9 +1,9 @@
 package com.harian.closer.share.location.presentation.login.state
 
-import com.harian.closer.share.location.R
 import com.harian.closer.share.location.presentation.login.LoginFragment
 import com.harian.closer.share.location.utils.extension.goneAllChildView
 import com.harian.closer.share.location.utils.extension.visible
+import com.harian.software.closer.share.location.R
 
 class VerificationState (private val fragment: LoginFragment): State{
     override fun setupUI() {

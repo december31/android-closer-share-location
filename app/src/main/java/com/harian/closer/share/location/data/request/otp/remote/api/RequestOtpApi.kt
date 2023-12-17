@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface RequestOtpApi {
-    @POST("auth/request-otp")
+    @POST("api/v1/auth/request-otp")
     suspend fun requestOtp(@Body requestOtpRequest: RequestOtpRequest): Response<WrappedResponse<Unit>>
 }
