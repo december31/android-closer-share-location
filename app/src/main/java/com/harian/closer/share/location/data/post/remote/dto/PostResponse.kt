@@ -1,7 +1,6 @@
 package com.harian.closer.share.location.data.post.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.harian.closer.share.location.data.comment.remote.dto.CommentResponse
 import com.harian.closer.share.location.data.user.remote.dto.UserResponse
 
 data class PostResponse(

@@ -5,6 +5,8 @@ import com.google.gson.reflect.TypeToken
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.api.PostApi
+import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
+import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
 import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
 import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
@@ -57,6 +59,38 @@ class PostRepositoryImpl(private val postApi: PostApi) : PostRepository {
         }
     }
 
+    override suspend fun createComment(commentRequest: CommentRequest, postId: Int): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>> {
+        return flow {
+            delay(2000)
+            val response = postApi.createComment(commentRequest, postId)
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                val commentEntity = body?.data.let { data ->
+                    val owner = UserEntity(
+                        id = data?.owner?.id,
+                        name = data?.owner?.name,
+                        avatar = data?.owner?.avatar,
+                        email = data?.owner?.email,
+                        gender = data?.owner?.gender,
+                        description = data?.owner?.description,
+                    )
+                    CommentEntity(
+                        id = data?.id,
+                        content = data?.content,
+                        createdTime = data?.createdTime,
+                        owner = owner,
+                    )
+                }
+                emit(BaseResult.Success(commentEntity))
+            } else {
+                val type = object : TypeToken<WrappedResponse<CommentResponse>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<CommentResponse>>(response.errorBody()!!.charStream(), type)!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
+
     override suspend fun getPopularPosts(
         page: Int?,
         pageSize: Int?
@@ -88,7 +122,7 @@ class PostRepositoryImpl(private val postApi: PostApi) : PostRepository {
                         CommentEntity(
                             id = comment?.id,
                             content = comment?.content,
-                            createdTime = comment?.createTime,
+                            createdTime = comment?.createdTime,
                             owner = UserEntity(
                                 id = comment?.owner?.id,
                                 name = comment?.owner?.name,
@@ -148,7 +182,7 @@ class PostRepositoryImpl(private val postApi: PostApi) : PostRepository {
                     CommentEntity(
                         id = comment?.id,
                         content = comment?.content,
-                        createdTime = comment?.createTime,
+                        createdTime = comment?.createdTime,
                         owner = UserEntity(
                             id = comment?.owner?.id,
                             name = comment?.owner?.name,

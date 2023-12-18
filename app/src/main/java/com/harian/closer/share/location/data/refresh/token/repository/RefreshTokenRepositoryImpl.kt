@@ -18,8 +18,8 @@ class RefreshTokenRepositoryImpl(private val refreshTokenApi: RefreshTokenApi, p
     RefreshTokenRepository {
     override suspend fun refresh(): Flow<BaseResult<RefreshTokenEntity, WrappedResponse<RefreshTokenResponse>>> {
         return flow {
+            delay(2000)
             val response = refreshTokenApi.refreshToken("Bearer " + sharedPrefs.getRefreshToken())
-            delay(1000)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
                 val refreshTokenEntity = body?.data.let { data ->

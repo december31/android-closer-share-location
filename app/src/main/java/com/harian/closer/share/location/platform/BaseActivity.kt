@@ -1,6 +1,5 @@
 package com.harian.closer.share.location.platform
 
-import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -31,19 +30,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     private fun createBinding(): T {
         return DataBindingUtil.setContentView(this, layoutId)
-    }
-
-    override fun attachBaseContext(newBase: Context?) {
-        newBase?.let { ctx ->
-//            val preferences = BasePrefers.initPrefs(ctx)
-//            val locale = preferences.locale ?: Constants.en
-
-//            locale.let {
-//                val locale1 = Locale.forLanguageTag(it)
-//                val localeUpdatedContext = ContextUtils.updateLocale(ctx, locale1)
-//                super.attachBaseContext(localeUpdatedContext)
-//            }
-        }
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

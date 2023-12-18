@@ -1,12 +1,18 @@
 package com.harian.closer.share.location.presentation.post.details
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
+import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.utils.Constants
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentPostDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,6 +40,13 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
             icBack.setOnClickListener {
                 findNavController().popBackStack()
             }
+            btnPostComment.setOnClickListener {
+                if (!edtComment.text.isNullOrBlank()) {
+                    viewModel.createComment(CommentRequest(edtComment.text.toString()), safeArgs.postId)
+                } else {
+                    edtComment.performClick()
+                }
+            }
         }
     }
 
@@ -45,6 +58,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     private fun fetchData() {
         if (safeArgs.postId > 0) {
             viewModel.fetchPostData(safeArgs.postId)
+            viewModel.fetchUserData()
         } else {
             handleErrorGetPost()
         }
@@ -54,14 +68,41 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is PostDetailsViewModel.FunctionState.Init -> Unit
+                is PostDetailsViewModel.FunctionState.ErrorGetUserUserInfo -> Unit
+                is PostDetailsViewModel.FunctionState.IsLoading -> handleIsLoading(it.isLoading)
                 is PostDetailsViewModel.FunctionState.ErrorGetPost -> handleErrorGetPost()
                 is PostDetailsViewModel.FunctionState.SuccessGetPost -> handleSuccessGetPost(it.postDataList)
+                is PostDetailsViewModel.FunctionState.SuccessGetUserUserInfo -> handleSuccessGetUserInfo(it.userEntity)
+                is PostDetailsViewModel.FunctionState.ErrorCreateComment -> handleErrorCreateComment()
+                is PostDetailsViewModel.FunctionState.SuccessCreateComment -> handleSuccessCrateComment()
             }
         }.launchIn(lifecycleScope)
     }
 
+    private fun handleErrorCreateComment() {
+        showToast(getString(R.string.post_comment_failed_please_try_again_later))
+    }
+
+    private fun handleSuccessCrateComment() {
+        viewModel.fetchPostData(safeArgs.postId)
+    }
+
+    private fun handleIsLoading(isLoading: Boolean) {
+        binding.loadingContainer.isVisible = isLoading
+        if (isLoading) {
+            binding.loadingAnimation.playAnimation()
+        } else {
+            binding.loadingAnimation.cancelAnimation()
+        }
+    }
+
+    private fun handleSuccessGetUserInfo(user: UserEntity) {
+        Glide.with(binding.root).load(user.avatar ?: Constants.DEFAULT_IMAGE_URL).into(binding.imgUserAvatar)
+    }
+
     private fun handleSuccessGetPost(postDataList: List<Any>) {
         adapter.updateData(postDataList)
+        binding.rvDetailsPost.layoutManager?.smoothScrollToPosition(binding.rvDetailsPost, RecyclerView.State(), 0)
     }
 
     private fun handleErrorGetPost() {
