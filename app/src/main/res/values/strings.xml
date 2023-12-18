@@ -40,4 +40,19 @@
     <string name="please_enter_a_valid_email">Please enter a valid email!!</string>
     <string name="your_name">Username</string>
     <string name="login_successful">Login successful</string>
+    <string name="an_otp_is_being_sent_to_you_please_check_spam_email">An otp is being sent to you, please check spam email</string>
+    <string name="something_go_wrong_please_try_again">Something go wrong, please try again</string>
+    <string name="login_failed_wrong_password">Login failed: wrong password</string>
+    <string name="register_successful">Register successful</string>
+    <string name="register_failed_please_check_your_otp">Register failed, please check your OTP</string>
+    <string name="an_account_has_already_registered_with_this_email_please_use_another">An account has already registered with this email, please use another</string>
+    <string name="press_back_again_to_quit">Press back again to quit</string>
+    <string name="share_post">Share post</string>
+    <string name="post">Post</string>
+    <string name="anyone">Anyone</string>
+    <string name="what_do_you_want_to_talk_about">What do you want to talk about?</string>
+    <string name="logging_you_in">Logging you in</string>
+    <string name="failed_to_create_post_please_try_again_later">Failed to create post, please try again later!</string>
+    <string name="posted_successful">Posted successful</string>
+    <string name="this_post_is_no_longer_existed">This post is no longer existed</string>
 </resources>

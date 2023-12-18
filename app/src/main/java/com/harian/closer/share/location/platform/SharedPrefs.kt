@@ -27,6 +27,10 @@ class SharedPrefs(context: Context) {
         return get(PREF_TOKEN, String::class.java)
     }
 
+    fun getRefreshToken(): String {
+        return get(PREF_REFRESH_TOKEN, String::class.java)
+    }
+
     private fun <T> get(key: String, clazz: Class<T>): T =
         when (clazz) {
             String::class.java -> sharedPref.getString(key, "")
@@ -54,6 +58,7 @@ class SharedPrefs(context: Context) {
     fun clear() {
         sharedPref.edit().run {
             remove(PREF_TOKEN)
+            remove(PREF_REFRESH_TOKEN)
         }.apply()
     }
 }

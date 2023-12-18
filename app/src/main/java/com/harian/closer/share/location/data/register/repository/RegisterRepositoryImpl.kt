@@ -15,13 +15,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class RegisterRepositoryImpl @Inject constructor(private val registerApi: RegisterApi) :
-    RegisterRepository {
+class RegisterRepositoryImpl @Inject constructor(private val registerApi: RegisterApi) : RegisterRepository {
     override suspend fun register(registerRequest: RegisterRequest): Flow<BaseResult<RegisterEntity, WrappedResponse<RegisterResponse>>> {
         return flow {
             delay(1000) // for loading animation
             val response = registerApi.register(registerRequest)
-            if (response.isSuccessful) {
+            if (response.isSuccessful && response.code() in 200 until 400) {
                 val registerEntity = response.body()?.data.let { data ->
                     RegisterEntity(
                         id = data?.id,
@@ -34,7 +33,7 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
                 }
                 emit(BaseResult.Success(registerEntity))
             } else {
-                val type = object : TypeToken<RegisterResponse>() {}.type
+                val type = object : TypeToken<WrappedResponse<RegisterResponse>>() {}.type
                 val err: WrappedResponse<RegisterResponse> =
                     Gson().fromJson(response.errorBody()!!.charStream(), type)
                 emit(BaseResult.Error(err))

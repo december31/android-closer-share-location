@@ -101,6 +101,7 @@
                 android:id="@+id/edt_email"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
+                android:autofillHints="emailAddress"
                 android:layout_marginTop="0dp"
                 style="@style/CommonEditText" />
 
@@ -113,6 +114,7 @@
             <EditText
                 android:id="@+id/edt_password"
                 style="@style/CommonEditText"
+                android:autofillHints="password"
                 android:inputType="textPassword"
                 android:hint="@string/password"
                 android:drawableEnd="@drawable/ic_eye" />
@@ -120,13 +122,13 @@
             <EditText
                 android:id="@+id/edt_confirm_password"
                 style="@style/CommonEditText"
-                android:visibility="visible"
+                android:autofillHints="password"
                 android:inputType="textPassword"
                 android:hint="@string/confirm_password"
                 android:drawableEnd="@drawable/ic_eye" />
 
             <EditText
-                android:id="@+id/edt_confirm_code"
+                android:id="@+id/edt_confirmation_code"
                 style="@style/CommonEditText"
                 android:visibility="visible"
                 android:inputType="number"
@@ -163,7 +165,7 @@
 
                 <TextView
                     android:id="@+id/call_to_action_btn"
-                    android:text=""
+                    tools:text="Login"
                     android:textAllCaps="true"
                     app:layout_constraintTop_toTopOf="parent"
                     android:background="@drawable/bg_rounded_gradient"
@@ -182,6 +184,7 @@
                     app:lottie_rawRes="@raw/white_dot_loading"
                     android:scaleType="centerCrop"
                     android:paddingBottom="14dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@id/call_to_action_btn"
                     app:layout_constraintBottom_toBottomOf="@id/call_to_action_btn"
                     app:lottie_autoPlay="true"

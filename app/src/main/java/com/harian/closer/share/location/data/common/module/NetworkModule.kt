@@ -1,8 +1,8 @@
 package com.harian.closer.share.location.data.common.module
 
-import com.harian.closer.share.location.BuildConfig
 import com.harian.closer.share.location.data.common.utils.RequestInterceptor
 import com.harian.closer.share.location.platform.SharedPrefs
+import com.harian.software.closer.share.location.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

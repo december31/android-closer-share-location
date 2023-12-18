@@ -11,8 +11,13 @@
         <item name="android:textCursorDrawable">@null</item>
         <item name="android:backgroundTint">@color/field_background</item>
         <item name="android:animateLayoutChanges">true</item>
-        <item name="android:textColorHint">@color/hint</item>
+        <item name="android:textColorHint">@color/text_placeholder</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="RoundedImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 </resources>
