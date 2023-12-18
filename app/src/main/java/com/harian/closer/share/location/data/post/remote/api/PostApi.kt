@@ -16,4 +16,8 @@ interface PostApi {
 
     @GET("api/v1/post/popular")
     suspend fun getPopularPosts(@Query("page") page: Int? = null, @Query("page-size") pageSize: Int? = null): Response<WrappedListResponse<PostResponse>>
+
+    @GET("api/v1/post")
+    suspend fun getPostById(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
+
 }

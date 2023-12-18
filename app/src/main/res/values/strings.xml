@@ -52,4 +52,7 @@
     <string name="anyone">Anyone</string>
     <string name="what_do_you_want_to_talk_about">What do you want to talk about?</string>
     <string name="logging_you_in">Logging you in</string>
+    <string name="failed_to_create_post_please_try_again_later">Failed to create post, please try again later!</string>
+    <string name="posted_successful">Posted successful</string>
+    <string name="this_post_is_no_longer_existed">This post is no longer existed</string>
 </resources>

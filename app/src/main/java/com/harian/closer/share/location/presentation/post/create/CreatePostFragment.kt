@@ -1,5 +1,6 @@
-package com.harian.closer.share.location.presentation.createpost
+package com.harian.closer.share.location.presentation.post.create
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -63,6 +64,33 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
                 }
             }
         }.launchIn(lifecycleScope)
+
+        postViewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                is PostViewModel.FunctionState.Init -> Unit
+                is PostViewModel.FunctionState.IsLoading -> handleIsLoading(it.isLoading)
+                is PostViewModel.FunctionState.ErrorCreatePost -> handleErrorCreatePost()
+                is PostViewModel.FunctionState.SuccessCreatePost -> handleSuccessCreatePost()
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleSuccessCreatePost() {
+        showToast(getString(R.string.posted_successful))
+        findNavController().popBackStack()
+    }
+
+    private fun handleErrorCreatePost() {
+        showToast(getString(R.string.failed_to_create_post_please_try_again_later))
+    }
+
+    private fun handleIsLoading(isLoading: Boolean) {
+        binding.loadingContainer.isVisible = isLoading
+        if (isLoading) {
+            binding.loadingAnimation.playAnimation()
+        } else {
+            binding.loadingAnimation.cancelAnimation()
+        }
     }
 
     private fun createPost() {

@@ -12,6 +12,9 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn"
+            android:src="@drawable/ic_plus"
+            app:tint="@color/white"
+            android:elevation="10dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_width="wrap_content"
@@ -21,13 +24,25 @@
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="28dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_post"
-            android:layout_margin="16dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_recycler_post"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_post"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_recycler_post"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                tools:itemCount="2"
+                android:paddingBottom="16dp"
+                android:clipToPadding="false"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 </layout>

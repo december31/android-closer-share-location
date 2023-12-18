@@ -16,6 +16,10 @@ import java.util.Locale
 class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     private val items = arrayListOf<PostEntity>()
+    private var onItemClickListener: (Int) -> Unit = {}
+    fun setOnItemClickListener(onItemClickListener: (Int) -> Unit) {
+        this.onItemClickListener = onItemClickListener
+    }
 
     fun updateData(data: List<PostEntity>) {
         DiffUtil.calculateDiff(object : DiffUtil.Callback() {
@@ -41,6 +45,10 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         fun bind(item: PostEntity?) {
             if (item == null) return
             binding.apply {
+                root.setOnClickListener {
+                    item.id?.let { id -> onItemClickListener.invoke(id) }
+                }
+
                 Glide.with(binding.root).load(item.owner?.avatar ?: Constants.DEFAULT_IMAGE_URL).into(binding.imgAvatar)
                 tvUsername.text = item.owner?.name
                 item.createdTime?.let {
@@ -50,6 +58,10 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
                 tvTitle.text = item.title
                 tvContent.isVisible = !item.content.isNullOrBlank()
                 tvContent.text = item.content
+
+                tvCommented.text = "${item.comments?.size ?: 0}"
+                tvLiked.text = "${item.likes?.size ?: 0}"
+                tvWatched.text = "${0}"
             }
         }
     }

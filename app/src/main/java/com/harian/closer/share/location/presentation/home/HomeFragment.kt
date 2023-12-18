@@ -6,6 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
@@ -43,26 +44,39 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             btn.setOnClickListener {
                 findNavController().navigateWithAnimation(HomeFragmentDirections.actionHomeFragmentToCreatePostFragment())
             }
+            swipeRefresh.setOnRefreshListener {
+                viewModel.fetchPopularPosts()
+            }
         }
     }
 
     private fun setupRecyclerView() {
-        adapter = PostAdapter()
+        adapter = PostAdapter().apply {
+            setOnItemClickListener {
+                findNavController().navigateWithAnimation(HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(it))
+            }
+        }
         binding.rvPost.adapter = adapter
     }
 
     private fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
-            when(it) {
+            when (it) {
                 is HomeViewModel.FunctionState.Init -> Unit
-                is HomeViewModel.FunctionState.ErrorGetPopularPosts -> Unit
+                is HomeViewModel.FunctionState.ErrorGetPopularPosts -> handleOnErrorFetchPosts()
                 is HomeViewModel.FunctionState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(it.posts)
             }
         }.launchIn(lifecycleScope)
     }
 
+    private fun handleOnErrorFetchPosts() {
+        binding.swipeRefresh.isRefreshing = false
+    }
+
     private fun handleOnSuccessFetchPosts(posts: List<PostEntity>) {
         adapter.updateData(posts)
+        binding.swipeRefresh.isRefreshing = false
+        binding.rvPost.layoutManager?.smoothScrollToPosition(binding.rvPost, RecyclerView.State(), 0)
     }
 
     private fun handleOnBackPressed() {

@@ -19,4 +19,6 @@
     <color name="text_secondary">#828282</color>
     <color name="black1">#212121</color>
     <color name="bg_grey">#F6F7F9</color>
+    <color name="black_50">#80000000</color>
+    <color name="black_80">#CC000000</color>
 </resources>

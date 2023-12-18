@@ -11,4 +11,5 @@ import kotlinx.coroutines.flow.Flow
 interface PostRepository {
     suspend fun createPost(postRequest: CreatePostRequest): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
     suspend fun getPopularPosts(page: Int?, pageSize: Int?): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostResponse>>>
+    suspend fun getPostById(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
 }

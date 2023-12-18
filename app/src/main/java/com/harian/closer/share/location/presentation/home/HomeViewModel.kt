@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
@@ -32,10 +33,12 @@ class HomeViewModel @Inject constructor(
                     it.printStackTrace()
                 }
                 .collect { baseResult ->
+                    _state.value = FunctionState.Init
                     when (baseResult) {
                         is BaseResult.Success -> _state.value = FunctionState.SuccessGetPopularPosts(baseResult.data)
                         is BaseResult.Error -> _state.value = FunctionState.ErrorGetPopularPosts(baseResult.rawResponse)
                     }
+                    _state.value = FunctionState.Init
                 }
         }
     }
