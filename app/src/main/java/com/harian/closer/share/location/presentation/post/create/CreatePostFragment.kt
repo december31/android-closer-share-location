@@ -1,5 +1,8 @@
 package com.harian.closer.share.location.presentation.post.create
 
+import android.net.Uri
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,6 +14,7 @@ import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.common.UserViewModel
 import com.harian.closer.share.location.utils.Constants
+import com.harian.closer.share.location.utils.extension.FileUtils
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentCreatePostBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +27,12 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
 
     private val userViewModel: UserViewModel by viewModels()
     private val postViewModel: PostViewModel by viewModels()
+
+    private var selectedImages = arrayListOf<Uri>()
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+        selectedImages.addAll(uris)
+    }
 
     override val layoutId: Int
         get() = R.layout.fragment_create_post
@@ -41,6 +51,9 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
             }
             btnPost.setOnClickListener {
                 createPost()
+            }
+            btnAddPhoto.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
     }
@@ -94,8 +107,18 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
     }
 
     private fun createPost() {
-        postViewModel.createPost(
-            CreatePostRequest("", binding.edtContent.text.toString())
-        )
+        if (binding.edtContent.text.isNullOrBlank()) {
+            return
+        } else {
+            val images = context?.let { ctx ->
+                selectedImages.map { uri ->
+                    FileUtils.getFile(ctx, uri)
+                }
+            }
+            postViewModel.createPost(
+                CreatePostRequest("", binding.edtContent.text.toString()),
+                images
+            )
+        }
     }
 }

@@ -14,6 +14,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.parse
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,9 +33,12 @@ class PostViewModel @Inject constructor(
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
 
-    fun createPost(createPostRequest: CreatePostRequest) {
+    fun createPost(createPostRequest: CreatePostRequest, images: List<File?>? = null) {
         viewModelScope.launch {
-            createPostUseCase.execute(createPostRequest)
+            val parts = buildPostParts(images)
+            val body = buildPostBody(createPostRequest)
+
+            createPostUseCase.execute(parts, body)
                 .onStart {
                     _state.value = FunctionState.IsLoading(true)
                 }
@@ -43,6 +55,32 @@ class PostViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    /**
+     * build body for contents
+     */
+    private fun buildPostBody(createPostRequest: CreatePostRequest): RequestBody {
+        // build body
+        val jsonObject = JSONObject()
+        jsonObject.put("title", createPostRequest.title)
+        jsonObject.put("content", createPostRequest.content)
+        return jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+    }
+
+    /**
+     * build part for images
+     */
+    private fun buildPostParts(images: List<File?>?): List<MultipartBody.Part>? {
+        // build files part
+        return images?.map { image ->
+            if (image != null) {
+                val body = image.asRequestBody()
+                return@map MultipartBody.Part.createFormData("image", image.name, body)
+            } else {
+                return@map null
+            }
+        }?.filterNotNull()
     }
 
     sealed class FunctionState {

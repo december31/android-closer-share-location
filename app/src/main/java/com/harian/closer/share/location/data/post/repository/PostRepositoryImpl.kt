@@ -7,7 +7,6 @@ import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.api.PostApi
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
-import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
 import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.common.base.BaseResult
@@ -17,15 +16,16 @@ import com.harian.closer.share.location.domain.user.entity.UserEntity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class PostRepositoryImpl(private val postApi: PostApi) : PostRepository {
-    override suspend fun createPost(postRequest: CreatePostRequest): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
+    override suspend fun createPost(parts: List<MultipartBody.Part>?, body: RequestBody): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
         return flow {
             delay(1000)
-            val response = postApi.createPost(postRequest)
+            val response = postApi.createPost(parts, body)
             if (response.isSuccessful && response.code() in 200 until 400) {
-                val body = response.body()
-                val postOwner = body?.data?.owner?.let { owner ->
+                val postOwner = response.body()?.data?.owner?.let { owner ->
                     UserEntity(
                         id = owner.id,
                         name = owner.name,
@@ -35,7 +35,7 @@ class PostRepositoryImpl(private val postApi: PostApi) : PostRepository {
                         description = owner.description,
                     )
                 }
-                val postEntity = body?.data.let { data ->
+                val postEntity = response.body()?.data.let { data ->
                     PostEntity(
                         id = data?.id,
                         title = data?.title,
