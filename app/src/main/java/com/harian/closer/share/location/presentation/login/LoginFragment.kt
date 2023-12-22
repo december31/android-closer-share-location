@@ -224,8 +224,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun isPasswordValid(): Boolean {
-        return !binding.edtPassword.text.isNullOrBlank() &&
-                binding.edtEmail.text.toString().length > 8
+        return !binding.edtEmail.text.isNullOrBlank() &&
+                binding.edtPassword.text.toString().trim().length > 8
     }
 
     fun setState(state: State) {

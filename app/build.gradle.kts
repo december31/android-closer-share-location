@@ -11,6 +11,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.firebase.appdistribution")
 }
 
 android {
@@ -25,7 +26,12 @@ android {
         versionName = "1.0.0"
 
         archivesName =
-            "CloserShareLocation_v${versionName}(${versionCode})_${SimpleDateFormat("dd.MM.yyyy_hh.mm.ss", Locale.US).format(Date())}"
+            "CloserShareLocation_v${versionName}(${versionCode})_${
+                SimpleDateFormat(
+                    "dd.MM.yyyy_hh.mm.ss",
+                    Locale.US
+                ).format(Date())
+            }"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         flavorDimensions += versionName!!
