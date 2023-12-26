@@ -25,3 +25,12 @@ fun View.goneAllChildView() {
         this.gone()
     }
 }
+fun View.invisibleAllChildView() {
+    if (this is ViewGroup) {
+        this.children.forEach {
+            it.goneAllChildView()
+        }
+    } else {
+        this.invisible()
+    }
+}

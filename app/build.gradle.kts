@@ -12,6 +12,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.firebase.appdistribution")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -111,8 +112,13 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+
+    // crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
+
+    // Performance Monitoring
+    implementation("com.google.firebase:firebase-perf")
 
     implementation("com.airbnb.android:lottie:6.2.0")
 
