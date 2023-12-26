@@ -53,72 +53,106 @@
             android:layout_width="match_parent"
             android:layout_height="2dp" />
 
-        <RelativeLayout
-            android:id="@+id/owner_container"
-            android:layout_marginTop="16dp"
-            android:animateLayoutChanges="true"
-            android:layout_marginHorizontal="16dp"
+        <ScrollView
             android:layout_below="@id/divider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/img_avatar"
-                app:shapeAppearanceOverlay="@style/RoundedImageView"
-                android:layout_alignParentStart="true"
-                android:background="@color/transparent"
-                android:scaleType="centerCrop"
-                tools:src="@tools:sample/avatars"
-                android:layout_width="56dp"
-                android:layout_height="56dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_username"
-                android:layout_toEndOf="@id/img_avatar"
-                android:layout_marginStart="8dp"
-                android:layout_alignParentTop="true"
-                android:textColor="@color/text_primary"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:text="@tools:sample/full_names"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                <RelativeLayout
+                    android:id="@+id/owner_container"
+                    android:layout_marginTop="16dp"
+                    android:animateLayoutChanges="true"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_privacy"
-                android:layout_below="@id/tv_username"
-                android:layout_toEndOf="@id/img_avatar"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:paddingHorizontal="8dp"
-                android:drawablePadding="8dp"
-                android:paddingVertical="4dp"
-                android:text="@string/anyone"
-                android:background="@drawable/bg_rounded_stroke"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="@drawable/ic_world"
-                app:drawableEndCompat="@drawable/ic_triangle_down" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/img_avatar"
+                        app:shapeAppearanceOverlay="@style/RoundedImageView"
+                        android:layout_alignParentStart="true"
+                        android:background="@color/transparent"
+                        android:scaleType="centerCrop"
+                        tools:src="@tools:sample/avatars"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp" />
 
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_toEndOf="@id/img_avatar"
+                        android:layout_marginStart="8dp"
+                        android:layout_alignParentTop="true"
+                        android:textColor="@color/text_primary"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="@tools:sample/full_names"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-        <EditText
-            android:id="@+id/edt_content"
-            android:layout_below="@id/owner_container"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/transparent"
-            android:gravity="top"
-            android:textColorHint="@color/text_placeholder"
-            android:textColor="@color/text_primary"
-            android:textSize="24sp"
-            android:hint="@string/what_do_you_want_to_talk_about"
-            tools:text="@tools:sample/lorem/random"
-            android:inputType="textMultiLine"
-            android:maxHeight="200dp"
-            android:minHeight="100dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_privacy"
+                        android:layout_below="@id/tv_username"
+                        android:layout_toEndOf="@id/img_avatar"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:paddingHorizontal="8dp"
+                        android:drawablePadding="8dp"
+                        android:paddingVertical="4dp"
+                        android:text="@string/anyone"
+                        android:background="@drawable/bg_rounded_stroke"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:drawableStartCompat="@drawable/ic_world"
+                        app:drawableEndCompat="@drawable/ic_triangle_down" />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/edt_title"
+                    android:layout_below="@id/owner_container"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/transparent"
+                    android:gravity="top"
+                    android:textColorHint="@color/text_placeholder"
+                    android:textColor="@color/text_primary"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:hint="@string/what_do_you_want_to_talk_about"
+                    tools:text="@tools:sample/lorem/random"
+                    android:inputType="textMultiLine"
+                    android:maxHeight="50dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:id="@+id/edt_content"
+                    android:layout_below="@id/edt_title"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/transparent"
+                    android:gravity="top"
+                    android:textColorHint="@color/text_placeholder"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:hint="@string/describe_it_in_details_here"
+                    tools:text="@tools:sample/lorem/random"
+                    android:inputType="textMultiLine"
+                    android:maxHeight="200dp"
+                    android:minHeight="100dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.harian.closer.share.location.presentation.common.custom.imageview.MultipleImagesView
+                    android:id="@+id/multiple_images_view"
+                    android:layout_below="@id/edt_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </RelativeLayout>
+        </ScrollView>
 
         <LinearLayout
             android:id="@+id/loading_container"
@@ -139,5 +173,18 @@
 
         </LinearLayout>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_add_photo"
+            android:src="@drawable/ic_add_photo"
+            app:tint="@color/white"
+            android:elevation="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginBottom="28dp" />
     </RelativeLayout>
 </layout>

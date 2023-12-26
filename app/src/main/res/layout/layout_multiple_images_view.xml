@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="imagesCount"
+            type="int" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/vertical_guide_line_50"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            guidePercent="@{imagesCount == 1 ? 1.0f : imagesCount == 2 ? 0.5f : imagesCount == 3 ? 0.66f : imagesCount == 4 ? 0.5f : 0.5f, default=0.5f}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/horizontal_guide_line_50"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_70"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7"
+            guidePercent="@{imagesCount == 1 ? 1.0f : imagesCount == 2 ? 1.0f : imagesCount == 3 ? 1.0f : imagesCount == 4 ? 0.5f : 0.7f, default=0.7f}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_33"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.33"
+            guidePercent="@{imagesCount == 4 ? 0.5f : 0.33f, default=0.33f}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_line_66"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.66"
+            guidePercent="@{imagesCount == 4 ? 1f : 0.66f, default=0.66f}"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_margin="2dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/vertical_guide_line_50"
+            app:layout_constraintBottom_toTopOf="@id/guide_line_70"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars"
+            android:scaleType="centerCrop"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_margin="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/guide_line_70"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/vertical_guide_line_50"
+            android:scaleType="centerCrop"
+            android:visibility="@{imagesCount == 3 ? View.GONE : View.VISIBLE}"
+            tools:src="@tools:sample/avatars"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/image3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guide_line_33"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide_line_70"
+            android:layout_margin="2dp"
+            android:visibility="@{imagesCount > 3 ? View.VISIBLE : View.GONE}"
+            tools:src="@tools:sample/avatars"
+            android:scaleType="centerCrop"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/image4"
+            app:layout_constraintEnd_toStartOf="@id/guide_line_66"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide_line_70"
+            app:layout_constraintStart_toEndOf="@id/guide_line_33"
+            android:layout_margin="2dp"
+            android:visibility="@{imagesCount > 3 ? View.VISIBLE : View.GONE}"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/image5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide_line_70"
+            app:layout_constraintStart_toEndOf="@id/guide_line_66"
+            android:layout_margin="2dp"
+            android:scaleType="centerCrop"
+            android:visibility="@{imagesCount > 4 ? View.VISIBLE : View.GONE}"
+            tools:src="@tools:sample/avatars"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/image6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/horizontal_guide_line_50"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/vertical_guide_line_50"
+            android:layout_margin="2dp"
+            android:visibility="@{imagesCount == 3 ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/image7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/horizontal_guide_line_50"
+            app:layout_constraintStart_toEndOf="@id/vertical_guide_line_50"
+            android:layout_margin="2dp"
+            android:visibility="@{imagesCount == 3 ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <TextView
+            android:id="@+id/remain_images_count"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide_line_70"
+            app:layout_constraintStart_toEndOf="@id/guide_line_66"
+            android:layout_margin="2dp"
+            android:background="@color/black_50"
+            tools:text="+5"
+            android:visibility="@{imagesCount > 5 ? View.VISIBLE : View.GONE}"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,3 +1,8 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -6,6 +11,7 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.firebase.appdistribution")
 }
 
 android {
@@ -19,9 +25,25 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        archivesName =
+            "CloserShareLocation_v${versionName}(${versionCode})_${
+                SimpleDateFormat(
+                    "dd.MM.yyyy_hh.mm.ss",
+                    Locale.US
+                ).format(Date())
+            }"
 
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         flavorDimensions += versionName!!
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("key/harian_release.jks")
+            storePassword = "An30122002"
+            keyPassword = "An30122002"
+            keyAlias = "release"
+        }
     }
 
     buildTypes {
@@ -31,6 +53,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = true
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         }
     }
 
@@ -113,4 +140,6 @@ dependencies {
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
+
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }

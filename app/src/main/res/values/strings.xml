@@ -55,4 +55,9 @@
     <string name="failed_to_create_post_please_try_again_later">Failed to create post, please try again later!</string>
     <string name="posted_successful">Posted successful</string>
     <string name="this_post_is_no_longer_existed">This post is no longer existed</string>
+    <string name="add_a_comment">Add a comment</string>
+    <string name="post_comment_failed_please_try_again_later">Post comment failed, please try again later!</string>
+    <string name="describe_it_in_details_here">describe it in details here</string>
+    <string name="please_enter_at_least_title_or_description">Please enter at least title or description</string>
+    <string name="remain_image_count">+%d</string>
 </resources>

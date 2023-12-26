@@ -1,21 +1,29 @@
 package com.harian.closer.share.location
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.view.Menu
 import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsAnimationControlListenerCompat
+import androidx.core.view.WindowInsetsAnimationControllerCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updateLayoutParams
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.navigation.NavigationView
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,21 +37,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        enableEdgeToEdge()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        navView.setupWithNavController(navController)
-
-        hideSystemUI()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -51,21 +48,8 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun hideSystemUI() {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        WindowInsetsControllerCompat(window, binding.root).let { controller ->
-            controller.hide(WindowInsetsCompat.Type.systemBars())
-            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
-    }
-
-    private fun showSystemUI() {
-        WindowCompat.setDecorFitsSystemWindows(window, true)
-        WindowInsetsControllerCompat(window, binding.root).show(WindowInsetsCompat.Type.systemBars())
-    }
-
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
+        if (currentFocus != null && currentFocus !is EditText) {
             val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }

@@ -1,5 +1,9 @@
 package com.harian.closer.share.location.presentation.post.create
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,6 +15,7 @@ import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.common.UserViewModel
 import com.harian.closer.share.location.utils.Constants
+import com.harian.closer.share.location.utils.FileUtils
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentCreatePostBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +28,22 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
 
     private val userViewModel: UserViewModel by viewModels()
     private val postViewModel: PostViewModel by viewModels()
+
+    private var selectedImages = arrayListOf<Uri>()
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia()) { uris ->
+        selectedImages.addAll(uris)
+        val images = arrayListOf<Uri>()
+        images.addAll(selectedImages)
+        selectedImages.clear()
+        selectedImages.addAll(images.distinct())
+
+        selectedImages.forEach { uri ->
+            Log.d(this@CreatePostFragment.javaClass.simpleName, uri.path.toString())
+        }
+
+        updateUiImages()
+    }
 
     override val layoutId: Int
         get() = R.layout.fragment_create_post
@@ -41,6 +62,9 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
             }
             btnPost.setOnClickListener {
                 createPost()
+            }
+            btnAddPhoto.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
     }
@@ -93,9 +117,23 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
         }
     }
 
+    private fun updateUiImages() {
+        binding.multipleImagesView.loadImages(selectedImages)
+    }
+
     private fun createPost() {
-        postViewModel.createPost(
-            CreatePostRequest("", binding.edtContent.text.toString())
-        )
+        if (!binding.edtTitle.text.isNullOrBlank() || !binding.edtContent.text.isNullOrBlank()) {
+            val images = context?.let { ctx ->
+                selectedImages.map { uri ->
+                    FileUtils.getFile(ctx, uri)
+                }
+            }
+            postViewModel.createPost(
+                CreatePostRequest(binding.edtTitle.text.toString(), binding.edtContent.text.toString()),
+                images
+            )
+        } else {
+            showToast(getString(R.string.please_enter_at_least_title_or_description))
+        }
     }
 }

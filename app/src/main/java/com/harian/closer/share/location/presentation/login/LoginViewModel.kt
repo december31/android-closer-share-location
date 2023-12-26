@@ -19,10 +19,10 @@ import com.harian.closer.share.location.domain.register.usecase.RegisterUseCase
 import com.harian.closer.share.location.domain.request.api.usecase.RequestOtpUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class LoginViewModel @Inject constructor(
     val state: StateFlow<FunctionState> = _state
 
     fun login(loginRequest: LoginRequest) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             loginUseCase.execute(loginRequest)
                 .onStart {
                     showLoading()
@@ -52,10 +52,10 @@ class LoginViewModel @Inject constructor(
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorLogin(baseResult.rawResponse)
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorLogin(baseResult.rawResponse))
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
-                            _state.value = FunctionState.SuccessLogin(baseResult.data)
+                            _state.emit(FunctionState.SuccessLogin(baseResult.data))
                         }
                     }
                 }
@@ -63,7 +63,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun register(registerRequest: RegisterRequest) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             registerUseCase.execute(registerRequest)
                 .onStart {
                     showLoading()
@@ -75,10 +75,10 @@ class LoginViewModel @Inject constructor(
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorRegister(baseResult.rawResponse)
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorRegister(baseResult.rawResponse))
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
-                            _state.value = FunctionState.SuccessRegister(baseResult.data)
+                            _state.emit(FunctionState.SuccessRegister(baseResult.data))
                         }
                     }
                 }
@@ -86,7 +86,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun requestOtp(requestOtpRequest: RequestOtpRequest) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             requestOtpUseCase.execute(requestOtpRequest)
                 .onStart {
                     showLoading()
@@ -98,41 +98,41 @@ class LoginViewModel @Inject constructor(
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorRequestOtp(baseResult.rawResponse)
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessRequestOtp
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorRequestOtp(baseResult.rawResponse))
+                        is BaseResult.Success -> _state.emit(FunctionState.SuccessRequestOtp)
                     }
                 }
         }
     }
 
     fun refreshToken() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             refreshTokenUseCase.execute()
                 .onStart {
 
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.value = FunctionState.ErrorRefreshToken(null)
+                    _state.emit(FunctionState.ErrorRefreshToken(null))
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorRefreshToken(baseResult.rawResponse)
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorRefreshToken(baseResult.rawResponse))
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
-                            _state.value = FunctionState.SuccessRefreshToken(baseResult.data)
+                            _state.emit(FunctionState.SuccessRefreshToken(baseResult.data))
                         }
                     }
                 }
         }
     }
 
-    private fun showLoading() {
-        _state.value = FunctionState.IsLoading(true)
+    private suspend fun showLoading() {
+        _state.emit(FunctionState.IsLoading(true))
     }
 
-    private fun hideLoading() {
-        _state.value = FunctionState.IsLoading(false)
+    private suspend fun hideLoading() {
+        _state.emit(FunctionState.IsLoading(false))
     }
 
     sealed class FunctionState {

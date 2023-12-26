@@ -8,6 +8,7 @@ import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -23,19 +24,19 @@ class UserViewModel @Inject constructor(
     val state: StateFlow<FunctionState> = _state
 
     fun fetchUserInformation() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getUserInformationUseCase.execute()
                 .onStart {
 
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.value = FunctionState.ErrorGetUserInfo(null)
+                    _state.emit(FunctionState.ErrorGetUserInfo(null))
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessGetUserInfo(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorGetUserInfo(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.emit(FunctionState.SuccessGetUserInfo(baseResult.data))
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorGetUserInfo(baseResult.rawResponse))
                     }
                 }
         }

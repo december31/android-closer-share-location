@@ -1,6 +1,5 @@
 package com.harian.closer.share.location.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
@@ -8,7 +7,11 @@ import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.GetPopularPostsUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
+import com.harian.closer.share.location.utils.getBitmapFromURL
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -18,13 +21,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getPopularPostsUseCase: GetPopularPostsUseCase
+    private val getPopularPostsUseCase: GetPopularPostsUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
 
     fun fetchPopularPosts() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getPopularPostsUseCase.execute()
                 .onStart {
 
@@ -33,12 +36,13 @@ class HomeViewModel @Inject constructor(
                     it.printStackTrace()
                 }
                 .collect { baseResult ->
-                    _state.value = FunctionState.Init
+                    _state.emit(FunctionState.Init)
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessGetPopularPosts(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorGetPopularPosts(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.emit(FunctionState.SuccessGetPopularPosts(baseResult.data))
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorGetPopularPosts(baseResult.rawResponse))
                     }
-                    _state.value = FunctionState.Init
+                    delay(1000)
+                    _state.emit(FunctionState.Init)
                 }
         }
     }
