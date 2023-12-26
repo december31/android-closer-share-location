@@ -15,6 +15,7 @@ import com.harian.closer.share.location.domain.post.usecase.GetPostByIdUseCase
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -32,63 +33,63 @@ class PostDetailsViewModel @Inject constructor(
     var state: StateFlow<FunctionState> = _state
 
     fun fetchPostData(postId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getPostByIdUseCase.execute(postId)
                 .onStart {
 
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.value = FunctionState.ErrorGetPost(null)
+                    _state.emit(FunctionState.ErrorGetPost(null))
                 }
                 .collect { baseResult ->
                     when (baseResult) {
                         is BaseResult.Success -> {
                             val transformedPost = transformDataPost(baseResult.data)
-                            _state.value = FunctionState.SuccessGetPost(transformedPost)
+                            _state.emit(FunctionState.SuccessGetPost(transformedPost))
                         }
 
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorGetPost(baseResult.rawResponse)
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorGetPost(baseResult.rawResponse))
                     }
                 }
         }
     }
 
     fun fetchUserData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getUserInformationUseCase.execute()
                 .onStart {
 
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.value = FunctionState.ErrorGetUserUserInfo(null)
+                    _state.emit(FunctionState.ErrorGetUserUserInfo(null))
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessGetUserUserInfo(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorGetUserUserInfo(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.emit(FunctionState.SuccessGetUserUserInfo(baseResult.data))
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorGetUserUserInfo(baseResult.rawResponse))
                     }
                 }
         }
     }
 
     fun createComment(commentRequest: CommentRequest, postId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             createCommentUseCase.execute(commentRequest, postId)
                 .onStart {
-                    _state.value = FunctionState.IsLoading(true)
+                    _state.emit(FunctionState.IsLoading(true))
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.value = FunctionState.IsLoading(false)
+                    _state.emit(FunctionState.IsLoading(false))
                     FunctionState.ErrorCreateComment(null)
                 }
                 .collect { baseResult ->
-                    _state.value = FunctionState.IsLoading(false)
+                    _state.emit(FunctionState.IsLoading(false))
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessCreateComment(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorCreateComment(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.emit(FunctionState.SuccessCreateComment(baseResult.data))
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorCreateComment(baseResult.rawResponse))
                     }
                 }
         }

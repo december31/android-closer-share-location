@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentHomeBinding
@@ -26,6 +27,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     @Inject
     lateinit var appManager: AppManager
+
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
     private val viewModel by viewModels<HomeViewModel>()
     private lateinit var adapter: PostAdapter
@@ -51,7 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = PostAdapter().apply {
+        adapter = PostAdapter(sharedPrefs.getToken()).apply {
             setOnItemClickListener {
                 findNavController().navigateWithAnimation(HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(it))
             }

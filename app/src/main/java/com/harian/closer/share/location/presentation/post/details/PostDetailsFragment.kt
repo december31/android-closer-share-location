@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.post.details
 
+import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,23 +13,29 @@ import com.bumptech.glide.Glide
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.utils.Constants
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentPostDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     override val layoutId: Int
         get() = R.layout.fragment_post_details
 
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
+
     private val viewModel by viewModels<PostDetailsViewModel>()
     private val safeArgs by navArgs<PostDetailsFragmentArgs>()
     private lateinit var adapter: PostDetailsAdapter
     override fun setupUI() {
         super.setupUI()
+        activity?.window?.let { WindowCompat.setDecorFitsSystemWindows(it, true) }
         setupRecyclerView()
         handleStateChanges()
         fetchData()
@@ -51,7 +58,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = PostDetailsAdapter()
+        adapter = PostDetailsAdapter(sharedPrefs.getToken())
         binding.rvDetailsPost.adapter = adapter
     }
 
@@ -108,5 +115,10 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     private fun handleErrorGetPost() {
         showToast(getString(R.string.this_post_is_no_longer_existed))
         findNavController().popBackStack()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity?.window?.let { WindowCompat.setDecorFitsSystemWindows(it, false) }
     }
 }

@@ -60,6 +60,7 @@
             android:layout_height="match_parent" />
 
         <ImageView
+            android:id="@+id/image1"
             android:layout_margin="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/vertical_guide_line_50"
@@ -71,6 +72,7 @@
             android:layout_height="0dp" />
 
         <ImageView
+            android:id="@+id/image2"
             android:layout_margin="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/guide_line_70"
@@ -85,6 +87,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
+            android:id="@+id/image3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guide_line_33"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -97,6 +100,7 @@
             android:layout_height="0dp" />
 
         <ImageView
+            android:id="@+id/image4"
             app:layout_constraintEnd_toStartOf="@id/guide_line_66"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide_line_70"
@@ -109,17 +113,20 @@
             android:layout_height="0dp" />
 
         <ImageView
+            android:id="@+id/image5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/guide_line_70"
             app:layout_constraintStart_toEndOf="@id/guide_line_66"
             android:layout_margin="2dp"
+            android:scaleType="centerCrop"
             android:visibility="@{imagesCount > 4 ? View.VISIBLE : View.GONE}"
             tools:src="@tools:sample/avatars"
             android:layout_width="0dp"
             android:layout_height="0dp" />
 
         <ImageView
+            android:id="@+id/image6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/horizontal_guide_line_50"
             app:layout_constraintTop_toTopOf="parent"
@@ -133,6 +140,7 @@
             android:layout_height="0dp" />
 
         <ImageView
+            android:id="@+id/image7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/horizontal_guide_line_50"

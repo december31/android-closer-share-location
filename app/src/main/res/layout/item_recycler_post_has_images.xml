@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@drawable/bg_radius_12"
         android:backgroundTint="@color/white"
         android:layout_marginTop="16dp"
@@ -80,33 +80,18 @@
             android:layout_height="wrap_content"
             tools:ignore="RtlSymmetry" />
 
-        <ImageView
-            android:id="@+id/img_content"
+        <com.harian.closer.share.location.presentation.common.custom.imageview.MultipleImagesView
+            android:id="@+id/multiple_images_view"
             android:layout_below="@id/tv_content"
             android:layout_marginTop="4dp"
-            android:maxHeight="224dp"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/backgrounds/scenic"
-            android:adjustViewBounds="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!--        <androidx.recyclerview.widget.RecyclerView-->
-        <!--            android:id="@+id/rv_images"-->
-        <!--            android:layout_marginTop="4dp"-->
-        <!--            android:layout_below="@id/tv_content"-->
-        <!--            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"-->
-        <!--            tools:itemCount="1"-->
-        <!--            tools:listitem="@layout/item_recycler_post_images"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content">-->
-
-        <!--        </androidx.recyclerview.widget.RecyclerView>-->
+            android:layout_height="300dp"/>
 
         <RelativeLayout
             android:id="@+id/footer"
             android:padding="12dp"
-            android:layout_below="@id/img_content"
+            android:layout_below="@id/multiple_images_view"
+            android:layout_alignWithParentIfMissing="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

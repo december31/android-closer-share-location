@@ -2,30 +2,25 @@ package com.harian.closer.share.location.presentation.post.create
 
 import android.net.Uri
 import android.util.Log
-import android.widget.ImageView
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.common.UserViewModel
 import com.harian.closer.share.location.utils.Constants
-import com.harian.closer.share.location.utils.extension.FileUtils
+import com.harian.closer.share.location.utils.FileUtils
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentCreatePostBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -97,7 +92,7 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
         postViewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is PostViewModel.FunctionState.Init -> Unit
-                is PostViewModel.FunctionState.IsLoading -> handleIsLoading(it.isLoading, R.raw.loading_photo)
+                is PostViewModel.FunctionState.IsLoading -> handleIsLoading(it.isLoading)
                 is PostViewModel.FunctionState.ErrorCreatePost -> handleErrorCreatePost()
                 is PostViewModel.FunctionState.SuccessCreatePost -> handleSuccessCreatePost()
             }
@@ -113,10 +108,9 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
         showToast(getString(R.string.failed_to_create_post_please_try_again_later))
     }
 
-    private fun handleIsLoading(isLoading: Boolean, rawRes: Int? = null) {
+    private fun handleIsLoading(isLoading: Boolean) {
         binding.loadingContainer.isVisible = isLoading
         if (isLoading) {
-            rawRes?.let { binding.loadingAnimation.setAnimation(it) }
             binding.loadingAnimation.playAnimation()
         } else {
             binding.loadingAnimation.cancelAnimation()
@@ -124,31 +118,11 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
     }
 
     private fun updateUiImages() {
-        handleIsLoading(true, R.raw.loading_photo)
-        binding.imagesContainer.imagesCount = selectedImages.size
-        binding.imagesContainer.remainImagesCount.text = getString(R.string.remain_image_count, selectedImages.size - 5)
-        lifecycleScope.launch {
-            delay(1000)
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                val imageIterator = selectedImages.iterator()
-                binding.imagesContainer.container.children.forEach { view ->
-                    if (view is ImageView) {
-                        if (view.isVisible) {
-                            context?.let {
-                                if (imageIterator.hasNext()) {
-                                    Glide.with(it).load(imageIterator.next()).into(view)
-                                }
-                            }
-                        }
-                    }
-                }
-                handleIsLoading(false)
-            }
-        }
+        binding.multipleImagesView.loadImages(selectedImages)
     }
 
     private fun createPost() {
-        if (binding.edtTitle.text.isNullOrBlank() && binding.edtTitle.text.isNullOrBlank()) {
+        if (!binding.edtTitle.text.isNullOrBlank() || !binding.edtContent.text.isNullOrBlank()) {
             val images = context?.let { ctx ->
                 selectedImages.map { uri ->
                     FileUtils.getFile(ctx, uri)

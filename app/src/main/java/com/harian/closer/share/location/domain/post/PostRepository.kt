@@ -4,7 +4,6 @@ import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
-import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
 import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.common.base.BaseResult

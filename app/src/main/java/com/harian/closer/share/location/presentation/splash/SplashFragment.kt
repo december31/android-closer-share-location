@@ -43,6 +43,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                     SplashViewModel.FunctionState.ErrorVerifyToken -> {
                         findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
                     }
+
                     SplashViewModel.FunctionState.SuccessVerifyToken -> {
                         findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToHomeFragment())
                     }
@@ -54,13 +55,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     private fun handleOnBackPressed() {
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object :
             OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (appManager.isBackPressFinish) {
-                    activity?.finishAffinity()
-                    exitProcess(0)
-                } else {
-                    showToast("Press back again to quit")
-                }
+            override fun handleOnBackPressed() = if (appManager.isBackPressFinish) {
+                activity?.finishAffinity()
+                exitProcess(0)
+            } else {
+                showToast(R.string.press_back_again_to_quit)
             }
         })
     }

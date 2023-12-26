@@ -9,13 +9,12 @@ import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.CreatePostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.parse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -34,24 +33,24 @@ class PostViewModel @Inject constructor(
     val state: StateFlow<FunctionState> = _state
 
     fun createPost(createPostRequest: CreatePostRequest, images: List<File?>? = null) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val parts = buildPostParts(images)
             val body = buildPostBody(createPostRequest)
 
             createPostUseCase.execute(parts, body)
                 .onStart {
-                    _state.value = FunctionState.IsLoading(true)
+                    _state.emit(FunctionState.IsLoading(true))
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.value = FunctionState.IsLoading(false)
-                    _state.value = FunctionState.ErrorCreatePost(null)
+                    _state.emit(FunctionState.IsLoading(false))
+                    _state.emit(FunctionState.ErrorCreatePost(null))
                 }
                 .collect { baseResult ->
-                    _state.value = FunctionState.IsLoading(false)
+                    _state.emit(FunctionState.IsLoading(false))
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessCreatePost(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorCreatePost(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.emit(FunctionState.SuccessCreatePost(baseResult.data))
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorCreatePost(baseResult.rawResponse))
                     }
                 }
         }

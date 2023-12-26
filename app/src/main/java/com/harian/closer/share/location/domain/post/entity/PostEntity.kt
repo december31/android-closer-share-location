@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.domain.post.entity
 
+import android.graphics.Bitmap
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 
@@ -12,7 +13,8 @@ data class PostEntity(
     val lastModified: Long?,
     val owner: UserEntity?,
     val likes: List<UserEntity?>?,
-    val comments: List<CommentEntity?>?
+    val comments: List<CommentEntity?>?,
+    val imageBitmaps: ArrayList<Bitmap?> = arrayListOf()
 ) : Comparable<PostEntity> {
     override fun compareTo(other: PostEntity): Int {
         return if (

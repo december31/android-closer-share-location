@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +21,7 @@ class SplashViewModel @Inject constructor(
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
     fun verifyToken() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             delay(2000)
             getUserInformationUseCase.execute()
                 .onStart {
@@ -28,12 +29,12 @@ class SplashViewModel @Inject constructor(
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.value = FunctionState.ErrorVerifyToken
+                    _state.emit(FunctionState.ErrorVerifyToken)
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessVerifyToken
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorVerifyToken
+                        is BaseResult.Success -> _state.emit(FunctionState.SuccessVerifyToken)
+                        is BaseResult.Error -> _state.emit(FunctionState.ErrorVerifyToken)
                     }
                 }
         }

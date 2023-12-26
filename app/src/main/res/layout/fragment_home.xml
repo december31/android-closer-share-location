@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bg_grey"
@@ -26,7 +27,6 @@
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
-            android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_post"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_recycler_post"
+                tools:listitem="@layout/item_recycler_post_no_image"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
                 tools:itemCount="2"
