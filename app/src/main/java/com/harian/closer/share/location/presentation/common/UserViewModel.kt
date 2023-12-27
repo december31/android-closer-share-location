@@ -24,19 +24,19 @@ class UserViewModel @Inject constructor(
     val state: StateFlow<FunctionState> = _state
 
     fun fetchUserInformation() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             getUserInformationUseCase.execute()
                 .onStart {
 
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.emit(FunctionState.ErrorGetUserInfo(null))
+                    _state.value = FunctionState.ErrorGetUserInfo(null)
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.emit(FunctionState.SuccessGetUserInfo(baseResult.data))
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorGetUserInfo(baseResult.rawResponse))
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessGetUserInfo(baseResult.data)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorGetUserInfo(baseResult.rawResponse)
                     }
                 }
         }

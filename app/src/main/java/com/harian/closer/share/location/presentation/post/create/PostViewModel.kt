@@ -33,24 +33,24 @@ class PostViewModel @Inject constructor(
     val state: StateFlow<FunctionState> = _state
 
     fun createPost(createPostRequest: CreatePostRequest, images: List<File?>? = null) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val parts = buildPostParts(images)
             val body = buildPostBody(createPostRequest)
 
             createPostUseCase.execute(parts, body)
                 .onStart {
-                    _state.emit(FunctionState.IsLoading(true))
+                    _state.value = FunctionState.IsLoading(true)
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.emit(FunctionState.IsLoading(false))
-                    _state.emit(FunctionState.ErrorCreatePost(null))
+                    _state.value = FunctionState.IsLoading(false)
+                    _state.value = FunctionState.ErrorCreatePost(null)
                 }
                 .collect { baseResult ->
-                    _state.emit(FunctionState.IsLoading(false))
+                    _state.value = FunctionState.IsLoading(false)
                     when (baseResult) {
-                        is BaseResult.Success -> _state.emit(FunctionState.SuccessCreatePost(baseResult.data))
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorCreatePost(baseResult.rawResponse))
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessCreatePost(baseResult.data)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorCreatePost(baseResult.rawResponse)
                     }
                 }
         }

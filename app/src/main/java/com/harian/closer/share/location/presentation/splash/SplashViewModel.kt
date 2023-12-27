@@ -21,7 +21,7 @@ class SplashViewModel @Inject constructor(
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
     fun verifyToken() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             delay(2000)
             getUserInformationUseCase.execute()
                 .onStart {
@@ -29,12 +29,12 @@ class SplashViewModel @Inject constructor(
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.emit(FunctionState.ErrorVerifyToken)
+                    _state.value = FunctionState.ErrorVerifyToken
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.emit(FunctionState.SuccessVerifyToken)
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorVerifyToken)
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessVerifyToken
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorVerifyToken
                     }
                 }
         }

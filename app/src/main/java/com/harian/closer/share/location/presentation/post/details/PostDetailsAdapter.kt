@@ -69,6 +69,7 @@ class PostDetailsAdapter(private val token: String) : RecyclerView.Adapter<ViewH
                 tvCommented.text = "${item.comments?.size ?: 0}"
                 tvLiked.text = "${item.likes?.size ?: 0}"
                 tvWatched.text = "${0}"
+                multipleImagesView.isVisible = !item.imageUrls.isNullOrEmpty()
 
                 val authorizedUrls = item.imageUrls?.map { url ->
                     val uri = BuildConfig.API_BASE_URL + url

@@ -1,7 +1,14 @@
 package com.harian.closer.share.location.presentation.post.details
 
+import android.annotation.SuppressLint
+import android.os.Build
+import android.view.ViewGroup.MarginLayoutParams
+import android.view.WindowInsets
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -33,6 +40,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     private val viewModel by viewModels<PostDetailsViewModel>()
     private val safeArgs by navArgs<PostDetailsFragmentArgs>()
     private lateinit var adapter: PostDetailsAdapter
+
     override fun setupUI() {
         super.setupUI()
         activity?.window?.let { WindowCompat.setDecorFitsSystemWindows(it, true) }
@@ -50,6 +58,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
             btnPostComment.setOnClickListener {
                 if (!edtComment.text.isNullOrBlank()) {
                     viewModel.createComment(CommentRequest(edtComment.text.toString()), safeArgs.postId)
+                    edtComment.text.clear()
                 } else {
                     edtComment.performClick()
                 }

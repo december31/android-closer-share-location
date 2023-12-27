@@ -19,7 +19,6 @@ import com.harian.closer.share.location.domain.register.usecase.RegisterUseCase
 import com.harian.closer.share.location.domain.request.api.usecase.RequestOtpUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -40,7 +39,7 @@ class LoginViewModel @Inject constructor(
     val state: StateFlow<FunctionState> = _state
 
     fun login(loginRequest: LoginRequest) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             loginUseCase.execute(loginRequest)
                 .onStart {
                     showLoading()
@@ -52,10 +51,10 @@ class LoginViewModel @Inject constructor(
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorLogin(baseResult.rawResponse))
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorLogin(baseResult.rawResponse)
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
-                            _state.emit(FunctionState.SuccessLogin(baseResult.data))
+                            _state.value = FunctionState.SuccessLogin(baseResult.data)
                         }
                     }
                 }
@@ -63,7 +62,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun register(registerRequest: RegisterRequest) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             registerUseCase.execute(registerRequest)
                 .onStart {
                     showLoading()
@@ -75,10 +74,10 @@ class LoginViewModel @Inject constructor(
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorRegister(baseResult.rawResponse))
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorRegister(baseResult.rawResponse)
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
-                            _state.emit(FunctionState.SuccessRegister(baseResult.data))
+                            _state.value = FunctionState.SuccessRegister(baseResult.data)
                         }
                     }
                 }
@@ -86,7 +85,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun requestOtp(requestOtpRequest: RequestOtpRequest) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             requestOtpUseCase.execute(requestOtpRequest)
                 .onStart {
                     showLoading()
@@ -98,52 +97,52 @@ class LoginViewModel @Inject constructor(
                 .collect { baseResult ->
                     hideLoading()
                     when (baseResult) {
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorRequestOtp(baseResult.rawResponse))
-                        is BaseResult.Success -> _state.emit(FunctionState.SuccessRequestOtp)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorRequestOtp(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessRequestOtp
                     }
                 }
         }
     }
 
     fun refreshToken() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             refreshTokenUseCase.execute()
                 .onStart {
 
                 }
                 .catch {
                     it.printStackTrace()
-                    _state.emit(FunctionState.ErrorRefreshToken(null))
+                    _state.value = FunctionState.ErrorRefreshToken(null)
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorRefreshToken(baseResult.rawResponse))
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorRefreshToken(baseResult.rawResponse)
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
-                            _state.emit(FunctionState.SuccessRefreshToken(baseResult.data))
+                            _state.value = FunctionState.SuccessRefreshToken(baseResult.data)
                         }
                     }
                 }
         }
     }
 
-    private suspend fun showLoading() {
-        _state.emit(FunctionState.IsLoading(true))
+    private fun showLoading() {
+        _state.value = FunctionState.IsLoading(true)
     }
 
-    private suspend fun hideLoading() {
-        _state.emit(FunctionState.IsLoading(false))
+    private fun hideLoading() {
+        _state.value = FunctionState.IsLoading(false)
     }
 
     sealed class FunctionState {
         data object Init : FunctionState()
         data class IsLoading(val isLoading: Boolean) : FunctionState()
         data class SuccessLogin(val loginEntity: LoginEntity) : FunctionState()
-        data class ErrorLogin(val rawResponse: WrappedResponse<LoginResponse>) : FunctionState()
+        data class ErrorLogin(val rawResponse: WrappedResponse<LoginResponse>?) : FunctionState()
         data class SuccessRegister(val loginEntity: RegisterEntity) : FunctionState()
-        data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>) : FunctionState()
+        data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>?) : FunctionState()
         data object SuccessRequestOtp : FunctionState()
-        data class ErrorRequestOtp(val rawResponse: WrappedResponse<Unit>) : FunctionState()
+        data class ErrorRequestOtp(val rawResponse: WrappedResponse<Unit>?) : FunctionState()
         data class SuccessRefreshToken(val refreshTokenEntity: RefreshTokenEntity) : FunctionState()
         data class ErrorRefreshToken(val rawResponse: WrappedResponse<RefreshTokenResponse>?) : FunctionState()
     }

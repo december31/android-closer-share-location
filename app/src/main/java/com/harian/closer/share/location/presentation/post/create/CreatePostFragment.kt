@@ -1,9 +1,15 @@
 package com.harian.closer.share.location.presentation.post.create
 
+import android.annotation.SuppressLint
 import android.net.Uri
+import android.os.Build
 import android.util.Log
+import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -47,6 +53,20 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
 
     override val layoutId: Int
         get() = R.layout.fragment_create_post
+
+    @SuppressLint("WrongConstant")
+    override fun setupSystemBarVisibility() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, windowInsets ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.statusBars())
+                (binding.toolbar.layoutParams as? ViewGroup.MarginLayoutParams)?.topMargin = insets.top
+
+                val btnAddPhotoLayoutParam = binding.btnAddPhoto.layoutParams as? ViewGroup.MarginLayoutParams
+                btnAddPhotoLayoutParam?.bottomMargin = insets.bottom + (btnAddPhotoLayoutParam?.bottomMargin ?: 0)
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+    }
 
     override fun setupUI() {
         super.setupUI()

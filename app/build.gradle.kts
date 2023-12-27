@@ -67,7 +67,7 @@ android {
             buildConfigField(
                 "String",
                 "API_BASE_URL",
-                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\""
+                "\"http://dec31-58884.portmap.io:51147/closer/\""
             )
         }
 

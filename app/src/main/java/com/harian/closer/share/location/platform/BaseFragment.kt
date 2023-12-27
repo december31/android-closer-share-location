@@ -31,7 +31,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupSystemBarVisibility()
         setupData()
         setupUI()
         setupListener()
@@ -41,8 +41,13 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     private var _binding: T? = null
     protected val binding: T get() = _binding!!
 
+    protected open fun setupUI() {}
+
+    protected open fun setupData() {}
+    protected open fun setupListener() {}
+
     @SuppressLint("WrongConstant")
-    protected open fun setupUI() {
+    protected open fun setupSystemBarVisibility() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, windowInsets ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.statusBars())
@@ -51,9 +56,6 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
             WindowInsetsCompat.CONSUMED
         }
     }
-
-    protected open fun setupData() {}
-    protected open fun setupListener() {}
 
     fun showToast(message: String, length: Int = Toast.LENGTH_SHORT) {
         toast?.cancel()

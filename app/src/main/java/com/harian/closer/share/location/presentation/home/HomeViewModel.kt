@@ -8,8 +8,6 @@ import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.GetPopularPostsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -25,7 +23,7 @@ class HomeViewModel @Inject constructor(
     val state: StateFlow<FunctionState> = _state
 
     fun fetchPopularPosts() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             getPopularPostsUseCase.execute()
                 .onStart {
 
@@ -34,13 +32,12 @@ class HomeViewModel @Inject constructor(
                     it.printStackTrace()
                 }
                 .collect { baseResult ->
-                    _state.emit(FunctionState.Init)
+                    _state.value = FunctionState.Init
                     when (baseResult) {
-                        is BaseResult.Success -> _state.emit(FunctionState.SuccessGetPopularPosts(baseResult.data))
-                        is BaseResult.Error -> _state.emit(FunctionState.ErrorGetPopularPosts(baseResult.rawResponse))
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessGetPopularPosts(baseResult.data)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorGetPopularPosts(baseResult.rawResponse)
                     }
-                    delay(1000)
-                    _state.emit(FunctionState.Init)
+                    _state.value = FunctionState.Init
                 }
         }
     }

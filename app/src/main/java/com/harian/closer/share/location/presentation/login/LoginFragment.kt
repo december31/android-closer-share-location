@@ -131,8 +131,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
     }
 
-    private fun handleErrorRegister(rawResponse: WrappedResponse<RegisterResponse>) {
-        if (rawResponse.code == HttpURLConnection.HTTP_CONFLICT) {
+    private fun handleErrorRegister(rawResponse: WrappedResponse<RegisterResponse>?) {
+        if (rawResponse?.code == HttpURLConnection.HTTP_CONFLICT) {
             showToast(getString(R.string.an_account_has_already_registered_with_this_email_please_use_another))
         } else {
             showToast(getString(R.string.register_failed_please_check_your_otp))
