@@ -1,14 +1,7 @@
 package com.harian.closer.share.location.presentation.post.details
 
-import android.annotation.SuppressLint
-import android.os.Build
-import android.view.ViewGroup.MarginLayoutParams
-import android.view.WindowInsets
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -20,22 +13,17 @@ import com.bumptech.glide.Glide
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.utils.Constants
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentPostDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     override val layoutId: Int
         get() = R.layout.fragment_post_details
-
-    @Inject
-    lateinit var sharedPrefs: SharedPrefs
 
     private val viewModel by viewModels<PostDetailsViewModel>()
     private val safeArgs by navArgs<PostDetailsFragmentArgs>()
@@ -43,7 +31,6 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
 
     override fun setupUI() {
         super.setupUI()
-        activity?.window?.let { WindowCompat.setDecorFitsSystemWindows(it, true) }
         setupRecyclerView()
         handleStateChanges()
         fetchData()
@@ -67,7 +54,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = PostDetailsAdapter(sharedPrefs.getToken())
+        adapter = PostDetailsAdapter()
         binding.rvDetailsPost.adapter = adapter
     }
 
@@ -90,7 +77,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
                 is PostDetailsViewModel.FunctionState.SuccessGetPost -> handleSuccessGetPost(it.postDataList)
                 is PostDetailsViewModel.FunctionState.SuccessGetUserUserInfo -> handleSuccessGetUserInfo(it.userEntity)
                 is PostDetailsViewModel.FunctionState.ErrorCreateComment -> handleErrorCreateComment()
-                is PostDetailsViewModel.FunctionState.SuccessCreateComment -> handleSuccessCrateComment()
+                is PostDetailsViewModel.FunctionState.SuccessCreateComment -> handleSuccessCreateComment()
             }
         }.launchIn(lifecycleScope)
     }
@@ -99,7 +86,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
         showToast(getString(R.string.post_comment_failed_please_try_again_later))
     }
 
-    private fun handleSuccessCrateComment() {
+    private fun handleSuccessCreateComment() {
         viewModel.fetchPostData(safeArgs.postId)
     }
 
@@ -113,7 +100,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     }
 
     private fun handleSuccessGetUserInfo(user: UserEntity) {
-        Glide.with(binding.root).load(user.avatar ?: Constants.DEFAULT_IMAGE_URL).into(binding.imgUserAvatar)
+        Glide.with(binding.root).load(user.authorizedAvatarUrl).into(binding.imgUserAvatar)
     }
 
     private fun handleSuccessGetPost(postDataList: List<Any>) {

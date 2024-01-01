@@ -55,7 +55,7 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
         get() = R.layout.fragment_create_post
 
     @SuppressLint("WrongConstant")
-    override fun setupSystemBarVisibility() {
+    override fun setupSystemBarBehavior() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, windowInsets ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.statusBars())
@@ -99,9 +99,7 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
                 is UserViewModel.FunctionState.SuccessGetUserInfo -> {
                     context?.let { ctx ->
                         val user = it.userEntity
-                        val avatarUrl =
-                            user.avatar ?: Constants.DEFAULT_IMAGE_URL
-                        Glide.with(ctx).load(avatarUrl).into(binding.imgAvatar)
+                        Glide.with(ctx).load(user.authorizedAvatarUrl).into(binding.imgAvatar)
 
                         binding.tvUsername.text = it.userEntity.name
                     }

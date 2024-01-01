@@ -38,7 +38,7 @@ object NetworkModule {
             readTimeout(60, TimeUnit.SECONDS)
             writeTimeout(60, TimeUnit.SECONDS)
             addInterceptor(requestInterceptor)
-            addInterceptor(loggingInterceptor)
+            if (BuildConfig.DEBUG) addInterceptor(loggingInterceptor)
         }.build()
     }
 

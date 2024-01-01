@@ -10,13 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.platform.SharedPrefs
+import com.harian.closer.share.location.utils.extension.Animation
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.system.exitProcess
 
@@ -27,9 +30,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     @Inject
     lateinit var appManager: AppManager
-
-    @Inject
-    lateinit var sharedPrefs: SharedPrefs
 
     private val viewModel by viewModels<HomeViewModel>()
     private lateinit var adapter: PostAdapter
@@ -45,8 +45,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setupListener() {
         super.setupListener()
         binding.apply {
-            btn.setOnClickListener {
-                findNavController().navigateWithAnimation(HomeFragmentDirections.actionHomeFragmentToCreatePostFragment())
+            btnCreatePost.setOnClickListener {
+                findNavController().navigateWithAnimation(
+                    HomeFragmentDirections.actionHomeFragmentToCreatePostFragment(),
+                    Animation.SlideUp
+                )
             }
             swipeRefresh.setOnRefreshListener {
                 viewModel.fetchPopularPosts()
@@ -55,9 +58,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = PostAdapter(sharedPrefs.getToken()).apply {
+        adapter = PostAdapter().apply {
             setOnItemClickListener { postId ->
-                findNavController().navigateWithAnimation(HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(postId))
+                findNavController().navigateWithAnimation(
+                    HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(postId)
+                )
+            }
+            setOnLikePostListener { post ->
+                if (post.isLiked) {
+                    viewModel.likePost(post)
+                } else {
+                    viewModel.unlikePost(post)
+                }
             }
         }
         binding.rvPost.adapter = adapter
@@ -69,8 +81,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is HomeViewModel.FunctionState.Init -> Unit
                 is HomeViewModel.FunctionState.ErrorGetPopularPosts -> handleOnErrorFetchPosts()
                 is HomeViewModel.FunctionState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(it.posts)
+                is HomeViewModel.FunctionState.SuccessLikePost -> Unit
+                is HomeViewModel.FunctionState.ErrorLikePost -> handleOnErrorLikePost(it.postId)
+                is HomeViewModel.FunctionState.ErrorUnlikePost -> TODO()
+                is HomeViewModel.FunctionState.SuccessUnlikePost -> Unit
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun handleOnErrorLikePost(postId: Int) {
+        lifecycleScope.launch {
+            val position = adapter.getItemPosition(postId)
+            withContext(Dispatchers.Main) {
+                adapter.updatePostReactions(position)
+            }
+        }
     }
 
     private fun handleOnErrorFetchPosts() {

@@ -2,6 +2,8 @@ package com.harian.closer.share.location.presentation.post.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
@@ -14,9 +16,10 @@ import com.harian.closer.share.location.domain.post.usecase.CreateCommentUseCase
 import com.harian.closer.share.location.domain.post.usecase.GetPostByIdUseCase
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
+import com.harian.closer.share.location.utils.Constants
+import com.harian.software.closer.share.location.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -28,7 +31,7 @@ import javax.inject.Inject
 class PostDetailsViewModel @Inject constructor(
     private val getPostByIdUseCase: GetPostByIdUseCase,
     private val getUserInformationUseCase: GetUserInformationUseCase,
-    private val createCommentUseCase: CreateCommentUseCase
+    private val createCommentUseCase: CreateCommentUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     var state: StateFlow<FunctionState> = _state
@@ -99,10 +102,7 @@ class PostDetailsViewModel @Inject constructor(
     private fun transformDataPost(post: PostEntity): ArrayList<Any> {
         val result = arrayListOf<Any>()
         result.add(post)
-        val comments = post.comments?.sortedBy { it?.createdTime }?.asReversed()
-        comments?.forEach { comment ->
-            comment?.let { result.add(it) }
-        }
+        post.images?.let { result.addAll(it) }
         return result
     }
 

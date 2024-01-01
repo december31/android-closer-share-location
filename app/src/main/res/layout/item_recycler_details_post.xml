@@ -50,22 +50,14 @@
 
         </RelativeLayout>
 
-        <com.harian.closer.share.location.presentation.common.custom.imageview.MultipleImagesView
-            android:id="@+id/multiple_images_view"
-            android:layout_marginTop="4dp"
-            android:layout_below="@id/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
         <TextView
             android:id="@+id/tv_title"
             android:layout_marginStart="12dp"
             android:textSize="20sp"
-            android:layout_below="@id/multiple_images_view"
+            android:layout_below="@id/header"
             android:layout_alignWithParentIfMissing="true"
             android:ellipsize="end"
             android:textStyle="bold"
-            android:layout_marginTop="4dp"
             android:paddingEnd="50dp"
             tools:text="@tools:sample/lorem"
             android:textColor="@color/black1"
@@ -87,11 +79,19 @@
             android:layout_height="wrap_content"
             tools:ignore="RtlSymmetry" />
 
+        <View
+            android:id="@+id/divider"
+            android:layout_below="@id/tv_content"
+            android:background="@color/bg_grey"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"/>
+
         <LinearLayout
             android:id="@+id/footer"
-            android:layout_marginTop="4dp"
             android:baselineAligned="false"
-            android:layout_below="@id/tv_content"
+            android:layout_below="@id/divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

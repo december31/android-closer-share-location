@@ -17,4 +17,6 @@ interface PostRepository {
     suspend fun createComment(commentRequest: CommentRequest, postId: Int): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>>
     suspend fun getPopularPosts(page: Int?, pageSize: Int?): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostResponse>>>
     suspend fun getPostById(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
+    suspend fun likePost(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
+    suspend fun unlikePost(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
 }

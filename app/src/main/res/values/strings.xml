@@ -24,7 +24,7 @@
     <string name="don_t_have_account">Don\'t have account?</string>
     <string name="sign_up">Sign up</string>
     <string name="verification">VERIFICATION</string>
-    <string name="a_message_with_verification_code_was_sent_to_your_mobile_phone">A message with verification code was sent to your mobile phone.</string>
+    <string name="a_message_with_verification_code_was_sent_to_your_email">A message with verification code was sent to your Email.</string>
     <string name="already_have_account">Already have account?</string>
     <string name="don_t_receive_the_code">Don\'t receive the code</string>
     <string name="type_verification_code">Type verification code</string>

@@ -184,7 +184,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     fun requestOtpForRegister() {
         validateInput { email, password ->
             if (binding.edtConfirmPassword.text.toString() == password) {
-                viewModel.requestOtp(RequestOtpRequest(email))
+                viewModel.requestOtp(
+                    RequestOtpRequest(
+                        email = email,
+                        name = if (binding.edtName.text.isNullOrBlank()) null else binding.edtName.text.toString(),
+                    )
+                )
             } else {
                 showToast("Confirmation password is incorrect")
             }

@@ -38,4 +38,9 @@ interface PostApi {
     @GET("api/v1/post")
     suspend fun getPostById(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
 
+    @POST("api/v1/post/like")
+    suspend fun likePost(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
+    @POST("api/v1/post/unlike")
+    suspend fun unlikePost(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
+
 }

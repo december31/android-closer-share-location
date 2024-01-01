@@ -12,7 +12,7 @@
         tools:context=".presentation.home.HomeFragment">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn"
+            android:id="@+id/btn_create_post"
             android:src="@drawable/ic_plus"
             app:tint="@color/white"
             android:elevation="10dp"

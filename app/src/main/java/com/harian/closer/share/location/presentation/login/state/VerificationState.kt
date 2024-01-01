@@ -14,7 +14,7 @@ class VerificationState (private val fragment: LoginFragment): State{
             tvTitle.visible()
             tvTitle.setText(R.string.verification)
             tvDescription.visible()
-            tvDescription.setText(R.string.a_message_with_verification_code_was_sent_to_your_mobile_phone)
+            tvDescription.setText(R.string.a_message_with_verification_code_was_sent_to_your_email)
             edtConfirmationCode.visible()
             tvNotReceiveCode.visible()
             imgBottomDecorator.visible()

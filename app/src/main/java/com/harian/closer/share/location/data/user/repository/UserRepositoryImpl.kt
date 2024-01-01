@@ -8,24 +8,18 @@ import com.harian.closer.share.location.data.user.remote.dto.UserResponse
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.UserRepository
 import com.harian.closer.share.location.domain.user.entity.UserEntity
+import com.harian.closer.share.location.utils.ResponseUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class UserRepositoryImpl(private val userApi: UserApi) : UserRepository {
+class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil: ResponseUtil) : UserRepository {
     override suspend fun getUserInformation(): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
             val response = userApi.getUserInformation()
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
                 val userEntity = body?.data.let { data ->
-                    UserEntity(
-                        id = data?.id,
-                        name = data?.name,
-                        email = data?.email,
-                        avatar = data?.avatar,
-                        gender = data?.gender,
-                        description = data?.description,
-                    )
+                    responseUtil.buildUserEntity(data)
                 }
                 emit(BaseResult.Success(userEntity))
             } else {

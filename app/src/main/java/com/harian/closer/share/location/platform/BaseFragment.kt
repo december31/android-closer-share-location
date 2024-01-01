@@ -6,12 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowInsets
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -31,7 +29,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupSystemBarVisibility()
+        setupSystemBarBehavior()
         setupData()
         setupUI()
         setupListener()
@@ -47,7 +45,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected open fun setupListener() {}
 
     @SuppressLint("WrongConstant")
-    protected open fun setupSystemBarVisibility() {
+    protected open fun setupSystemBarBehavior() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, windowInsets ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.statusBars())

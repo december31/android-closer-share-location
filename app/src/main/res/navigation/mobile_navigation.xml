@@ -26,7 +26,6 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_fragment_to_create_post_fragment"
-            app:popUpTo="@id/home_fragment"
             app:destination="@id/create_post_fragment" />
         <action
             android:id="@+id/action_home_fragment_to_post_details_fragment"

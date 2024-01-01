@@ -29,7 +29,8 @@ class MultipleImagesView : RelativeLayout {
         this.onImageClickListener = onImageClickListener
     }
 
-    fun loadImages(authorizedUrls: List<Any?>) {
+    fun loadImages(authorizedUrls: List<Any?>?) {
+        if (authorizedUrls == null) return
         binding.apply {
             val imagesCount = authorizedUrls.size
             val imagesIterator = authorizedUrls.iterator()

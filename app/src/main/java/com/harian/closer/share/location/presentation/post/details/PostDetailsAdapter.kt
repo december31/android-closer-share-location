@@ -1,28 +1,19 @@
 package com.harian.closer.share.location.presentation.post.details
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
+import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
-import com.harian.closer.share.location.utils.Constants
-import com.harian.software.closer.share.location.BuildConfig
-import com.harian.software.closer.share.location.databinding.ItemRecyclerCommentBinding
-import com.harian.software.closer.share.location.databinding.ItemRecyclerDetailsPostBinding
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.harian.closer.share.location.presentation.post.viewholder.ImageViewHolder
+import com.harian.closer.share.location.presentation.post.viewholder.PostDetailsViewHolder
 
 /**
- * a adapter for display the post and its comments
+ * a adapter for display the post and its images
  */
-class PostDetailsAdapter(private val token: String) : RecyclerView.Adapter<ViewHolder>() {
+class PostDetailsAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     private val items = arrayListOf<Any>()
 
@@ -32,8 +23,8 @@ class PostDetailsAdapter(private val token: String) : RecyclerView.Adapter<ViewH
             override fun getNewListSize() = data.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return (items.getOrNull(oldItemPosition) as? CommentEntity)?.let { oldItem ->
-                    (data.getOrNull(newItemPosition) as? CommentEntity)?.let { newItem ->
+                return (items.getOrNull(oldItemPosition) as? ImageEntity)?.let { oldItem ->
+                    (data.getOrNull(newItemPosition) as? ImageEntity)?.let { newItem ->
                         oldItem.id == newItem.id
                     }
                 } ?: true
@@ -46,53 +37,9 @@ class PostDetailsAdapter(private val token: String) : RecyclerView.Adapter<ViewH
                     }
                 } ?: true
             }
-
         }).dispatchUpdatesTo(this)
         this.items.clear()
         this.items.addAll(data)
-    }
-
-    inner class PostViewHolder(private val binding: ItemRecyclerDetailsPostBinding) : ViewHolder(binding.root) {
-        fun bind(item: PostEntity?) {
-            if (item == null) return
-            binding.apply {
-                Glide.with(binding.root).load(item.owner?.avatar ?: Constants.DEFAULT_IMAGE_URL).into(binding.imgAvatar)
-                tvUsername.text = item.owner?.name
-                item.createdTime?.let {
-                    tvCreatedTime.text = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(it))
-                }
-                tvTitle.isVisible = !item.title.isNullOrBlank()
-                tvTitle.text = item.title
-                tvContent.isVisible = !item.content.isNullOrBlank()
-                tvContent.text = item.content
-
-                tvCommented.text = "${item.comments?.size ?: 0}"
-                tvLiked.text = "${item.likes?.size ?: 0}"
-                tvWatched.text = "${0}"
-                multipleImagesView.isVisible = !item.imageUrls.isNullOrEmpty()
-
-                val authorizedUrls = item.imageUrls?.map { url ->
-                    val uri = BuildConfig.API_BASE_URL + url
-                    GlideUrl(uri, LazyHeaders.Builder().addHeader("Authorization", "Bearer $token").build())
-                } ?: listOf()
-
-                multipleImagesView.loadImages(authorizedUrls)
-            }
-        }
-    }
-
-    inner class CommentViewHolder(private val binding: ItemRecyclerCommentBinding) : ViewHolder(binding.root) {
-        fun bind(item: CommentEntity?) {
-            if (item == null) return
-            binding.apply {
-                Glide.with(binding.root).load(item.owner?.avatar ?: Constants.DEFAULT_IMAGE_URL).into(binding.imgAvatar)
-                tvUsername.text = item.owner?.name
-                tvContent.text = item.content
-                item.createdTime?.let {
-                    tvCreatedTime.text = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(it))
-                }
-            }
-        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -101,16 +48,16 @@ class PostDetailsAdapter(private val token: String) : RecyclerView.Adapter<ViewH
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> PostViewHolder(ItemRecyclerDetailsPostBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            1 -> CommentViewHolder(ItemRecyclerCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-            else -> CommentViewHolder(ItemRecyclerCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            0 -> PostDetailsViewHolder.newInstance(parent)
+            1 -> ImageViewHolder.newInstance(parent)
+            else -> ImageViewHolder.newInstance(parent)
         }
     }
 
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (holder as? PostViewHolder)?.bind(items.getOrNull(position) as? PostEntity)
-        (holder as? CommentViewHolder)?.bind(items.getOrNull(position) as? CommentEntity)
+        (holder as? PostDetailsViewHolder)?.bind(items.getOrNull(position) as? PostEntity)
+        (holder as? ImageViewHolder)?.bind(items.getOrNull(position) as? ImageEntity)
     }
 }

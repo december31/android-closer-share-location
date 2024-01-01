@@ -3,6 +3,7 @@ package com.harian.closer.share.location.platform
 import android.content.Context
 import android.content.SharedPreferences
 import com.harian.closer.share.location.data.common.utils.Token
+import com.harian.closer.share.location.utils.extension.toBearerToken
 
 @Suppress("UNCHECKED_CAST")
 class SharedPrefs(context: Context) {
@@ -24,7 +25,7 @@ class SharedPrefs(context: Context) {
     }
 
     fun getToken(): String {
-        return get(PREF_TOKEN, String::class.java)
+        return get(PREF_TOKEN, String::class.java).toBearerToken()
     }
 
     fun getRefreshToken(): String {
