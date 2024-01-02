@@ -60,4 +60,8 @@
     <string name="describe_it_in_details_here">describe it in details here</string>
     <string name="please_enter_at_least_title_or_description">Please enter at least title or description</string>
     <string name="remain_image_count">+%d</string>
+    <string name="authenticate_failed_wrong_otp">Authenticate failed, wrong otp</string>
+    <string name="confirmation_password_is_incorrect">Confirmation password is incorrect</string>
+    <string name="reset_password_successful">Reset password successful</string>
+    <string name="reset_password_failed_please_try_again_later">Reset password failed, please try again later</string>
 </resources>

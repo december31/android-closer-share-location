@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.domain.request.api
+package com.harian.closer.share.location.domain.request.otp
 
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.request.otp.remote.dto.RequestOtpRequest

@@ -1,8 +1,8 @@
-package com.harian.closer.share.location.data.login.remote.dto
+package com.harian.closer.share.location.data.authenticate.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginRequest(
+data class AuthenticateRequest(
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String,
 )

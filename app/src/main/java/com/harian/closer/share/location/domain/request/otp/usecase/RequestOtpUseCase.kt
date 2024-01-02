@@ -1,9 +1,9 @@
-package com.harian.closer.share.location.domain.request.api.usecase
+package com.harian.closer.share.location.domain.request.otp.usecase
 
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.request.otp.remote.dto.RequestOtpRequest
 import com.harian.closer.share.location.domain.common.base.BaseResult
-import com.harian.closer.share.location.domain.request.api.RequestOtpRepository
+import com.harian.closer.share.location.domain.request.otp.RequestOtpRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

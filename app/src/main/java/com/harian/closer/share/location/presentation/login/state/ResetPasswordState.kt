@@ -2,7 +2,6 @@ package com.harian.closer.share.location.presentation.login.state
 
 import com.harian.closer.share.location.presentation.login.LoginFragment
 import com.harian.closer.share.location.utils.extension.goneAllChildView
-import com.harian.closer.share.location.utils.extension.invisible
 import com.harian.closer.share.location.utils.extension.visible
 import com.harian.software.closer.share.location.R
 
@@ -27,7 +26,9 @@ class ResetPasswordState {
         override fun setupListener() {
             fragment.getBinding().apply {
                 callToActionBtn.setOnClickListener {
-                    fragment.setState(fragment.setNewPasswordState)
+                    edtPassword.text.clear()
+                    edtConfirmPassword.text.clear()
+                    fragment.requestOtpForResetPassword()
                 }
                 tvBack.setOnClickListener {
                     fragment.setState(fragment.loginState)
@@ -35,7 +36,8 @@ class ResetPasswordState {
             }
         }
     }
-    class SetNewPasswordState(private val fragment: LoginFragment): State {
+
+    class SetNewPasswordState(private val fragment: LoginFragment) : State {
         override fun setupUI() {
             fragment.getBinding().apply {
                 loginContainer.goneAllChildView()
@@ -47,7 +49,6 @@ class ResetPasswordState {
                 tvTitle.visible()
                 tvDescription.setText(R.string.type_your_new_password)
                 tvDescription.visible()
-                edtEmail.invisible()
                 edtPassword.visible()
                 callToActionBtn.setText(R.string.send)
                 callToActionBtn.visible()
@@ -58,11 +59,13 @@ class ResetPasswordState {
         override fun setupListener() {
             fragment.getBinding().apply {
                 callToActionBtn.setOnClickListener {
+                    fragment.resetPassword()
                 }
             }
         }
     }
-    class VerificationState (private val fragment: LoginFragment): State{
+
+    class VerificationState(private val fragment: LoginFragment) : State {
         override fun setupUI() {
             fragment.getBinding().apply {
                 loginContainer.goneAllChildView()
@@ -83,7 +86,7 @@ class ResetPasswordState {
         override fun setupListener() {
             fragment.getBinding().apply {
                 callToActionBtn.setOnClickListener {
-                    fragment.register()
+                    fragment.otpAuthenticate()
                 }
                 tvNotReceiveCode.setOnClickListener {
 

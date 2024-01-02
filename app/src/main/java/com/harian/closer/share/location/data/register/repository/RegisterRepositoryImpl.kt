@@ -23,11 +23,6 @@ class RegisterRepositoryImpl @Inject constructor(private val registerApi: Regist
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val registerEntity = response.body()?.data.let { data ->
                     RegisterEntity(
-                        id = data?.id,
-                        name = data?.name,
-                        email = data?.email,
-                        gender = data?.gender,
-                        description = data?.description,
                         token = Token(data?.accessToken, data?.refreshToken)
                     )
                 }

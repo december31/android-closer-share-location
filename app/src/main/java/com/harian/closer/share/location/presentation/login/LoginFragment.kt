@@ -1,24 +1,30 @@
 package com.harian.closer.share.location.presentation.login
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.text.method.PasswordTransformationMethod
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
+import android.view.WindowInsets
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.harian.closer.share.location.data.authenticate.remote.dto.AuthenticateRequest
+import com.harian.closer.share.location.data.authenticate.remote.dto.OtpAuthenticateRequest
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
-import com.harian.closer.share.location.data.login.remote.dto.LoginRequest
 import com.harian.closer.share.location.data.register.remote.dto.RegisterRequest
 import com.harian.closer.share.location.data.register.remote.dto.RegisterResponse
 import com.harian.closer.share.location.data.request.otp.remote.dto.RequestOtpRequest
+import com.harian.closer.share.location.data.resetpassword.remote.dto.ResetPasswordRequest
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.login.state.LoginState
@@ -50,12 +56,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     var loginState: State = LoginState(this)
     val enterEmailState: State = ResetPasswordState.EnterEmailState(this)
-    val setNewPasswordState: State = ResetPasswordState.SetNewPasswordState(this)
     val registerState: State = RegisterState(this)
-    val resetPasswordVerificationState: State = ResetPasswordState.VerificationState(this)
+    private val setNewPasswordState: State = ResetPasswordState.SetNewPasswordState(this)
+    private val resetPasswordVerificationState: State = ResetPasswordState.VerificationState(this)
     private val verificationState: State = VerificationState(this)
 
     private var state: State = loginState
+
+    @SuppressLint("WrongConstant")
+    override fun setupSystemBarBehavior() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, windowInsets ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.statusBars())
+                binding.root.setPadding(0, 0, 0, insets.bottom)
+                binding.appName.setPadding(0, insets.top, 0, 0)
+            }
+            WindowInsetsCompat.CONSUMED
+        }
+    }
 
     override fun setupUI() {
         super.setupUI()
@@ -118,12 +136,39 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                     is LoginViewModel.FunctionState.ErrorLogin -> handleErrorLogin()
                     is LoginViewModel.FunctionState.SuccessRegister -> handleSuccessRegister()
                     is LoginViewModel.FunctionState.ErrorRegister -> handleErrorRegister(state.rawResponse)
-                    is LoginViewModel.FunctionState.ErrorRequestOtp -> handleErrorRequestOtp()
-                    is LoginViewModel.FunctionState.SuccessRequestOtp -> handleSuccessRequestOtp()
-                    else -> Unit
+                    is LoginViewModel.FunctionState.ErrorRequestOtpForRegister -> handleErrorRequestOtp()
+                    is LoginViewModel.FunctionState.SuccessRequestOtpForRegister -> handleSuccessRequestOtpForRegister()
+                    is LoginViewModel.FunctionState.ErrorRequestOtpForResetPassword -> handleErrorRequestOtp()
+                    is LoginViewModel.FunctionState.SuccessRequestOtpForResetPassword -> handleSuccessRequestOtpForResetPassword()
+                    is LoginViewModel.FunctionState.ErrorOtpAuthenticate -> handleErrorOtpAuthenticate()
+                    is LoginViewModel.FunctionState.SuccessOtpAuthenticate -> handleSuccessOtpAuthenticate()
+                    is LoginViewModel.FunctionState.ErrorResetPassword -> handleErrorResetPassword()
+                    is LoginViewModel.FunctionState.SuccessResetPassword -> handleSuccessResetPassword()
                 }
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun handleSuccessResetPassword() {
+        showToast(getString(R.string.reset_password_successful))
+        setState(loginState)
+    }
+
+    private fun handleErrorResetPassword() {
+        showToast(getString(R.string.reset_password_failed_please_try_again_later))
+    }
+
+    private fun handleSuccessOtpAuthenticate() {
+        setState(setNewPasswordState)
+    }
+
+    private fun handleErrorOtpAuthenticate() {
+        showToast(getString(R.string.authenticate_failed_wrong_otp))
+    }
+
+    private fun handleSuccessRequestOtpForResetPassword() {
+        showToast(getString(R.string.an_otp_is_being_sent_to_you_please_check_spam_email))
+        setState(resetPasswordVerificationState)
     }
 
     private fun handleSuccessRegister() {
@@ -137,7 +182,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         } else {
             showToast(getString(R.string.register_failed_please_check_your_otp))
         }
-        state.setupUI()
     }
 
     private fun handleErrorLogin() {
@@ -145,7 +189,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         state.setupUI()
     }
 
-    private fun handleSuccessRequestOtp() {
+    private fun handleSuccessRequestOtpForRegister() {
         showToast(getString(R.string.an_otp_is_being_sent_to_you_please_check_spam_email))
         setState(verificationState)
     }
@@ -170,10 +214,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
     }
 
-    fun login() {
+    fun authenticate() {
         validateInput { email, password ->
-            viewModel.login(
-                LoginRequest(
+            viewModel.authenticate(
+                AuthenticateRequest(
                     email = email,
                     password = password
                 )
@@ -181,17 +225,52 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         }
     }
 
+    fun otpAuthenticate() {
+        if (isEmailValid()) {
+            viewModel.authenticate(
+                OtpAuthenticateRequest(
+                    binding.edtEmail.text.toString(),
+                    binding.edtConfirmationCode.text.toString()
+                )
+            )
+        } else {
+            showToast(R.string.please_enter_a_valid_email)
+        }
+    }
+
+    fun requestOtpForResetPassword() {
+        if (isEmailValid()) {
+            viewModel.requestOtpForResetPassword(
+                RequestOtpRequest(binding.edtEmail.text.toString(), null)
+            )
+        } else {
+            showToast(getString(R.string.please_enter_a_valid_email))
+        }
+    }
+
+    fun resetPassword() {
+        val newPassword = binding.edtPassword.text.toString().trim()
+        val confirmationPassword = binding.edtConfirmPassword.text.toString().trim()
+        if (newPassword.length >= 8) {
+            if (newPassword == confirmationPassword) {
+                viewModel.resetPassword(ResetPasswordRequest(newPassword))
+            }
+        } else {
+            showToast(R.string.password_invalid_warning)
+        }
+    }
+
     fun requestOtpForRegister() {
         validateInput { email, password ->
             if (binding.edtConfirmPassword.text.toString() == password) {
-                viewModel.requestOtp(
+                viewModel.requestOtpForRegister(
                     RequestOtpRequest(
                         email = email,
                         name = if (binding.edtName.text.isNullOrBlank()) null else binding.edtName.text.toString(),
                     )
                 )
             } else {
-                showToast("Confirmation password is incorrect")
+                showToast(getString(R.string.confirmation_password_is_incorrect))
             }
         }
     }
@@ -230,7 +309,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun isPasswordValid(): Boolean {
         return !binding.edtEmail.text.isNullOrBlank() &&
-                binding.edtPassword.text.toString().trim().length > 8
+                binding.edtPassword.text.toString().trim().length >= 8
     }
 
     fun setState(state: State) {

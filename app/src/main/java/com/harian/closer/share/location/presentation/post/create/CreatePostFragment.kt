@@ -136,6 +136,7 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
     }
 
     private fun updateUiImages() {
+        binding.multipleImagesView.isVisible = selectedImages.isNotEmpty()
         binding.multipleImagesView.loadImages(selectedImages)
     }
 
