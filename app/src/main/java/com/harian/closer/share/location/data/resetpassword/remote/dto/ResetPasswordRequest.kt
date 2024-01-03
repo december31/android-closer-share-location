@@ -1,5 +1,7 @@
 package com.harian.closer.share.location.data.resetpassword.remote.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class ResetPasswordRequest(
-    val newPassword: String
+    @SerializedName("new_password") val newPassword: String
 )

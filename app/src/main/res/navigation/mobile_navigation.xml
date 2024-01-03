@@ -38,6 +38,10 @@
         android:id="@+id/login_fragment"
         android:name="com.harian.closer.share.location.presentation.login.LoginFragment"
         tools:layout="@layout/fragment_login">
+        <argument
+            android:name="needResetPassword"
+            app:argType="boolean"
+            android:defaultValue="false" />
         <action
             android:id="@+id/action_login_fragment_to_home_fragment"
             app:popUpTo="@id/login_fragment"
@@ -54,7 +58,7 @@
         android:id="@+id/post_details_fragment"
         android:name="com.harian.closer.share.location.presentation.post.details.PostDetailsFragment"
         android:label="details post fragment"
-        tools:layout="@layout/fragment_post_details" >
+        tools:layout="@layout/fragment_post_details">
         <argument
             android:name="postId"
             app:argType="integer" />

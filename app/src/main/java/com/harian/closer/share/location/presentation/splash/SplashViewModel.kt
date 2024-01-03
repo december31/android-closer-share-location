@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val getUserInformationUseCase: GetUserInformationUseCase
+    private val getUserInformationUseCase: GetUserInformationUseCase,
+    private val sharedPrefs: SharedPrefs
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
@@ -33,7 +34,14 @@ class SplashViewModel @Inject constructor(
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessVerifyToken
+                        is BaseResult.Success -> {
+                            if (sharedPrefs.needResetPassword) {
+                                _state.value = FunctionState.NeedResetPassword
+                            } else {
+                                _state.value = FunctionState.SuccessVerifyToken
+                            }
+                        }
+
                         is BaseResult.Error -> _state.value = FunctionState.ErrorVerifyToken
                     }
                 }
@@ -44,5 +52,6 @@ class SplashViewModel @Inject constructor(
         data object Init : FunctionState()
         data object SuccessVerifyToken : FunctionState()
         data object ErrorVerifyToken : FunctionState()
+        data object NeedResetPassword: FunctionState()
     }
 }

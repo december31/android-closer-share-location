@@ -61,6 +61,9 @@ class ResetPasswordState {
                 callToActionBtn.setOnClickListener {
                     fragment.resetPassword()
                 }
+                tvBack.setOnClickListener {
+                    fragment.setState(fragment.loginState)
+                }
             }
         }
     }

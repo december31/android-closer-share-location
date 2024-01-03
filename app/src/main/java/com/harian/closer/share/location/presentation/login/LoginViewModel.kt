@@ -79,6 +79,7 @@ class LoginViewModel @Inject constructor(
                         is BaseResult.Error -> _state.value = FunctionState.ErrorOtpAuthenticate(baseResult.rawResponse)
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
+                            sharedPrefs.needResetPassword = true
                             _state.value = FunctionState.SuccessOtpAuthenticate(baseResult.data)
                         }
                     }
@@ -165,7 +166,10 @@ class LoginViewModel @Inject constructor(
                     hideLoading()
                     when (baseResult) {
                         is BaseResult.Error -> _state.value = FunctionState.ErrorResetPassword(baseResult.rawResponse)
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessResetPassword
+                        is BaseResult.Success -> {
+                            _state.value = FunctionState.SuccessResetPassword
+                            sharedPrefs.needResetPassword = false
+                        }
                     }
                 }
         }

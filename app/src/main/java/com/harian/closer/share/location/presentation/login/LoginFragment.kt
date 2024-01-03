@@ -18,6 +18,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.harian.closer.share.location.data.authenticate.remote.dto.AuthenticateRequest
 import com.harian.closer.share.location.data.authenticate.remote.dto.OtpAuthenticateRequest
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
@@ -54,10 +55,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private val viewModel by viewModels<LoginViewModel>()
 
+    private val args: LoginFragmentArgs by navArgs()
+
     var loginState: State = LoginState(this)
     val enterEmailState: State = ResetPasswordState.EnterEmailState(this)
     val registerState: State = RegisterState(this)
-    private val setNewPasswordState: State = ResetPasswordState.SetNewPasswordState(this)
+    private val resetPasswordState: State = ResetPasswordState.SetNewPasswordState(this)
     private val resetPasswordVerificationState: State = ResetPasswordState.VerificationState(this)
     private val verificationState: State = VerificationState(this)
 
@@ -77,14 +80,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun setupUI() {
         super.setupUI()
-        state.setupUI()
+        if (args.needResetPassword) {
+            setState(resetPasswordState)
+        } else {
+            setState(loginState)
+        }
         handleOnBackPressed()
         handleStateChanges()
     }
 
     override fun setupListener() {
         super.setupListener()
-        state.setupListener()
         setClickRightIconEditText(binding.edtPassword)
         setClickRightIconEditText(binding.edtConfirmPassword)
     }
@@ -159,7 +165,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun handleSuccessOtpAuthenticate() {
-        setState(setNewPasswordState)
+        setState(resetPasswordState)
     }
 
     private fun handleErrorOtpAuthenticate() {
