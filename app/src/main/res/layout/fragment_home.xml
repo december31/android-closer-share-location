@@ -11,20 +11,6 @@
         android:background="@color/bg_grey"
         tools:context=".presentation.home.HomeFragment">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_create_post"
-            android:src="@drawable/ic_plus"
-            app:tint="@color/white"
-            android:elevation="10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginBottom="28dp" />
-
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
             android:layout_marginStart="16dp"
@@ -38,11 +24,11 @@
                 tools:listitem="@layout/item_recycler_post_no_image"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
-                tools:itemCount="2"
-                android:paddingBottom="16dp"
+                tools:itemCount="5"
+                android:paddingBottom="120dp"
                 android:clipToPadding="false"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </RelativeLayout>
 </layout>

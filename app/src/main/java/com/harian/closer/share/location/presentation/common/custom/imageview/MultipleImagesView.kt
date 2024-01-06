@@ -9,7 +9,6 @@ import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.harian.closer.share.location.utils.extension.goneAllChildView
 import com.harian.closer.share.location.utils.extension.invisibleAllChildView
 import com.harian.closer.share.location.utils.extension.visible
 import com.harian.software.closer.share.location.R
@@ -43,12 +42,15 @@ class MultipleImagesView : RelativeLayout {
                 0 -> Unit
                 1 -> {
                     image1.visible()
+                    loadingImage1.visible()
                     bindImage(imagesIterator, image1)
                 }
 
                 2 -> {
                     image2.visible()
                     image3.visible()
+                    loadingImage2.visible()
+                    loadingImage3.visible()
                     bindImage(imagesIterator, image2)
                     bindImage(imagesIterator, image3)
                 }
@@ -57,6 +59,9 @@ class MultipleImagesView : RelativeLayout {
                     image4.visible()
                     image5.visible()
                     image6.visible()
+                    loadingImage4.visible()
+                    loadingImage5.visible()
+                    loadingImage6.visible()
                     bindImage(imagesIterator, image4)
                     bindImage(imagesIterator, image5)
                     bindImage(imagesIterator, image6)
@@ -67,6 +72,10 @@ class MultipleImagesView : RelativeLayout {
                     image8.visible()
                     image9.visible()
                     image10.visible()
+                    loadingImage7.visible()
+                    loadingImage8.visible()
+                    loadingImage9.visible()
+                    loadingImage10.visible()
                     bindImage(imagesIterator, image7)
                     bindImage(imagesIterator, image8)
                     bindImage(imagesIterator, image9)
@@ -79,6 +88,11 @@ class MultipleImagesView : RelativeLayout {
                     image13.visible()
                     image14.visible()
                     image15.visible()
+                    loadingImage11.visible()
+                    loadingImage12.visible()
+                    loadingImage13.visible()
+                    loadingImage14.visible()
+                    loadingImage15.visible()
                     bindImage(imagesIterator, image11)
                     bindImage(imagesIterator, image12)
                     bindImage(imagesIterator, image13)
@@ -94,7 +108,6 @@ class MultipleImagesView : RelativeLayout {
             Glide.with(context)
                 .load(imagesIterator.next())
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(R.drawable.image_loading)
                 .into(imageView)
         }
     }

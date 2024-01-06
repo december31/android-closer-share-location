@@ -18,7 +18,6 @@ import javax.inject.Inject
 class RegisterRepositoryImpl @Inject constructor(private val registerApi: RegisterApi) : RegisterRepository {
     override suspend fun register(registerRequest: RegisterRequest): Flow<BaseResult<RegisterEntity, WrappedResponse<RegisterResponse>>> {
         return flow {
-            delay(1000) // for loading animation
             val response = registerApi.register(registerRequest)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val registerEntity = response.body()?.data.let { data ->

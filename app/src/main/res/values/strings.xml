@@ -64,4 +64,7 @@
     <string name="confirmation_password_is_incorrect">Confirmation password is incorrect</string>
     <string name="reset_password_successful">Reset password successful</string>
     <string name="reset_password_failed_please_try_again_later">Reset password failed, please try again later</string>
+    <string name="category">Category</string>
+    <string name="notification">Notification</string>
+    <string name="personal">Personal</string>
 </resources>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -19,16 +20,58 @@
         android:layout_width="match_parent"
         android:layout_height="300dp">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_image1"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            app:lottie_rawRes="@raw/loading_photo"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp" />
+
         <ImageView
             android:id="@+id/image1"
             android:layout_margin="1dp"
             tools:src="@tools:sample/avatars"
-            android:src="@color/white"
+            android:visibility="invisible"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image2"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_weight="1"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image3"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            tools:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -52,6 +95,18 @@
 
         </LinearLayout>
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_image4"
+            android:layout_margin="1dp"
+            android:scaleType="centerCrop"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/loading_photo"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/ln_three_images"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
         <ImageView
             android:id="@+id/image4"
             android:layout_margin="1dp"
@@ -59,12 +114,42 @@
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@id/ln_three_images"
             tools:src="@tools:sample/avatars"
+            android:visibility="invisible"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_width="150dp"
+            android:layout_height="match_parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image5"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image6"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_weight="1"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ln_three_images"
             android:orientation="vertical"
+            tools:visibility="invisible"
             android:layout_alignParentEnd="true"
             android:layout_width="150dp"
             android:layout_height="match_parent">
@@ -90,7 +175,34 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image7"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_weight="1"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image8"
+                app:lottie_loop="true"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ln_four_images_top"
+            tools:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="150dp">
 
@@ -119,6 +231,34 @@
             android:layout_width="match_parent"
             android:layout_height="150dp">
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image9"
+                android:layout_margin="1dp"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image10"
+                android:layout_margin="1dp"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/ln_four_images_top"
+            tools:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
             <ImageView
                 android:id="@+id/image9"
                 android:layout_margin="1dp"
@@ -140,8 +280,35 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image11"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image12"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/ln_five_images_top"
             android:layout_width="match_parent"
+            tools:visibility="invisible"
             android:layout_height="200dp">
 
             <ImageView
@@ -166,6 +333,44 @@
 
         <LinearLayout
             android:layout_below="@id/ln_five_images_top"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image13"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image14"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                android:layout_weight="1"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_image15"
+                android:layout_margin="1dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:layout_weight="1"
+                app:lottie_rawRes="@raw/loading_photo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@id/ln_five_images_top"
+            tools:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="100dp">
 
@@ -211,7 +416,7 @@
                     android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="1dp"/>
+                    android:layout_margin="1dp" />
 
             </RelativeLayout>
 

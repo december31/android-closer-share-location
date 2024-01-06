@@ -25,12 +25,23 @@ fun View.goneAllChildView() {
         this.gone()
     }
 }
+
 fun View.invisibleAllChildView() {
     if (this is ViewGroup) {
         this.children.forEach {
-            it.goneAllChildView()
+            it.invisibleAllChildView()
         }
     } else {
         this.invisible()
+    }
+}
+
+fun View.invisibleAllChildViewIf(condition: (View) -> Boolean) {
+    if (condition.invoke(this)) {
+        this.invisible()
+    } else {
+        (this as? ViewGroup)?.children?.forEach {
+            it.invisibleAllChildViewIf(condition)
+        }
     }
 }

@@ -125,6 +125,7 @@ dependencies {
 
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
+    // dagger hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
@@ -149,4 +150,7 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    // https://mvnrepository.com/artifact/com.google.android.material/material
+    runtimeOnly("com.google.android.material:material:1.11.0")
 }

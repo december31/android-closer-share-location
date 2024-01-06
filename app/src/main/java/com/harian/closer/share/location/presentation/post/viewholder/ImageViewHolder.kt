@@ -16,7 +16,7 @@ class ImageViewHolder(private val binding: ItemRecyclerPostImageBinding) : Recyc
             Glide.with(root.context)
                 .load(item.authorizedUrl)
                 .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(R.drawable.image_loading)
+                .placeholder(R.drawable.empty)
                 .into(image)
             tvCommented.text = (item.comments?.size ?: 0).toString()
             tvLiked.text = (item.likes?.size ?: 0).toString()

@@ -49,6 +49,7 @@ class LoginViewModel @Inject constructor(
                 .catch {
                     it.printStackTrace()
                     hideLoading()
+                    _state.value = FunctionState.ErrorLogin()
                 }
                 .collect { baseResult ->
                     hideLoading()
@@ -72,6 +73,7 @@ class LoginViewModel @Inject constructor(
                 .catch {
                     it.printStackTrace()
                     hideLoading()
+                    _state.value = FunctionState.ErrorOtpAuthenticate(null)
                 }
                 .collect { baseResult ->
                     hideLoading()
@@ -96,6 +98,7 @@ class LoginViewModel @Inject constructor(
                 .catch {
                     it.printStackTrace()
                     hideLoading()
+                    _state.value = FunctionState.ErrorRegister(null)
                 }
                 .collect { baseResult ->
                     hideLoading()
@@ -119,6 +122,7 @@ class LoginViewModel @Inject constructor(
                 .catch {
                     it.printStackTrace()
                     hideLoading()
+                    _state.value = FunctionState.ErrorRequestOtpForRegister(null)
                 }
                 .collect { baseResult ->
                     hideLoading()
@@ -139,6 +143,7 @@ class LoginViewModel @Inject constructor(
                 .catch {
                     it.printStackTrace()
                     hideLoading()
+                    _state.value = FunctionState.ErrorRequestOtpForResetPassword(null)
                 }
                 .collect { baseResult ->
                     hideLoading()
@@ -161,6 +166,7 @@ class LoginViewModel @Inject constructor(
                 .catch {
                     it.printStackTrace()
                     hideLoading()
+                    _state.value = FunctionState.ErrorResetPassword(null)
                 }
                 .collect { baseResult ->
                     hideLoading()
@@ -187,16 +193,16 @@ class LoginViewModel @Inject constructor(
         data object Init : FunctionState()
         data class IsLoading(val isLoading: Boolean) : FunctionState()
         data class SuccessLogin(val authenticateEntity: AuthenticateEntity) : FunctionState()
-        data class ErrorLogin(val rawResponse: WrappedResponse<AuthenticateResponse>?) : FunctionState()
+        data class ErrorLogin(val rawResponse: WrappedResponse<AuthenticateResponse>? = null) : FunctionState()
         data class SuccessRegister(val loginEntity: RegisterEntity) : FunctionState()
-        data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>?) : FunctionState()
+        data class ErrorRegister(val rawResponse: WrappedResponse<RegisterResponse>? = null) : FunctionState()
         data object SuccessRequestOtpForRegister : FunctionState()
-        data class ErrorRequestOtpForRegister(val rawResponse: WrappedResponse<Unit>?) : FunctionState()
+        data class ErrorRequestOtpForRegister(val rawResponse: WrappedResponse<Unit>? = null) : FunctionState()
         data object SuccessResetPassword : FunctionState()
-        data class ErrorResetPassword(val rawResponse: WrappedResponse<Unit>?) : FunctionState()
+        data class ErrorResetPassword(val rawResponse: WrappedResponse<Unit>? = null) : FunctionState()
         data object SuccessRequestOtpForResetPassword : FunctionState()
-        data class ErrorRequestOtpForResetPassword(val rawResponse: WrappedResponse<Unit>?) : FunctionState()
+        data class ErrorRequestOtpForResetPassword(val rawResponse: WrappedResponse<Unit>? = null) : FunctionState()
         data class SuccessOtpAuthenticate(val loginEntity: AuthenticateEntity) : FunctionState()
-        data class ErrorOtpAuthenticate(val rawResponse: WrappedResponse<AuthenticateResponse>?) : FunctionState()
+        data class ErrorOtpAuthenticate(val rawResponse: WrappedResponse<AuthenticateResponse>? = null) : FunctionState()
     }
 }

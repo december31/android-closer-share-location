@@ -5,12 +5,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.utils.extension.Animation
+import com.harian.closer.share.location.presentation.main.MainNavFragmentDirections
+import com.harian.closer.share.location.utils.extension.findMainNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentHomeBinding
@@ -45,12 +45,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setupListener() {
         super.setupListener()
         binding.apply {
-            btnCreatePost.setOnClickListener {
-                findNavController().navigateWithAnimation(
-                    HomeFragmentDirections.actionHomeFragmentToCreatePostFragment(),
-                    Animation.SlideUp
-                )
-            }
             swipeRefresh.setOnRefreshListener {
                 viewModel.fetchPopularPosts()
             }
@@ -60,8 +54,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setupRecyclerView() {
         adapter = PostAdapter().apply {
             setOnItemClickListener { postId ->
-                findNavController().navigateWithAnimation(
-                    HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(postId)
+                findMainNavController()?.navigateWithAnimation(
+                    MainNavFragmentDirections.actionMainNavFragmentToPostDetailsFragment(postId)
                 )
             }
             setOnLikePostListener { post ->
