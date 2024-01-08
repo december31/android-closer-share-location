@@ -13,6 +13,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.firebase.appdistribution")
     id("com.google.firebase.firebase-perf")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -56,10 +57,14 @@ android {
                 "proguard-rules.pro"
             )
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
+            manifestPlaceholders["firebasePerformanceLogcatEnabled"] = false
+            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
             signingConfig = signingConfigs.getByName("release")
         }
         debug {
             manifestPlaceholders["crashlyticsCollectionEnabled"] = false
+            manifestPlaceholders["firebasePerformanceLogcatEnabled"] = true
+            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
         }
     }
 
@@ -108,6 +113,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

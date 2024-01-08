@@ -1,6 +1,10 @@
-package com.harian.closer.share.location.presentation.home
+package com.harian.closer.share.location.presentation.main.home
 
-import androidx.activity.OnBackPressedCallback
+import android.annotation.SuppressLint
+import android.os.Build
+import android.view.WindowInsets
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -21,7 +25,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -37,7 +40,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setupUI() {
         super.setupUI()
         setupRecyclerView()
-        handleOnBackPressed()
         handleStateChanges()
         viewModel.fetchPopularPosts()
     }
@@ -100,19 +102,5 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         adapter.updateData(posts)
         binding.swipeRefresh.isRefreshing = false
         binding.rvPost.layoutManager?.smoothScrollToPosition(binding.rvPost, RecyclerView.State(), 0)
-    }
-
-    private fun handleOnBackPressed() {
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object :
-            OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (appManager.isBackPressFinish) {
-                    activity?.finishAffinity()
-                    exitProcess(0)
-                } else {
-                    showToast("Press back again to quit")
-                }
-            }
-        })
     }
 }
