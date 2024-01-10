@@ -45,7 +45,7 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         postId: Int
     ): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>> {
         return flow {
-            val response = postApi.createComment(commentRequest, postId)
+            val response = postApi.commentPost(commentRequest, postId)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
                 val commentEntity = body?.data.let { data ->

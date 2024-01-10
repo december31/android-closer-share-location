@@ -17,10 +17,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
+import com.harian.closer.share.location.data.post.remote.dto.PostRequest
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.common.UserViewModel
-import com.harian.closer.share.location.utils.Constants
 import com.harian.closer.share.location.utils.FileUtils
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentCreatePostBinding
@@ -148,7 +147,7 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
                 }
             }
             postViewModel.createPost(
-                CreatePostRequest(binding.edtTitle.text.toString(), binding.edtContent.text.toString()),
+                PostRequest(binding.edtTitle.text.toString(), binding.edtContent.text.toString()),
                 images
             )
         } else {

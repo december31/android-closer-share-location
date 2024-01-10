@@ -30,7 +30,7 @@ android {
         archivesName =
             "CloserShareLocation_v${versionName}(${versionCode})_${
                 SimpleDateFormat(
-                    "dd.MM.yyyy_hh.mm.ss",
+                    "dd.MM.yyyy",
                     Locale.US
                 ).format(Date())
             }"

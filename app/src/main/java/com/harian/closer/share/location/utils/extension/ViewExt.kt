@@ -2,7 +2,10 @@ package com.harian.closer.share.location.utils.extension
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.children
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 fun View.gone() {
     visibility = View.GONE
@@ -44,4 +47,11 @@ fun View.invisibleAllChildViewIf(condition: (View) -> Boolean) {
             it.invisibleAllChildViewIf(condition)
         }
     }
+}
+
+fun ImageView.glideLoadImage(resId: Int) {
+    Glide.with(this.context)
+        .load(resId)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(this)
 }

@@ -15,4 +15,14 @@
         android:name="com.harian.closer.share.location.presentation.main.map.MapsFragment"
         tools:layout="@layout/fragment_maps" />
 
+    <fragment
+        android:id="@+id/notification_fragment"
+        android:name="com.harian.closer.share.location.presentation.main.notification.NotificationFragment"
+        tools:layout="@layout/fragment_notification" />
+
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="com.harian.closer.share.location.presentation.main.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>

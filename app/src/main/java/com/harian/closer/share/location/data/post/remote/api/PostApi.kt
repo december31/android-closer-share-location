@@ -4,6 +4,7 @@ import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
+import com.harian.closer.share.location.data.post.remote.dto.ImageResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -24,7 +25,7 @@ interface PostApi {
     ): Response<WrappedResponse<PostResponse>>
 
     @POST("api/v1/post/comment")
-    suspend fun createComment(
+    suspend fun commentPost(
         @Body commentRequest: CommentRequest,
         @Query("post-id") postId: Int
     ): Response<WrappedResponse<CommentResponse>>
@@ -40,7 +41,13 @@ interface PostApi {
 
     @POST("api/v1/post/like")
     suspend fun likePost(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
+
     @POST("api/v1/post/unlike")
     suspend fun unlikePost(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
 
+    @POST("api/v1/post/image/like")
+    suspend fun likeImage(@Query("id") imageId: Int? = null): Response<WrappedResponse<ImageResponse>>
+
+    @POST("api/v1/post/image/comment")
+    suspend fun commentImage(@Query("id") imageId: Int? = null): Response<WrappedResponse<CommentResponse>>
 }

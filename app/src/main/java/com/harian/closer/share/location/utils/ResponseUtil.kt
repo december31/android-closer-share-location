@@ -2,6 +2,10 @@ package com.harian.closer.share.location.utils
 
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.harian.closer.share.location.data.common.utils.WrappedListResponse
+import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
 import com.harian.closer.share.location.data.post.remote.dto.ImageResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostResponse
@@ -11,9 +15,8 @@ import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.SharedPrefs
-import com.harian.closer.share.location.utils.extension.toBearerToken
 import com.harian.software.closer.share.location.BuildConfig
-import java.net.HttpURLConnection
+import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 

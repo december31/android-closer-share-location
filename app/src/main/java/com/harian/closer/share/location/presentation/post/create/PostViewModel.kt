@@ -3,13 +3,12 @@ package com.harian.closer.share.location.presentation.post.create
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
-import com.harian.closer.share.location.data.post.remote.dto.CreatePostRequest
+import com.harian.closer.share.location.data.post.remote.dto.PostRequest
 import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.CreatePostUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -32,10 +31,10 @@ class PostViewModel @Inject constructor(
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
 
-    fun createPost(createPostRequest: CreatePostRequest, images: List<File?>? = null) {
+    fun createPost(postRequest: PostRequest, images: List<File?>? = null) {
         viewModelScope.launch {
             val parts = buildPostParts(images)
-            val body = buildPostBody(createPostRequest)
+            val body = buildPostBody(postRequest)
 
             createPostUseCase.execute(parts, body)
                 .onStart {
@@ -59,11 +58,11 @@ class PostViewModel @Inject constructor(
     /**
      * build body for contents
      */
-    private fun buildPostBody(createPostRequest: CreatePostRequest): RequestBody {
+    private fun buildPostBody(postRequest: PostRequest): RequestBody {
         // build body
         val jsonObject = JSONObject()
-        jsonObject.put("title", createPostRequest.title)
-        jsonObject.put("content", createPostRequest.content)
+        jsonObject.put("title", postRequest.title)
+        jsonObject.put("content", postRequest.content)
         return jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
     }
 

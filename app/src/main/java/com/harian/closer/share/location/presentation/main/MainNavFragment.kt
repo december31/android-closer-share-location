@@ -57,6 +57,12 @@ class MainNavFragment : BaseFragment<FragmentMainNavBinding>() {
             icMap.setOnClickListener {
                 openOrPopIfExisted(R.id.map_fragment)
             }
+            icNotification.setOnClickListener {
+                openOrPopIfExisted(R.id.notification_fragment)
+            }
+            icProfile.setOnClickListener {
+                openOrPopIfExisted(R.id.profile_fragment)
+            }
         }
     }
 
@@ -77,8 +83,25 @@ class MainNavFragment : BaseFragment<FragmentMainNavBinding>() {
             icNotification.setImageResource(R.drawable.ic_notification)
             icProfile.setImageResource(R.drawable.ic_profile)
             when (findHomeNavController()?.currentDestination?.id) {
-                R.id.home_fragment -> icHome.setImageResource(R.drawable.ic_home_selected)
-                R.id.map_fragment -> icMap.setImageResource(R.drawable.ic_map_seleted)
+                R.id.home_fragment -> {
+                    icHome.setImageResource(R.drawable.ic_home_selected)
+                    floatingActionButton.setImageResource(R.drawable.ic_add)
+                }
+
+                R.id.map_fragment -> {
+                    icMap.setImageResource(R.drawable.ic_map_seleted)
+                    floatingActionButton.setImageResource(R.drawable.ic_my_location)
+                }
+
+                R.id.notification_fragment -> {
+                    icNotification.setImageResource(R.drawable.ic_notification_selected)
+                    floatingActionButton.setImageResource(R.drawable.ic_add)
+                }
+
+                R.id.profile_fragment -> {
+                    icProfile.setImageResource(R.drawable.ic_profile_selected)
+                    floatingActionButton.setImageResource(R.drawable.ic_add)
+                }
             }
         }
     }

@@ -14,10 +14,3 @@ data class PostResponse(
     @SerializedName("comments") val comments: List<CommentResponse?>?,
     @SerializedName("likes") val likes: List<UserResponse?>?,
 )
-
-data class ImageResponse(
-    @SerializedName("id") val id: Int?,
-    @SerializedName("url") val url: String?,
-    @SerializedName("comments") val comments: List<UserResponse>?,
-    @SerializedName("likes") val likes: List<UserResponse>?,
-)
