@@ -13,10 +13,19 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface PostRepository {
-    suspend fun createPost(parts: List<MultipartBody.Part>?, body: RequestBody): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
-    suspend fun createComment(commentRequest: CommentRequest, postId: Int): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>>
+    suspend fun createPost(
+        parts: List<MultipartBody.Part>?,
+        body: RequestBody
+    ): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
+
+    suspend fun comment(
+        commentRequest: CommentRequest,
+        post: PostEntity?
+    ): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>>
+
     suspend fun getPopularPosts(page: Int?, pageSize: Int?): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostResponse>>>
-    suspend fun getPostById(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
-    suspend fun likePost(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
-    suspend fun unlikePost(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
+    suspend fun getPostById(id: Int?): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
+    suspend fun like(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
+    suspend fun unlike(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
+    suspend fun watch(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>>
 }

@@ -40,12 +40,12 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         }
     }
 
-    override suspend fun createComment(
+    override suspend fun comment(
         commentRequest: CommentRequest,
-        postId: Int
+        post: PostEntity?
     ): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>> {
         return flow {
-            val response = postApi.commentPost(commentRequest, postId)
+            val response = postApi.commentPost(commentRequest, post?.id)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
                 val commentEntity = body?.data.let { data ->
@@ -82,7 +82,7 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         }
     }
 
-    override suspend fun getPostById(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
+    override suspend fun getPostById(id: Int?): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
         return flow {
             val response = postApi.getPostById(id)
             if (response.isSuccessful && response.code() in 200 until 400) {
@@ -98,9 +98,9 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         }
     }
 
-    override suspend fun likePost(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
+    override suspend fun like(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
         return flow {
-            val response = postApi.likePost(id)
+            val response = postApi.likePost(post.id)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val postResponse = response.body()?.data
                 val postEntity = responseUtil.buildPostEntity(postResponse)
@@ -114,9 +114,25 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         }
     }
 
-    override suspend fun unlikePost(id: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
+    override suspend fun unlike(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
         return flow {
-            val response = postApi.unlikePost(id)
+            val response = postApi.unlikePost(post.id)
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val postResponse = response.body()?.data
+                val postEntity = responseUtil.buildPostEntity(postResponse)
+                emit(BaseResult.Success(postEntity))
+            } else {
+                val type = object : TypeToken<WrappedResponse<PostResponse>>() {}.type
+                val err = Gson().fromJson<WrappedResponse<PostResponse>>(response.errorBody()!!.charStream(), type)!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+            }
+        }
+    }
+
+    override suspend fun watch(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
+        return flow {
+            val response = postApi.watchPost(post.id)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val postResponse = response.body()?.data
                 val postEntity = responseUtil.buildPostEntity(postResponse)

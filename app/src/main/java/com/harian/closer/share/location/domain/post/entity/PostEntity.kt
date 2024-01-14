@@ -25,7 +25,8 @@ data class PostEntity(
             this.createdTime == other.createdTime &&
             this.lastModified == other.lastModified &&
             this.likes == other.likes &&
-            this.comments == other.comments
+            this.comments == other.comments &&
+            this.isLiked == other.isLiked
         ) 0 else 1
     }
 }

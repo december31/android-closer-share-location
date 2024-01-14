@@ -1,10 +1,5 @@
 package com.harian.closer.share.location.presentation.main.home
 
-import android.annotation.SuppressLint
-import android.os.Build
-import android.view.WindowInsets
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -78,18 +73,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is HomeViewModel.FunctionState.ErrorGetPopularPosts -> handleOnErrorFetchPosts()
                 is HomeViewModel.FunctionState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(it.posts)
                 is HomeViewModel.FunctionState.SuccessLikePost -> Unit
-                is HomeViewModel.FunctionState.ErrorLikePost -> handleOnErrorLikePost(it.postId)
-                is HomeViewModel.FunctionState.ErrorUnlikePost -> TODO()
+                is HomeViewModel.FunctionState.ErrorLikePost -> handleOnErrorLikePost(it.post)
+                is HomeViewModel.FunctionState.ErrorUnlikePost -> Unit
                 is HomeViewModel.FunctionState.SuccessUnlikePost -> Unit
             }
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleOnErrorLikePost(postId: Int) {
+    private fun handleOnErrorLikePost(post: PostEntity) {
         lifecycleScope.launch {
-            val position = adapter.getItemPosition(postId)
+            val position = post.id?.let { adapter.getItemPosition(it) }
             withContext(Dispatchers.Main) {
-                adapter.updatePostReactions(position)
+                if (position != null) {
+                    adapter.updatePostReactions(position)
+                }
             }
         }
     }

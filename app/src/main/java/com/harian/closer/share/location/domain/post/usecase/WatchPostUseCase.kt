@@ -8,8 +8,8 @@ import com.harian.closer.share.location.domain.post.entity.PostEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class UnlikePostUseCase @Inject constructor(private val postRepository: PostRepository) {
+class WatchPostUseCase @Inject constructor(private val postRepository: PostRepository) {
     suspend fun execute(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
-        return postRepository.unlike(post)
+        return postRepository.watch(post)
     }
 }

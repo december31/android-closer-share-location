@@ -2,8 +2,6 @@ package com.harian.closer.share.location.presentation.post.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.LazyHeaders
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
@@ -14,11 +12,9 @@ import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.CreateCommentUseCase
 import com.harian.closer.share.location.domain.post.usecase.GetPostByIdUseCase
+import com.harian.closer.share.location.domain.post.usecase.WatchPostUseCase
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
-import com.harian.closer.share.location.platform.SharedPrefs
-import com.harian.closer.share.location.utils.Constants
-import com.harian.software.closer.share.location.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,9 +28,12 @@ class PostDetailsViewModel @Inject constructor(
     private val getPostByIdUseCase: GetPostByIdUseCase,
     private val getUserInformationUseCase: GetUserInformationUseCase,
     private val createCommentUseCase: CreateCommentUseCase,
+    private val watchPostUseCase: WatchPostUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     var state: StateFlow<FunctionState> = _state
+
+    private var post: PostEntity? = null
 
     fun fetchPostData(postId: Int) {
         viewModelScope.launch {
@@ -49,6 +48,7 @@ class PostDetailsViewModel @Inject constructor(
                 .collect { baseResult ->
                     when (baseResult) {
                         is BaseResult.Success -> {
+                            watchPostUseCase.execute(baseResult.data)
                             val transformedPost = transformDataPost(baseResult.data)
                             _state.value = FunctionState.SuccessGetPost(transformedPost)
                         }
@@ -78,9 +78,9 @@ class PostDetailsViewModel @Inject constructor(
         }
     }
 
-    fun createComment(commentRequest: CommentRequest, postId: Int) {
+    fun createComment(commentRequest: CommentRequest) {
         viewModelScope.launch {
-            createCommentUseCase.execute(commentRequest, postId)
+            createCommentUseCase.execute(commentRequest, post)
                 .onStart {
                     _state.value = FunctionState.IsLoading(true)
                 }
@@ -100,6 +100,7 @@ class PostDetailsViewModel @Inject constructor(
     }
 
     private fun transformDataPost(post: PostEntity): ArrayList<Any> {
+        this.post = post
         val result = arrayListOf<Any>()
         result.add(post)
         post.images?.let { result.addAll(it) }

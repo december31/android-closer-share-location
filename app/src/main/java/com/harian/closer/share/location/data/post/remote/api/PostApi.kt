@@ -26,8 +26,8 @@ interface PostApi {
 
     @POST("api/v1/post/comment")
     suspend fun commentPost(
-        @Body commentRequest: CommentRequest,
-        @Query("post-id") postId: Int
+        @Body commentRequest: CommentRequest?,
+        @Query("id") postId: Int?
     ): Response<WrappedResponse<CommentResponse>>
 
     @GET("api/v1/post/popular")
@@ -44,6 +44,9 @@ interface PostApi {
 
     @POST("api/v1/post/unlike")
     suspend fun unlikePost(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
+
+    @POST("api/v1/post/watch")
+    suspend fun watchPost(@Query("id") postId: Int? = null): Response<WrappedResponse<PostResponse>>
 
     @POST("api/v1/post/image/like")
     suspend fun likeImage(@Query("id") imageId: Int? = null): Response<WrappedResponse<ImageResponse>>

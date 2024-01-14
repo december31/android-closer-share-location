@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class LikePostUseCase @Inject constructor(private val postRepository: PostRepository) {
-    suspend fun execute(postId: Int): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
-        return postRepository.likePost(postId)
+    suspend fun execute(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostResponse>>> {
+        return postRepository.like(post)
     }
 }

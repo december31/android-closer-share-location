@@ -44,7 +44,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
             }
             btnPostComment.setOnClickListener {
                 if (!edtComment.text.isNullOrBlank()) {
-                    viewModel.createComment(CommentRequest(edtComment.text.toString()), safeArgs.postId)
+                    viewModel.createComment(CommentRequest(edtComment.text.toString()))
                     edtComment.text.clear()
                 } else {
                     edtComment.performClick()

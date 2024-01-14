@@ -48,35 +48,31 @@ class HomeViewModel @Inject constructor(
 
     fun likePost(post: PostEntity) {
         viewModelScope.launch {
-            post.id?.let { postId ->
-                likePostUseCase.execute(postId)
-                    .catch {
-                        _state.value = FunctionState.ErrorLikePost(postId)
+            likePostUseCase.execute(post)
+                .catch {
+                    _state.value = FunctionState.ErrorLikePost(post)
+                }
+                .collect { baseResult ->
+                    when (baseResult) {
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessLikePost(baseResult.data)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorLikePost(post)
                     }
-                    .collect { baseResult ->
-                        when (baseResult) {
-                            is BaseResult.Success -> _state.value = FunctionState.SuccessLikePost(baseResult.data)
-                            is BaseResult.Error -> _state.value = FunctionState.ErrorLikePost(postId)
-                        }
-                    }
-            }
+                }
         }
     }
 
     fun unlikePost(post: PostEntity) {
         viewModelScope.launch {
-            post.id?.let { postId ->
-                unlikePostUseCase.execute(postId)
-                    .catch {
-                        _state.value = FunctionState.ErrorLikePost(postId)
+            unlikePostUseCase.execute(post)
+                .catch {
+                    _state.value = FunctionState.ErrorLikePost(post)
+                }
+                .collect { baseResult ->
+                    when (baseResult) {
+                        is BaseResult.Success -> _state.value = FunctionState.SuccessUnlikePost(baseResult.data)
+                        is BaseResult.Error -> _state.value = FunctionState.ErrorUnlikePost(post)
                     }
-                    .collect { baseResult ->
-                        when (baseResult) {
-                            is BaseResult.Success -> _state.value = FunctionState.SuccessUnlikePost(baseResult.data)
-                            is BaseResult.Error -> _state.value = FunctionState.ErrorUnlikePost(postId)
-                        }
-                    }
-            }
+                }
         }
     }
 
@@ -85,8 +81,8 @@ class HomeViewModel @Inject constructor(
         data class SuccessGetPopularPosts(val posts: List<PostEntity>) : FunctionState()
         data class ErrorGetPopularPosts(val rawResponse: WrappedListResponse<PostResponse>?) : FunctionState()
         data class SuccessLikePost(val post: PostEntity) : FunctionState()
-        data class ErrorLikePost(val postId: Int) : FunctionState()
+        data class ErrorLikePost(val post: PostEntity) : FunctionState()
         data class SuccessUnlikePost(val post: PostEntity) : FunctionState()
-        data class ErrorUnlikePost(val postId: Int) : FunctionState()
+        data class ErrorUnlikePost(val post: PostEntity) : FunctionState()
     }
 }
