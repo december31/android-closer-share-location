@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.main.map
+package com.harian.closer.share.location.presentation.mainnav.map
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback

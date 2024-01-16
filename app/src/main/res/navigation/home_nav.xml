@@ -7,22 +7,22 @@
 
     <fragment
         android:id="@+id/home_fragment"
-        android:name="com.harian.closer.share.location.presentation.main.home.HomeFragment"
+        android:name="com.harian.closer.share.location.presentation.mainnav.home.HomeFragment"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/map_fragment"
-        android:name="com.harian.closer.share.location.presentation.main.map.MapsFragment"
+        android:name="com.harian.closer.share.location.presentation.mainnav.map.MapsFragment"
         tools:layout="@layout/fragment_maps" />
 
     <fragment
         android:id="@+id/notification_fragment"
-        android:name="com.harian.closer.share.location.presentation.main.notification.NotificationFragment"
+        android:name="com.harian.closer.share.location.presentation.mainnav.notification.NotificationFragment"
         tools:layout="@layout/fragment_notification" />
 
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="com.harian.closer.share.location.presentation.main.profile.ProfileFragment"
+        android:name="com.harian.closer.share.location.presentation.mainnav.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
 
 </navigation>

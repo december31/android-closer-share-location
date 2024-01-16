@@ -68,4 +68,6 @@
     <string name="notification">Notification</string>
     <string name="personal">Personal</string>
     <string name="profile">Profile</string>
+    <string name="friends">Friends</string>
+    <string name="posts">Posts</string>
 </resources>

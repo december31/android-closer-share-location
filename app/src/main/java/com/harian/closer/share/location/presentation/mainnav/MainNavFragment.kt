@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.main
+package com.harian.closer.share.location.presentation.mainnav
 
 import android.annotation.SuppressLint
 import android.os.Build

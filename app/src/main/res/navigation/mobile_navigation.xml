@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/main_nav_fragment"
-        android:name="com.harian.closer.share.location.presentation.main.MainNavFragment"
+        android:name="com.harian.closer.share.location.presentation.mainnav.MainNavFragment"
         tools:layout="@layout/fragment_main_nav">
         <action
             android:id="@+id/action_main_nav_fragment_to_create_post_fragment"

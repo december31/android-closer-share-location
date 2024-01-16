@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.view.children
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
 fun View.gone() {
@@ -52,6 +53,13 @@ fun View.invisibleAllChildViewIf(condition: (View) -> Boolean) {
 fun ImageView.glideLoadImage(resId: Int) {
     Glide.with(this.context)
         .load(resId)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(this)
+}
+
+fun ImageView.glideLoadImage(url: GlideUrl) {
+    Glide.with(this.context)
+        .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 }

@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.main.home
+package com.harian.closer.share.location.presentation.mainnav.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

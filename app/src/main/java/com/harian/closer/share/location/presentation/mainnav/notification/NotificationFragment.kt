@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.main.notification
+package com.harian.closer.share.location.presentation.mainnav.notification
 
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.software.closer.share.location.R

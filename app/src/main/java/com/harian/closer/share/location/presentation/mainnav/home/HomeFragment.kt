@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.main.home
+package com.harian.closer.share.location.presentation.mainnav.home
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.presentation.main.MainNavFragmentDirections
+import com.harian.closer.share.location.presentation.mainnav.MainNavFragmentDirections
 import com.harian.closer.share.location.utils.extension.findMainNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
