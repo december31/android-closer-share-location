@@ -70,19 +70,11 @@ android {
 
     productFlavors {
         create("appDev") {
-            buildConfigField(
-                "String",
-                "API_BASE_URL",
-                "\"http://dec31-58884.portmap.io:51147/closer/\""
-            )
+            buildConfigField("String", "API_BASE_URL", "\"http://dec31-58884.portmap.io:51147/closer/\"")
         }
 
         create("appProduct") {
-            buildConfigField(
-                "String",
-                "API_BASE_URL",
-                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\""
-            )
+            buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
         }
     }
 

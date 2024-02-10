@@ -1,7 +1,5 @@
 package com.harian.closer.share.location.presentation.mainnav.profile
 
-import android.content.Context
-import android.telephony.TelephonyManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -9,7 +7,6 @@ import androidx.lifecycle.lifecycleScope
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.utils.extension.glideLoadImage
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,11 +20,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         get() = R.layout.fragment_profile
 
     private val viewModel: ProfileViewModel by viewModels()
+    private lateinit var adapter: ProfileAdapter
 
     override fun setupUI() {
         super.setupUI()
+        setupRecyclerView()
         handleStateChanges()
         viewModel.getUserInformation()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = ProfileAdapter()
+        binding.rv.adapter = adapter
     }
 
     private fun handleStateChanges() {
@@ -51,13 +55,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun handleSuccessGetUserInformation(user: UserEntity) {
-        binding.apply {
-//            username.text = user.name
-//            avatar.glideLoadImage(user.authorizedAvatarUrl)
-
-//            val tm = context?.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-//            val countryCode = tm.networkCountryIso
-//            viewModel.getCountry(countryCode)
-        }
+        adapter.updateData(listOf(user))
     }
 }

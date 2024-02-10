@@ -4,12 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.presentation.mainnav.profile.viewholder.ProfileViewHolder
 import com.harian.software.closer.share.location.databinding.ItemRecyclerProfileBinding
 
 class ProfileAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     private val items = arrayListOf<Any>()
+
+    fun updateData(data: List<Any>) {
+        items.clear()
+        items.addAll(data)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ProfileViewHolder(ItemRecyclerProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -19,12 +26,10 @@ class ProfileAdapter : RecyclerView.Adapter<ViewHolder>() {
         return super.getItemViewType(position)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        (items[position] as? UserEntity)?.let { (holder as? ProfileViewHolder)?.bind(it) }
     }
 
 }
