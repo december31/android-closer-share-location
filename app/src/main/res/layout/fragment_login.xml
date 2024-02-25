@@ -81,7 +81,7 @@
 
             <TextView
                 android:id="@+id/tv_description"
-                android:text="@string/a_message_with_verification_code_was_sent_to_your_mobile_phone"
+                android:text="@string/a_message_with_verification_code_was_sent_to_your_email"
                 android:fontFamily="@font/circular_std_medium"
                 android:textAlignment="center"
                 android:paddingHorizontal="24dp"

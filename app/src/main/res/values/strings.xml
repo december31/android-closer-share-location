@@ -24,7 +24,7 @@
     <string name="don_t_have_account">Don\'t have account?</string>
     <string name="sign_up">Sign up</string>
     <string name="verification">VERIFICATION</string>
-    <string name="a_message_with_verification_code_was_sent_to_your_mobile_phone">A message with verification code was sent to your mobile phone.</string>
+    <string name="a_message_with_verification_code_was_sent_to_your_email">A message with verification code was sent to your Email.</string>
     <string name="already_have_account">Already have account?</string>
     <string name="don_t_receive_the_code">Don\'t receive the code</string>
     <string name="type_verification_code">Type verification code</string>
@@ -52,4 +52,22 @@
     <string name="anyone">Anyone</string>
     <string name="what_do_you_want_to_talk_about">What do you want to talk about?</string>
     <string name="logging_you_in">Logging you in</string>
+    <string name="failed_to_create_post_please_try_again_later">Failed to create post, please try again later!</string>
+    <string name="posted_successful">Posted successful</string>
+    <string name="this_post_is_no_longer_existed">This post is no longer existed</string>
+    <string name="add_a_comment">Add a comment</string>
+    <string name="post_comment_failed_please_try_again_later">Post comment failed, please try again later!</string>
+    <string name="describe_it_in_details_here">describe it in details here</string>
+    <string name="please_enter_at_least_title_or_description">Please enter at least title or description</string>
+    <string name="remain_image_count">+%d</string>
+    <string name="authenticate_failed_wrong_otp">Authenticate failed, wrong otp</string>
+    <string name="confirmation_password_is_incorrect">Confirmation password is incorrect</string>
+    <string name="reset_password_successful">Reset password successful</string>
+    <string name="reset_password_failed_please_try_again_later">Reset password failed, please try again later</string>
+    <string name="category">Category</string>
+    <string name="notification">Notification</string>
+    <string name="personal">Personal</string>
+    <string name="profile">Profile</string>
+    <string name="friends">Friends</string>
+    <string name="posts">Posts</string>
 </resources>

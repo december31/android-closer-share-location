@@ -1,3 +1,8 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
@@ -6,6 +11,9 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("com.google.firebase.appdistribution")
+    id("com.google.firebase.firebase-perf")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -19,36 +27,54 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        archivesName =
+            "CloserShareLocation_v${versionName}(${versionCode})_${
+                SimpleDateFormat(
+                    "dd.MM.yyyy",
+                    Locale.US
+                ).format(Date())
+            }"
 
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         flavorDimensions += versionName!!
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("key/harian_release.jks")
+            storePassword = "An30122002"
+            keyPassword = "An30122002"
+            keyAlias = "release"
+        }
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = true
+            manifestPlaceholders["firebasePerformanceLogcatEnabled"] = false
+            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            manifestPlaceholders["crashlyticsCollectionEnabled"] = false
+            manifestPlaceholders["firebasePerformanceLogcatEnabled"] = true
+            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
         }
     }
 
     productFlavors {
         create("appDev") {
-            buildConfigField(
-                "String",
-                "API_BASE_URL",
-                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\""
-            )
+            buildConfigField("String", "API_BASE_URL", "\"http://dec31-58884.portmap.io:51147/closer/\"")
         }
 
         create("appProduct") {
-            buildConfigField(
-                "String",
-                "API_BASE_URL",
-                "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\""
-            )
+            buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
         }
     }
 
@@ -79,18 +105,25 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+
+    // crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
+
+    // Performance Monitoring
+    implementation("com.google.firebase:firebase-perf")
 
     implementation("com.airbnb.android:lottie:6.2.0")
 
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
+    // dagger hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
@@ -112,5 +145,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    // https://mvnrepository.com/artifact/com.google.android.material/material
+    runtimeOnly("com.google.android.material:material:1.11.0")
 }

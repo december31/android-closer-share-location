@@ -32,7 +32,7 @@ class LoginState(private val fragment: LoginFragment) : State {
                 fragment.setState(fragment.registerState)
             }
             callToActionBtn.setOnClickListener {
-                fragment.login()
+                fragment.authenticate()
             }
             tvForgotPassword.setOnClickListener {
                 fragment.setState(fragment.enterEmailState)

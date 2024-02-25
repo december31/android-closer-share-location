@@ -8,6 +8,7 @@ import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch

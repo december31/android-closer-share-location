@@ -3,6 +3,7 @@ package com.harian.closer.share.location.platform
 import android.content.Context
 import android.content.SharedPreferences
 import com.harian.closer.share.location.data.common.utils.Token
+import com.harian.closer.share.location.utils.extension.toBearerToken
 
 @Suppress("UNCHECKED_CAST")
 class SharedPrefs(context: Context) {
@@ -10,6 +11,7 @@ class SharedPrefs(context: Context) {
         private const val PREF = "MyAppPrefName"
         private const val PREF_TOKEN = "user_token"
         private const val PREF_REFRESH_TOKEN = "user_refresh_token"
+        private const val PREF_IS_RESETTING_PASSWORD = "is_resetting_password"
     }
 
     private val sharedPref: SharedPreferences =
@@ -24,12 +26,16 @@ class SharedPrefs(context: Context) {
     }
 
     fun getToken(): String {
-        return get(PREF_TOKEN, String::class.java)
+        return get(PREF_TOKEN, String::class.java).toBearerToken()
     }
 
     fun getRefreshToken(): String {
         return get(PREF_REFRESH_TOKEN, String::class.java)
     }
+
+    var needResetPassword: Boolean
+        get() = get(PREF_IS_RESETTING_PASSWORD, Boolean::class.java)
+        set(value) = put(PREF_IS_RESETTING_PASSWORD, value)
 
     private fun <T> get(key: String, clazz: Class<T>): T =
         when (clazz) {

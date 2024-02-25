@@ -1,8 +1,8 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.CloserShareLocation" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.CloserShareLocation" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
 
@@ -12,10 +12,6 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Customize your theme here. -->
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
         <item name="android:fontFamily">@font/circular_std_medium</item>
     </style>
 
