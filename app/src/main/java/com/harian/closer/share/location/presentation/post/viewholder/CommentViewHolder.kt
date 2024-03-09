@@ -10,11 +10,12 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class CommentViewHolder(private val binding: ItemRecyclerCommentBinding) : RecyclerView.ViewHolder(binding.root) {
+class CommentViewHolder(private val bearerToken: String, private val binding: ItemRecyclerCommentBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(item: CommentEntity?) {
         if (item == null) return
         binding.apply {
-            Glide.with(binding.root).load(item.owner?.authorizedAvatarUrl).into(binding.imgAvatar)
+            Glide.with(binding.root).load(item.owner?.getAuthorizedAvatarUrl(bearerToken)).into(binding.imgAvatar)
             tvUsername.text = item.owner?.name
             tvContent.text = item.content
             item.createdTime?.let {
@@ -24,8 +25,9 @@ class CommentViewHolder(private val binding: ItemRecyclerCommentBinding) : Recyc
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup): CommentViewHolder {
+        fun newInstance(bearerToken: String, parent: ViewGroup): CommentViewHolder {
             return CommentViewHolder(
+                bearerToken,
                 ItemRecyclerCommentBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,

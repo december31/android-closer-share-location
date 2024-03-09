@@ -58,7 +58,19 @@
         <argument
             android:name="postId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_post_details_fragment_to_images_viewer_fragment"
+            app:destination="@id/images_viewer_fragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/images_viewer_fragment"
+        android:name="com.harian.closer.share.location.presentation.imagesviewer.ImagesViewerFragment"
+        android:label="image viewer fragment"
+        tools:layout="@layout/fragment_images_viewer">
+        <argument
+            android:name="images"
+            app:argType="com.harian.closer.share.location.domain.post.entity.ImageEntity[]" />
+    </fragment>
 
 </navigation>

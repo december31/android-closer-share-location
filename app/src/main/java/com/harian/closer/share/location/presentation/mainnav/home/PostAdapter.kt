@@ -1,13 +1,10 @@
 package com.harian.closer.share.location.presentation.mainnav.home
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.platform.BaseRecyclerViewAdapter
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.ItemRecyclerPostHasImagesBinding
 import com.harian.software.closer.share.location.databinding.ItemRecyclerPostNoImageBinding
@@ -15,9 +12,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class PostAdapter : RecyclerView.Adapter<ViewHolder>() {
+class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<PostEntity, ViewDataBinding>() {
 
-    private val items = arrayListOf<PostEntity>()
     private var onItemClickListener: (Int) -> Unit = {}
     private var onLikePostListener: (PostEntity) -> Unit = {}
     fun setOnItemClickListener(onItemClickListener: (Int) -> Unit) {
@@ -26,26 +22,6 @@ class PostAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     fun setOnLikePostListener(onLikePostListener: (PostEntity) -> Unit) {
         this.onLikePostListener = onLikePostListener
-    }
-
-    fun updateData(data: List<PostEntity>) {
-        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize() = items.size
-
-            override fun getNewListSize() = data.size
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return items.getOrNull(oldItemPosition)?.id == data.getOrNull(newItemPosition)?.id
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return data.getOrNull(newItemPosition)?.let { newItem ->
-                    items.getOrNull(oldItemPosition)?.compareTo(newItem)
-                } == 0
-            }
-        }).dispatchUpdatesTo(this)
-        items.clear()
-        items.addAll(data)
     }
 
     /**
@@ -59,109 +35,74 @@ class PostAdapter : RecyclerView.Adapter<ViewHolder>() {
         notifyItemChanged(position, PayLoad.REACTIONS)
     }
 
-    inner class PostHasImagesViewHolder(private val binding: ItemRecyclerPostHasImagesBinding) : ViewHolder(binding.root) {
-        fun bind(item: PostEntity?) {
-            if (item == null) return
-            binding.apply {
-                root.setOnClickListener {
-                    item.id?.let { id -> onItemClickListener.invoke(id) }
-                }
-
-                icLike.setOnClickListener {
-                    item.isLiked = !item.isLiked
-                    notifyItemChanged(adapterPosition, PayLoad.REACTIONS)
-                    onLikePostListener.invoke(item)
-                }
-
-                Glide.with(binding.root).load(item.owner?.authorizedAvatarUrl).into(binding.imgAvatar)
-
-                tvUsername.text = item.owner?.name
-                item.createdTime?.let {
-                    tvCreatedTime.text = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(it))
-                }
-                tvTitle.isVisible = !item.title.isNullOrBlank()
-                tvTitle.text = item.title
-                tvContent.isVisible = !item.content.isNullOrBlank()
-                tvContent.text = item.content
-
-                tvCommented.text = "${item.comments?.size ?: 0}"
-                tvLiked.text = "${item.likes?.size ?: 0}"
-                tvWatched.text = "${0}"
-
-                multipleImagesView.loadImages(item.images?.map { image -> image.authorizedUrl })
+    private fun bindHasImagePost(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
+        item ?: return
+        (holder.binding as? ItemRecyclerPostHasImagesBinding)?.apply {
+            root.setOnClickListener {
+                item.id?.let { id -> onItemClickListener.invoke(id) }
             }
-        }
 
-        fun updateReactions(item: PostEntity?) {
-            if (item == null) return
-            binding.apply {
-                tvCommented.text = "${item.comments?.size ?: 0}"
-                tvLiked.text = "${item.likes?.size ?: 0}"
-                tvWatched.text = "${0}"
-                icLike.setImageResource(if (item.isLiked) R.drawable.ic_liked else R.drawable.ic_like)
+            icLike.setOnClickListener {
+                item.isLiked = !item.isLiked
+                notifyItemChanged(holder.adapterPosition, PayLoad.REACTIONS)
+                onLikePostListener.invoke(item)
             }
+
+            Glide.with(root).load(item.owner?.getAuthorizedAvatarUrl(bearerToken)).into(imgAvatar)
+
+            tvUsername.text = item.owner?.name
+            item.createdTime?.let {
+                tvCreatedTime.text = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(it))
+            }
+            tvTitle.isVisible = !item.title.isNullOrBlank()
+            tvTitle.text = item.title
+            tvContent.isVisible = !item.content.isNullOrBlank()
+            tvContent.text = item.content
+
+            tvCommented.text = "${item.comments?.size ?: 0}"
+            tvLiked.text = "${item.likes?.size ?: 0}"
+            tvWatched.text = "${0}"
+
+            multipleImagesView.loadImages(item.images?.map { image -> image.getAuthorizeUrl(bearerToken) })
         }
     }
 
-    inner class PostNoImagesViewHolder(private val binding: ItemRecyclerPostNoImageBinding) : ViewHolder(binding.root) {
-        fun bind(item: PostEntity?) {
-            if (item == null) return
-            binding.apply {
-                root.setOnClickListener {
-                    item.id?.let { id -> onItemClickListener.invoke(id) }
-                }
-
-                Glide.with(binding.root).load(item.owner?.authorizedAvatarUrl).into(binding.imgAvatar)
-                tvUsername.text = item.owner?.name
-                item.createdTime?.let {
-                    tvCreatedTime.text = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(it))
-                }
-                tvTitle.isVisible = !item.title.isNullOrBlank()
-                tvTitle.text = item.title
-                tvContent.isVisible = !item.content.isNullOrBlank()
-                tvContent.text = item.content
-
-                tvCommented.text = "${item.comments?.size ?: 0}"
-                tvLiked.text = "${item.likes?.size ?: 0}"
-                tvWatched.text = "${0}"
-            }
+    fun updateReactions(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
+        if (item == null) return
+        (holder.binding as? ItemRecyclerPostHasImagesBinding)?.apply {
+            tvCommented.text = "${item.comments?.size ?: 0}"
+            tvLiked.text = "${item.likes?.size ?: 0}"
+            tvWatched.text = "${0}"
+            icLike.setImageResource(if (item.isLiked) R.drawable.ic_liked else R.drawable.ic_like)
         }
-
-        fun updateReactions(item: PostEntity?) {
-            if (item == null) return
-            binding.apply {
-                tvCommented.text = "${item.comments?.size ?: 0}"
-                tvLiked.text = "${item.likes?.size ?: 0}"
-                tvWatched.text = "${0}"
-            }
+        (holder.binding as? ItemRecyclerPostNoImageBinding)?.apply {
+            tvCommented.text = "${item.comments?.size ?: 0}"
+            tvLiked.text = "${item.likes?.size ?: 0}"
+            tvWatched.text = "${0}"
+            icLike.setImageResource(if (item.isLiked) R.drawable.ic_liked else R.drawable.ic_like)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return when (viewType) {
-            PostType.HAS_IMAGES.value -> PostHasImagesViewHolder(
-                ItemRecyclerPostHasImagesBinding.inflate(
-                    LayoutInflater.from(
-                        parent.context
-                    ), parent, false
-                )
-            )
+    fun bindNoImagePost(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
+        if (item == null) return
+        (holder.binding as? ItemRecyclerPostNoImageBinding)?.apply {
+            root.setOnClickListener {
+                item.id?.let { id -> onItemClickListener.invoke(id) }
+            }
 
-            PostType.NO_IMAGES.value -> PostNoImagesViewHolder(
-                ItemRecyclerPostNoImageBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
+            Glide.with(root).load(item.owner?.getAuthorizedAvatarUrl(bearerToken)).into(imgAvatar)
+            tvUsername.text = item.owner?.name
+            item.createdTime?.let {
+                tvCreatedTime.text = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(it))
+            }
+            tvTitle.isVisible = !item.title.isNullOrBlank()
+            tvTitle.text = item.title
+            tvContent.isVisible = !item.content.isNullOrBlank()
+            tvContent.text = item.content
 
-            else -> PostNoImagesViewHolder(
-                ItemRecyclerPostNoImageBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
-            )
+            tvCommented.text = "${item.comments?.size ?: 0}"
+            tvLiked.text = "${item.likes?.size ?: 0}"
+            tvWatched.text = "${0}"
         }
     }
 
@@ -169,19 +110,27 @@ class PostAdapter : RecyclerView.Adapter<ViewHolder>() {
         return items.size
     }
 
+    override fun getLayoutId(viewType: Int): Int {
+        return when (viewType) {
+            PostType.HAS_IMAGES.value -> R.layout.item_recycler_post_has_images
+            PostType.NO_IMAGES.value -> R.layout.item_recycler_post_no_image
+            else -> R.layout.item_recycler_post_no_image
+        }
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder<ViewDataBinding, PostEntity>, position: Int) {
+        bindHasImagePost(holder, items.getOrNull(position))
+        bindNoImagePost(holder, items.getOrNull(position))
+    }
+
     override fun getItemViewType(position: Int): Int {
         return if (items[position].images.isNullOrEmpty()) PostType.NO_IMAGES.value else PostType.HAS_IMAGES.value
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (holder as? PostHasImagesViewHolder)?.bind(items.getOrNull(position))
-        (holder as? PostNoImagesViewHolder)?.bind(items.getOrNull(position))
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: BaseViewHolder<ViewDataBinding, PostEntity>, position: Int, payloads: MutableList<Any>) {
         if (payloads.contains(PayLoad.REACTIONS)) {
-            (holder as? PostHasImagesViewHolder)?.updateReactions(items.getOrNull(position))
-            (holder as? PostNoImagesViewHolder)?.updateReactions(items.getOrNull(position))
+            updateReactions(holder, items.getOrNull(position))
+            updateReactions(holder, items.getOrNull(position))
         } else {
             super.onBindViewHolder(holder, position, payloads)
         }

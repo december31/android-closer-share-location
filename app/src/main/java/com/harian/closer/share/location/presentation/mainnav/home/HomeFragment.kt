@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = PostAdapter().apply {
+        adapter = PostAdapter(viewModel.sharedPrefs.getToken()).apply {
             setOnItemClickListener { postId ->
                 findMainNavController()?.navigateWithAnimation(
                     MainNavFragmentDirections.actionMainNavFragmentToPostDetailsFragment(postId)

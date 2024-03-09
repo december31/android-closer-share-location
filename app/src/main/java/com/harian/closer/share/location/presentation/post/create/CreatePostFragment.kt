@@ -98,7 +98,8 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
                 is UserViewModel.FunctionState.SuccessGetUserInfo -> {
                     context?.let { ctx ->
                         val user = it.userEntity
-                        Glide.with(ctx).load(user.authorizedAvatarUrl).into(binding.imgAvatar)
+                        Glide.with(ctx).load(user.getAuthorizedAvatarUrl(postViewModel.sharedPrefs.getToken()))
+                            .into(binding.imgAvatar)
 
                         binding.tvUsername.text = it.userEntity.name
                     }

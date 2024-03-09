@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.utils.Constants
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentPostDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +53,15 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = PostDetailsAdapter()
+        adapter = PostDetailsAdapter(viewModel.sharedPrefs.getToken()).apply {
+            onClickImage = {
+                viewModel.post?.images?.let {
+                    findNavController().navigate(
+                        PostDetailsFragmentDirections.actionPostDetailsFragmentToImagesViewerFragment(it.toTypedArray())
+                    )
+                }
+            }
+        }
         binding.rvDetailsPost.adapter = adapter
     }
 
@@ -100,7 +107,8 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     }
 
     private fun handleSuccessGetUserInfo(user: UserEntity) {
-        Glide.with(binding.root).load(user.authorizedAvatarUrl).into(binding.imgUserAvatar)
+        Glide.with(binding.root).load(user.getAuthorizedAvatarUrl(viewModel.sharedPrefs.getToken()))
+            .into(binding.imgUserAvatar)
     }
 
     private fun handleSuccessGetPost(postDataList: List<Any>) {

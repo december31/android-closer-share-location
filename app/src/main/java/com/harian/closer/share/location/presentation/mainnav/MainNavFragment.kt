@@ -15,9 +15,11 @@ import com.harian.closer.share.location.utils.extension.isOnBackStack
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentMainNavBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.system.exitProcess
 
+@AndroidEntryPoint
 class MainNavFragment : BaseFragment<FragmentMainNavBinding>() {
     override val layoutId: Int
         get() = R.layout.fragment_main_nav

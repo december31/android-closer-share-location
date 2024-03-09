@@ -1,35 +1,29 @@
 package com.harian.closer.share.location.presentation.mainnav.profile
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.databinding.ViewDataBinding
 import com.harian.closer.share.location.domain.user.entity.UserEntity
-import com.harian.closer.share.location.presentation.mainnav.profile.viewholder.ProfileViewHolder
+import com.harian.closer.share.location.platform.BaseRecyclerViewAdapter
+import com.harian.closer.share.location.utils.extension.glideLoadImage
 import com.harian.software.closer.share.location.databinding.ItemRecyclerProfileBinding
 
-class ProfileAdapter : RecyclerView.Adapter<ViewHolder>() {
+class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Any, ViewDataBinding>() {
 
-    private val items = arrayListOf<Any>()
-
-    fun updateData(data: List<Any>) {
-        items.clear()
-        items.addAll(data)
-        notifyDataSetChanged()
+    override fun getLayoutId(viewType: Int): Int {
+        TODO("Not yet implemented")
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ProfileViewHolder(ItemRecyclerProfileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
+    override fun onBindViewHolder(holder: BaseViewHolder<ViewDataBinding, Any>, position: Int) {
+        bindProfile(holder, items.getOrNull(position))
     }
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (items[position] as? UserEntity)?.let { (holder as? ProfileViewHolder)?.bind(it) }
+    private fun bindProfile(holder: BaseViewHolder<ViewDataBinding, Any>, item: Any?) {
+        (holder.binding as? ItemRecyclerProfileBinding)?.apply {
+            (item as? UserEntity)?.let { user ->
+                avatar.glideLoadImage(user.getAuthorizedAvatarUrl(bearerToken))
+                username.text = user.name
+            }
+        }
     }
-
 }

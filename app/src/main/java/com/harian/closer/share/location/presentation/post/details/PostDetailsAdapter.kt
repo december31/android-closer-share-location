@@ -1,63 +1,85 @@
 package com.harian.closer.share.location.presentation.post.details
 
-import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.harian.closer.share.location.domain.comment.entity.CommentEntity
+import androidx.core.view.isVisible
+import androidx.databinding.ViewDataBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
-import com.harian.closer.share.location.presentation.post.viewholder.ImageViewHolder
-import com.harian.closer.share.location.presentation.post.viewholder.PostDetailsViewHolder
+import com.harian.closer.share.location.platform.BaseRecyclerViewAdapter
+import com.harian.software.closer.share.location.R
+import com.harian.software.closer.share.location.databinding.ItemRecyclerDetailsPostBinding
+import com.harian.software.closer.share.location.databinding.ItemRecyclerPostImageBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * a adapter for display the post and its images
  */
-class PostDetailsAdapter : RecyclerView.Adapter<ViewHolder>() {
-
-    private val items = arrayListOf<Any>()
-
-    fun updateData(data: List<Any>) {
-        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize() = items.size
-            override fun getNewListSize() = data.size
-
-            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return (items.getOrNull(oldItemPosition) as? ImageEntity)?.let { oldItem ->
-                    (data.getOrNull(newItemPosition) as? ImageEntity)?.let { newItem ->
-                        oldItem.id == newItem.id
-                    }
-                } ?: true
-            }
-
-            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return (items.getOrNull(oldItemPosition) as? CommentEntity)?.let { oldItem ->
-                    (data.getOrNull(newItemPosition) as? CommentEntity)?.let { newItem ->
-                        oldItem.compareTo(newItem) == 0
-                    }
-                } ?: true
-            }
-        }).dispatchUpdatesTo(this)
-        this.items.clear()
-        this.items.addAll(data)
-    }
+class PostDetailsAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Any, ViewDataBinding>() {
+    var onClickImage: (ImageEntity) -> Unit = {}
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) return 0 else 1
+        return if (position == 0) return PostDetailsItemType.DETAIL.value else PostDetailsItemType.IMAGE.value
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun getLayoutId(viewType: Int): Int {
         return when (viewType) {
-            0 -> PostDetailsViewHolder.newInstance(parent)
-            1 -> ImageViewHolder.newInstance(parent)
-            else -> ImageViewHolder.newInstance(parent)
+            PostDetailsItemType.DETAIL.value -> R.layout.item_recycler_details_post
+            PostDetailsItemType.IMAGE.value -> R.layout.item_recycler_post_image
+            else -> R.layout.item_recycler_details_post
+        }
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder<ViewDataBinding, Any>, position: Int) {
+        items.getOrNull(position).let { item ->
+            bindPostDetail(holder, item)
+            bindImage(holder, item)
+        }
+    }
+
+    private fun bindPostDetail(holder: BaseViewHolder<ViewDataBinding, Any>, item: Any?) {
+        (item as? PostEntity)?.let { post ->
+            (holder.binding as ItemRecyclerDetailsPostBinding).apply {
+                Glide.with(root).load(post.owner?.getAuthorizedAvatarUrl(bearerToken)).into(imgAvatar)
+                tvUsername.text = post.owner?.name
+                post.createdTime?.let {
+                    tvCreatedTime.text = SimpleDateFormat("dd-MM-yyyy", Locale.US).format(Date(it))
+                }
+                tvTitle.isVisible = !post.title.isNullOrBlank()
+                tvTitle.text = post.title
+                tvContent.isVisible = !post.content.isNullOrBlank()
+                tvContent.text = post.content
+
+                tvCommented.text = "${post.comments?.size ?: 0}"
+                tvLiked.text = "${post.likes?.size ?: 0}"
+                tvWatched.text = "${0}"
+            }
+        }
+    }
+
+    private fun bindImage(holder: BaseViewHolder<ViewDataBinding, Any>, item: Any?) {
+        (item as? ImageEntity)?.let { image ->
+            (holder.binding as? ItemRecyclerPostImageBinding)?.apply {
+                Glide.with(root.context)
+                    .load(image.getAuthorizeUrl(bearerToken))
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .placeholder(R.drawable.empty)
+                    .into(this.image)
+                tvCommented.text = (image.comments?.size ?: 0).toString()
+                tvLiked.text = (image.likes?.size ?: 0).toString()
+                root.setOnClickListener {
+                    onClickImage.invoke(image)
+                }
+            }
         }
     }
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (holder as? PostDetailsViewHolder)?.bind(items.getOrNull(position) as? PostEntity)
-        (holder as? ImageViewHolder)?.bind(items.getOrNull(position) as? ImageEntity)
+    private enum class PostDetailsItemType(val value: Int) {
+        DETAIL(0),
+        IMAGE(1)
     }
 }

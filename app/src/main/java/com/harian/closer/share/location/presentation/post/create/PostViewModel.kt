@@ -8,6 +8,7 @@ import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.CreatePostUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
-    private val createPostUseCase: CreatePostUseCase
+    private val createPostUseCase: CreatePostUseCase,
+    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)

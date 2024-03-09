@@ -30,7 +30,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = ProfileAdapter()
+        adapter = ProfileAdapter(viewModel.sharedPrefs.getToken())
         binding.rv.adapter = adapter
     }
 

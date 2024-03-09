@@ -9,6 +9,7 @@ import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.GetPopularPostsUseCase
 import com.harian.closer.share.location.domain.post.usecase.LikePostUseCase
 import com.harian.closer.share.location.domain.post.usecase.UnlikePostUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getPopularPostsUseCase: GetPopularPostsUseCase,
     private val likePostUseCase: LikePostUseCase,
-    private val unlikePostUseCase: UnlikePostUseCase
+    private val unlikePostUseCase: UnlikePostUseCase,
+    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state

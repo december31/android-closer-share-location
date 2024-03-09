@@ -10,6 +10,7 @@ import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.country.usecase.GetCountryUseCase
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserInformationUseCase: GetUserInformationUseCase,
-    private val getCountryUseCase: GetCountryUseCase
+    private val getCountryUseCase: GetCountryUseCase,
+    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<ProfileState>(ProfileState.Init)

@@ -14,6 +14,7 @@ plugins {
     id("com.google.firebase.appdistribution")
     id("com.google.firebase.firebase-perf")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -149,6 +150,6 @@ dependencies {
 
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
-    // https://mvnrepository.com/artifact/com.google.android.material/material
     runtimeOnly("com.google.android.material:material:1.11.0")
+    implementation("com.fragula2:fragula-core:2.10.1")
 }

@@ -57,7 +57,7 @@ fun ImageView.glideLoadImage(resId: Int) {
         .into(this)
 }
 
-fun ImageView.glideLoadImage(url: GlideUrl) {
+fun ImageView.glideLoadImage(url: GlideUrl?) {
     Glide.with(this.context)
         .load(url)
         .transition(DrawableTransitionOptions.withCrossFade())

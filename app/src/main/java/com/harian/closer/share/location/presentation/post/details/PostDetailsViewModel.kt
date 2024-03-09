@@ -15,6 +15,7 @@ import com.harian.closer.share.location.domain.post.usecase.GetPostByIdUseCase
 import com.harian.closer.share.location.domain.post.usecase.WatchPostUseCase
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,12 +29,13 @@ class PostDetailsViewModel @Inject constructor(
     private val getPostByIdUseCase: GetPostByIdUseCase,
     private val getUserInformationUseCase: GetUserInformationUseCase,
     private val createCommentUseCase: CreateCommentUseCase,
-    private val watchPostUseCase: WatchPostUseCase
+    private val watchPostUseCase: WatchPostUseCase,
+    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     var state: StateFlow<FunctionState> = _state
 
-    private var post: PostEntity? = null
+    var post: PostEntity? = null
 
     fun fetchPostData(postId: Int) {
         viewModelScope.launch {
