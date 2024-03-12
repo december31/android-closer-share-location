@@ -72,10 +72,12 @@ android {
     productFlavors {
         create("appDev") {
             buildConfigField("String", "API_BASE_URL", "\"http://dec31-58884.portmap.io:51147/closer/\"")
+            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"ws://dec31-58884.portmap.io:51147/closer/websocket\"")
         }
 
         create("appProduct") {
             buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
+            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"wss://solely-pleased-wallaby.ngrok-free.app/closer/websocket\"")
         }
     }
 
@@ -102,10 +104,8 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -120,7 +120,7 @@ dependencies {
     // Performance Monitoring
     implementation("com.google.firebase:firebase-perf")
 
-    implementation("com.airbnb.android:lottie:6.2.0")
+    implementation("com.airbnb.android:lottie:6.4.0")
 
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
@@ -129,7 +129,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 
-    val navVersion = "2.7.6"
+    val navVersion = "2.7.7"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
@@ -142,8 +142,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
@@ -151,5 +151,9 @@ dependencies {
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
     runtimeOnly("com.google.android.material:material:1.11.0")
-    implementation("com.fragula2:fragula-core:2.10.1")
+
+    implementation("org.hildan.krossbow:krossbow-stomp-core:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-ktor:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-builtin:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-okhttp:5.12.0")
 }

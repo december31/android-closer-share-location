@@ -34,6 +34,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.rv.adapter = adapter
     }
 
+    override fun setupListener() {
+        super.setupListener()
+        binding.root.setOnClickListener {
+            viewModel.connectWebsocket()
+        }
+    }
+
     private fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {

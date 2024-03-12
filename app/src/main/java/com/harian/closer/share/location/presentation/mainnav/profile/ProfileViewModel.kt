@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.mainnav.profile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
@@ -8,6 +9,7 @@ import com.harian.closer.share.location.data.user.remote.dto.UserResponse
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.country.usecase.GetCountryUseCase
+import com.harian.closer.share.location.domain.messaging.MessagingRepository
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
@@ -23,6 +25,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserInformationUseCase: GetUserInformationUseCase,
     private val getCountryUseCase: GetCountryUseCase,
+    private val messagingRepository: MessagingRepository,
     val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
@@ -30,6 +33,7 @@ class ProfileViewModel @Inject constructor(
     val state: StateFlow<ProfileState> = _state
     fun getUserInformation() {
         viewModelScope.launch {
+            connectWebsocket()
             getUserInformationUseCase.execute()
                 .onStart {
 
@@ -42,6 +46,21 @@ class ProfileViewModel @Inject constructor(
                         is BaseResult.Success -> _state.value = ProfileState.SuccessGetUserInformation(baseResult.data)
                         is BaseResult.Error -> _state.value = ProfileState.ErrorGetUserInformation(baseResult.rawResponse)
                     }
+                }
+        }
+    }
+
+    fun connectWebsocket() {
+        viewModelScope.launch {
+            messagingRepository.listenForMessage()
+                .onStart {
+                    Log.d(this@ProfileViewModel.javaClass.simpleName, "start connect websocket")
+                }
+                .catch {
+                    it.printStackTrace()
+                }
+                .collect {
+                    Log.d(this@ProfileViewModel.javaClass.simpleName, it)
                 }
         }
     }

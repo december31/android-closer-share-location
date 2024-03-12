@@ -4,12 +4,13 @@ import androidx.databinding.ViewDataBinding
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseRecyclerViewAdapter
 import com.harian.closer.share.location.utils.extension.glideLoadImage
+import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.ItemRecyclerProfileBinding
 
 class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Any, ViewDataBinding>() {
 
     override fun getLayoutId(viewType: Int): Int {
-        TODO("Not yet implemented")
+        return R.layout.item_recycler_profile
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewDataBinding, Any>, position: Int) {
