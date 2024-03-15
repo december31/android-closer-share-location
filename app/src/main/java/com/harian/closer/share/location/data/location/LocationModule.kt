@@ -1,9 +1,9 @@
-package com.harian.closer.share.location.data.messaging
+package com.harian.closer.share.location.data.location
 
 import com.harian.closer.share.location.data.common.module.SharedPrefModule
 import com.harian.closer.share.location.data.common.module.StompModule
-import com.harian.closer.share.location.data.messaging.repository.MessagingRepositoryImpl
-import com.harian.closer.share.location.domain.messaging.MessagingRepository
+import com.harian.closer.share.location.data.location.repository.LocationRepositoryImpl
+import com.harian.closer.share.location.domain.location.LocationRepository
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.Module
 import dagger.Provides
@@ -14,11 +14,11 @@ import javax.inject.Singleton
 
 @Module(includes = [StompModule::class, SharedPrefModule::class])
 @InstallIn(SingletonComponent::class)
-object MessagingModule {
+object LocationModule {
 
     @Provides
     @Singleton
-    fun provideMessagingRepository(stompClient: StompClient, sharedPrefs: SharedPrefs): MessagingRepository {
-        return MessagingRepositoryImpl(stompClient, sharedPrefs)
+    fun provideLocationRepository(stompClient: StompClient, sharedPrefs: SharedPrefs) : LocationRepository{
+        return LocationRepositoryImpl(stompClient, sharedPrefs)
     }
 }

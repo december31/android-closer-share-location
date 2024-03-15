@@ -72,12 +72,12 @@ android {
     productFlavors {
         create("appDev") {
             buildConfigField("String", "API_BASE_URL", "\"http://dec31-58884.portmap.io:51147/closer/\"")
-            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"ws://dec31-58884.portmap.io:51147/closer/websocket\"")
+            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"ws://dec31-58884.portmap.io:51147/closer/websocket/v1\"")
         }
 
         create("appProduct") {
             buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
-            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"wss://solely-pleased-wallaby.ngrok-free.app/closer/websocket\"")
+            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"wss://solely-pleased-wallaby.ngrok-free.app/closer/websocket/v1\"")
         }
     }
 
@@ -107,6 +107,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -142,8 +143,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
@@ -152,8 +153,11 @@ dependencies {
 
     runtimeOnly("com.google.android.material:material:1.11.0")
 
-    implementation("org.hildan.krossbow:krossbow-stomp-core:5.12.0")
-    implementation("org.hildan.krossbow:krossbow-websocket-ktor:5.12.0")
-    implementation("org.hildan.krossbow:krossbow-websocket-builtin:5.12.0")
-    implementation("org.hildan.krossbow:krossbow-websocket-okhttp:5.12.0")
+    // stomp client
+//    implementation("org.hildan.krossbow:krossbow-stomp-core:5.12.0")
+//    implementation("org.hildan.krossbow:krossbow-websocket-ktor:5.12.0")
+//    implementation("org.hildan.krossbow:krossbow-websocket-builtin:5.12.0")
+//    implementation("org.hildan.krossbow:krossbow-websocket-okhttp:5.12.0")
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 }
