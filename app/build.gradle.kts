@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -153,11 +155,13 @@ dependencies {
 
     runtimeOnly("com.google.android.material:material:1.11.0")
 
-    // stomp client
-//    implementation("org.hildan.krossbow:krossbow-stomp-core:5.12.0")
-//    implementation("org.hildan.krossbow:krossbow-websocket-ktor:5.12.0")
-//    implementation("org.hildan.krossbow:krossbow-websocket-builtin:5.12.0")
-//    implementation("org.hildan.krossbow:krossbow-websocket-okhttp:5.12.0")
+    // stomp client using krossbow (flow)
+    implementation("org.hildan.krossbow:krossbow-stomp-core:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-ktor:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-builtin:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-okhttp:5.12.0")
+
+    // stomp client using StompProtocolAndroid (rxAndroid)
     implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 }

@@ -1,10 +1,12 @@
 package com.harian.closer.share.location.presentation.mainnav.map
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Looper
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -12,9 +14,10 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.software.closer.share.location.R
@@ -31,35 +34,48 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
 
-    private var locationInterval = 30000L
+    private var locationInterval = 3000L
+    private var marker: Marker? = null
+    private var lastTimeMoveCamera = 0L
+    private val cameraMovingInterval = 15000
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) {
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                initGoogleMap()
+            }
 
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                initGoogleMap()
+            }
+
+            else -> {
+                findNavController().popBackStack()
+            }
+        }
     }
 
     override fun setupUI() {
         super.setupUI()
-        initGoogleMap()
+        locationPermissionLauncher.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        )
     }
 
     private fun initGoogleMap() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync { googleMap ->
-            val sydney = LatLng(-34.0, 151.0)
-            googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-            val cameraPosition = CameraPosition.builder()
-                .target(sydney)
-                .build()
-            val cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
-            googleMap.animateCamera(cameraUpdate)
-            requestLocationUpdates()
+            requestLocationUpdates(googleMap)
         }
     }
 
     @SuppressLint("MissingPermission")
-    private fun requestLocationUpdates() {
+    private fun requestLocationUpdates(googleMap: GoogleMap) {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, locationInterval)
             .setWaitForAccurateLocation(false)
@@ -68,10 +84,19 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
-                Log.d(
-                    this@MapsFragment.javaClass.simpleName,
-                    "Lat: ${locationResult.locations[0].latitude}, Long: ${locationResult.locations[0].longitude}  "
-                )
+                locationResult.lastLocation?.let { location ->
+                    val currentLocation = LatLng(location.latitude, location.longitude)
+                    marker?.remove()
+                    marker = googleMap.addMarker(MarkerOptions().position(currentLocation))
+                    if (System.currentTimeMillis() - lastTimeMoveCamera > cameraMovingInterval) {
+                        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, googleMap.cameraPosition.zoom)
+                        Log.d("googleMap.cameraPosition.zoom", googleMap.cameraPosition.zoom.toString())
+                        googleMap.animateCamera(cameraUpdate)
+                        lastTimeMoveCamera = System.currentTimeMillis()
+                    }
+
+                    viewModel.updateLocation(location.latitude, location.longitude)
+                }
             }
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
@@ -79,15 +104,11 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
 
     override fun setupListener() {
         super.setupListener()
-        viewModel.listenForFriendsLocationChanges()
-        binding.apply {
-            sampleButton.setOnClickListener {
-                viewModel.updateLocation()
-            }
-        }
+        viewModel.subscribeForFriendsLocationUpdates()
     }
 
-    private fun requestLocationPermission() {
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.disposeObserver()
     }
 }

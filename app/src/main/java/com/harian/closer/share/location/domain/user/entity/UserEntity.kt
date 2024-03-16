@@ -15,7 +15,7 @@ data class UserEntity(
     val email: String?,
     val avatar: String?,
     val gender: String?,
-    val description: String?,
+    val description: String?
 ) : Parcelable {
 
     @IgnoredOnParcel

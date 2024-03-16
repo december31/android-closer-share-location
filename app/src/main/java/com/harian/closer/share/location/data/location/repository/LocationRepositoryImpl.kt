@@ -2,12 +2,16 @@ package com.harian.closer.share.location.data.location.repository
 
 import android.annotation.SuppressLint
 import android.util.Log
+import com.google.gson.Gson
+import com.harian.closer.share.location.data.location.dto.Location
 import com.harian.closer.share.location.domain.location.LocationRepository
 import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.utils.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
@@ -15,30 +19,39 @@ import ua.naiksoftware.stomp.dto.StompHeader
 
 class LocationRepositoryImpl(private val stompClient: StompClient, private val sharedPrefs: SharedPrefs) : LocationRepository {
 
+    val disposables = CompositeDisposable()
+
     override suspend fun subscribeFriendsLocationUpdates(): Flow<String> {
-        return flow {
-            initSessionIfNeed()
+        val flow: MutableStateFlow<String> = MutableStateFlow("")
+        initSessionIfNeed()
+        disposables.add(
             stompClient.topic("/topic/location/subscribe")
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe({ stompMessage ->
-                    Log.d(this@LocationRepositoryImpl.javaClass.simpleName, "received: " + stompMessage.payload)
+                    flow.value = stompMessage.payload
+                }, {
+                    it.printStackTrace()
+                })
+        )
+        return flow
+    }
+
+    override suspend fun updateLocation(location: Location): Flow<String> {
+        return flow {
+            initSessionIfNeed()
+            stompClient.send("/app/location/update", Gson().toJson(location))
+                .subscribe({
+                    Log.d(this@LocationRepositoryImpl.javaClass.simpleName, "update location (${location.latitude}, ${location.longitude})")
                 }, {
                     it.printStackTrace()
                 })
         }
     }
 
-    override suspend fun updateLocation(): Flow<String> {
-        return flow {
-            initSessionIfNeed()
-            stompClient.send("/app/location/update", "hello")
-                .subscribe({
-                    Log.d(this@LocationRepositoryImpl.javaClass.simpleName, "send successful")
-                }, {
-                    it.printStackTrace()
-                })
-        }
+    override fun disposeObserver() {
+        disposables.dispose()
+        disposables.clear()
     }
 
     @SuppressLint("CheckResult")

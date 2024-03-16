@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_friend"
+            android:text="@string/friends"
+            style="@style/Body3"
+            android:textStyle="bold"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/text_primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_friend_size"
+            tools:text="23"
+            style="@style/Body3"
+            android:layout_toEndOf="@id/tv_friend"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_view_all"
+            android:text="@string/view_all"
+            android:layout_alignParentEnd="true"
+            android:paddingVertical="8dp"
+            android:paddingHorizontal="4dp"
+            android:textColor="@color/text_blue"
+            style="@style/Body3"
+            android:textSize="14sp"
+            android:lineSpacingExtra="1dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@id/tv_friend"
+            tools:listitem="@layout/item_recycler_grid_friend"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:orientation="vertical"
+            style="@style/Body3"
+            app:spanCount="3"
+            tools:itemCount="6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+</layout>
