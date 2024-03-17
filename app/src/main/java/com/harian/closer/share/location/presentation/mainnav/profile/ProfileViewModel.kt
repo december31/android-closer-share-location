@@ -1,16 +1,21 @@
 package com.harian.closer.share.location.presentation.mainnav.profile
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.country.remote.dto.CountryResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostResponse
 import com.harian.closer.share.location.data.user.remote.dto.UserResponse
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.country.usecase.GetCountryUseCase
-import com.harian.closer.share.location.domain.messaging.MessagingRepository
+import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.domain.user.entity.ProfileEntity
+import com.harian.closer.share.location.domain.user.entity.ProfileType
 import com.harian.closer.share.location.domain.user.entity.UserEntity
+import com.harian.closer.share.location.domain.user.usecase.GetFriendsUseCase
+import com.harian.closer.share.location.domain.user.usecase.GetPostsUseCase
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,15 +30,24 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserInformationUseCase: GetUserInformationUseCase,
     private val getCountryUseCase: GetCountryUseCase,
-    private val messagingRepository: MessagingRepository,
+    private val getFriendsUseCase: GetFriendsUseCase,
+    private val getPostsUseCase: GetPostsUseCase,
     val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ProfileState>(ProfileState.Init)
+    private val _state = MutableStateFlow<ProfileState>(
+        ProfileState.Init(
+            listOf(
+                ProfileEntity(null, ProfileType.PROFILE),
+                ProfileEntity(null, ProfileType.FRIENDS),
+                ProfileEntity(null, ProfileType.POSTS),
+            )
+        )
+    )
     val state: StateFlow<ProfileState> = _state
-    fun getUserInformation() {
+
+    fun fetchUserInformation() {
         viewModelScope.launch {
-            connectWebsocket()
             getUserInformationUseCase.execute()
                 .onStart {
 
@@ -46,21 +60,38 @@ class ProfileViewModel @Inject constructor(
                         is BaseResult.Success -> _state.value = ProfileState.SuccessGetUserInformation(baseResult.data)
                         is BaseResult.Error -> _state.value = ProfileState.ErrorGetUserInformation(baseResult.rawResponse)
                     }
+                    fetchFriends()
                 }
         }
     }
 
-    fun connectWebsocket() {
+    private fun fetchFriends() {
         viewModelScope.launch {
-            messagingRepository.listenForMessage()
-                .onStart {
-                    Log.d(this@ProfileViewModel.javaClass.simpleName, "start connect websocket")
-                }
+            getFriendsUseCase.execute()
                 .catch {
                     it.printStackTrace()
                 }
-                .collect {
-                    Log.d(this@ProfileViewModel.javaClass.simpleName, it)
+                .collect { baseResult ->
+                    when (baseResult) {
+                        is BaseResult.Error -> _state.value = ProfileState.ErrorGetFriends(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.value = ProfileState.SuccessGetFriends(baseResult.data)
+                    }
+                    fetchPosts()
+                }
+        }
+    }
+
+    private fun fetchPosts() {
+        viewModelScope.launch {
+            getPostsUseCase.execute()
+                .catch {
+                    it.printStackTrace()
+                }
+                .collect { baseResult ->
+                    when (baseResult) {
+                        is BaseResult.Error -> _state.value = ProfileState.ErrorGetPosts(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.value = ProfileState.SuccessGetPosts(baseResult.data)
+                    }
                 }
         }
     }
@@ -81,9 +112,13 @@ class ProfileViewModel @Inject constructor(
     }
 
     sealed class ProfileState {
-        data object Init : ProfileState()
+        data class Init(val defaultData: List<ProfileEntity<Any>>) : ProfileState()
         data class SuccessGetUserInformation(val user: UserEntity) : ProfileState()
         data class ErrorGetUserInformation(val rawResponse: WrappedResponse<UserResponse>) : ProfileState()
+        data class SuccessGetFriends(val friends: List<UserEntity>) : ProfileState()
+        data class ErrorGetFriends(val rawResponse: WrappedListResponse<UserResponse>) : ProfileState()
+        data class SuccessGetPosts(val posts: List<PostEntity>) : ProfileState()
+        data class ErrorGetPosts(val rawResponse: WrappedListResponse<PostResponse>) : ProfileState()
         data class SuccessGetCountry(val country: CountryEntity) : ProfileState()
         data class ErrorGetCountry(val rawResponse: WrappedResponse<CountryResponse>) : ProfileState()
     }

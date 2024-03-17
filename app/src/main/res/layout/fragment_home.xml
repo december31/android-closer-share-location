@@ -14,8 +14,7 @@
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="4dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -25,7 +24,7 @@
                 tools:listitem="@layout/item_recycler_post_no_image"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
-                tools:itemCount="5"
+                tools:itemCount="2"
                 android:paddingBottom="120dp"
                 android:clipToPadding="false"
                 android:layout_width="match_parent"

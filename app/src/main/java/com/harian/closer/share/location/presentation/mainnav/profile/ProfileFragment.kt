@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
+import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.software.closer.share.location.R
@@ -26,7 +27,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         super.setupUI()
         setupRecyclerView()
         handleStateChanges()
-        viewModel.getUserInformation()
+        viewModel.fetchUserInformation()
     }
 
     private fun setupRecyclerView() {
@@ -36,32 +37,45 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun setupListener() {
         super.setupListener()
-        binding.root.setOnClickListener {
-            viewModel.connectWebsocket()
-        }
     }
 
     private fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
-                is ProfileViewModel.ProfileState.Init -> Unit
+                is ProfileViewModel.ProfileState.Init -> adapter.updateData(it.defaultData)
                 is ProfileViewModel.ProfileState.ErrorGetUserInformation -> handleErrorGetUserInformation()
                 is ProfileViewModel.ProfileState.SuccessGetUserInformation -> handleSuccessGetUserInformation(it.user)
                 is ProfileViewModel.ProfileState.ErrorGetCountry -> Unit
                 is ProfileViewModel.ProfileState.SuccessGetCountry -> handleSuccessGetCountry(it.country)
+                is ProfileViewModel.ProfileState.SuccessGetFriends -> handleSuccessGetFriend(it.friends)
+                is ProfileViewModel.ProfileState.ErrorGetFriends -> handleErrorGetFriend()
+                is ProfileViewModel.ProfileState.ErrorGetPosts -> Unit
+                is ProfileViewModel.ProfileState.SuccessGetPosts -> handleSuccessGetPosts(it.posts)
             }
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleSuccessGetCountry(country: CountryEntity) {
-//        binding.address.text = country.name
+    private fun handleSuccessGetPosts(posts: List<PostEntity>) {
+        adapter.updatePosts(posts)
     }
 
-    private fun handleErrorGetUserInformation() {
+    private fun handleSuccessGetFriend(friends: List<UserEntity>) {
+        adapter.updateFriends(friends)
+    }
+
+    private fun handleErrorGetFriend() {
+
+    }
+
+    private fun handleSuccessGetCountry(country: CountryEntity) {
 
     }
 
     private fun handleSuccessGetUserInformation(user: UserEntity) {
-        adapter.updateData(listOf(user))
+        adapter.updateProfile(user)
+    }
+
+    private fun handleErrorGetUserInformation() {
+
     }
 }

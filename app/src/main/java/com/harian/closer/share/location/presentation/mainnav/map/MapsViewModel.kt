@@ -20,7 +20,7 @@ import javax.inject.Inject
 class MapsViewModel @Inject constructor(
     private val subscribeFriendsLocationUpdatesUseCase: SubscribeFriendsLocationUpdatesUseCase,
     private val updateLocationUseCase: UpdateLocationUseCase,
-    private val disposeObserverUseCase: DisposeObserverUseCase
+    private val disposeObserverUseCase: DisposeObserverUseCase,
 ) : ViewModel() {
     private val _state = MutableStateFlow("")
     val state: StateFlow<String> get() = _state

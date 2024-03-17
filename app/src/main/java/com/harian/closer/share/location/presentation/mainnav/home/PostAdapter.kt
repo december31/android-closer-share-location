@@ -67,7 +67,7 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
         }
     }
 
-    fun updateReactions(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
+    private fun updateReactions(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
         if (item == null) return
         (holder.binding as? ItemRecyclerPostHasImagesBinding)?.apply {
             tvCommented.text = "${item.comments?.size ?: 0}"
@@ -83,7 +83,7 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
         }
     }
 
-    fun bindNoImagePost(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
+    private fun bindNoImagePost(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
         if (item == null) return
         (holder.binding as? ItemRecyclerPostNoImageBinding)?.apply {
             root.setOnClickListener {
