@@ -7,4 +7,5 @@ object Constants {
     val en: String = "en"
     const val DEFAULT_IMAGE_URL = "avatar/avatar1.png"
     const val KEY_ID: String = "id"
+    const val DEFAULT_MAP_ZOOM_LEVEL: Float = 15f
 }

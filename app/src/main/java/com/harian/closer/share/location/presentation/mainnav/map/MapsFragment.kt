@@ -6,6 +6,9 @@ import android.os.Looper
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -19,10 +22,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.utils.Constants
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentMapsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MapsFragment : BaseFragment<FragmentMapsBinding>() {
@@ -38,6 +45,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
     private var marker: Marker? = null
     private var lastTimeMoveCamera = 0L
     private val cameraMovingInterval = 15000
+    private var firstTimeGetLocation = true
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -65,6 +73,24 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         )
+        handleObserver()
+    }
+
+    private fun handleObserver() {
+        viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                MapsViewModel.NetworkState.Init -> Unit
+                is MapsViewModel.NetworkState.GotLocationUpdate -> updateFriendsLocation(it.user)
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun updateFriendsLocation(user: UserEntity) {
+        binding.apply {
+            name.text = user.name
+            latitude.text = user.latitude.toString()
+            longitude.text = user.longitude.toString()
+        }
     }
 
     private fun initGoogleMap() {
@@ -89,12 +115,15 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
                     marker?.remove()
                     marker = googleMap.addMarker(MarkerOptions().position(currentLocation))
                     if (System.currentTimeMillis() - lastTimeMoveCamera > cameraMovingInterval) {
-                        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, googleMap.cameraPosition.zoom)
+                        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                            currentLocation,
+                            if (firstTimeGetLocation) Constants.DEFAULT_MAP_ZOOM_LEVEL else googleMap.cameraPosition.zoom
+                        )
                         Log.d("googleMap.cameraPosition.zoom", googleMap.cameraPosition.zoom.toString())
                         googleMap.animateCamera(cameraUpdate)
                         lastTimeMoveCamera = System.currentTimeMillis()
                     }
-
+                    firstTimeGetLocation = false
                     viewModel.updateLocation(location.latitude, location.longitude)
                 }
             }

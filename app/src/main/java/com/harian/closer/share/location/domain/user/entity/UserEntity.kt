@@ -15,7 +15,9 @@ data class UserEntity(
     val email: String?,
     val avatar: String?,
     val gender: String?,
-    val description: String?
+    val description: String?,
+    var latitude: Double?,
+    var longitude: Double?
 ) : Parcelable {
 
     @IgnoredOnParcel
@@ -23,7 +25,8 @@ data class UserEntity(
 
     fun getAuthorizedAvatarUrl(bearerToken: String): GlideUrl? {
         if (authorizedAvatarUrl == null) {
-            authorizedAvatarUrl = GlideUrl(BuildConfig.API_BASE_URL + avatar, LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION, bearerToken).build())
+            authorizedAvatarUrl =
+                GlideUrl(BuildConfig.API_BASE_URL + avatar, LazyHeaders.Builder().addHeader(Constants.AUTHORIZATION, bearerToken).build())
         }
         return authorizedAvatarUrl
     }

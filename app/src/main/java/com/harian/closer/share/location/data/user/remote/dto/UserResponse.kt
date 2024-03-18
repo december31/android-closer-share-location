@@ -10,6 +10,6 @@ data class UserResponse(
     @SerializedName("gender") val gender: String?,
     @SerializedName("description") val description: String?,
     @SerializedName("status") val status: String?,
-    @SerializedName("latitude") val latitude: Long?,
-    @SerializedName("longitude") val longitude: Long?,
+    @SerializedName("latitude") val latitude: Double?,
+    @SerializedName("longitude") val longitude: Double?,
 )

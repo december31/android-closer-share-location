@@ -20,7 +20,9 @@ class ResponseUtil @Inject constructor() {
             avatar = userResponse?.avatar ?: Constants.DEFAULT_IMAGE_URL,
             email = userResponse?.email,
             gender = userResponse?.gender,
-            description = userResponse?.description
+            description = userResponse?.description,
+            latitude = userResponse?.latitude,
+            longitude = userResponse?.longitude
         )
     }
 

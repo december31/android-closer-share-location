@@ -12,24 +12,34 @@ import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.UserRepository
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.utils.ResponseUtil
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil: ResponseUtil) : UserRepository {
+
+    private var userInformation: BaseResult.Success<UserEntity>? = null
+
     override suspend fun getUserInformation(): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
         return flow {
-            val response = userApi.getUserInformation()
-            if (response.isSuccessful && response.code() in 200 until 400) {
-                val body = response.body()
-                val userEntity = body?.data.let { data ->
-                    responseUtil.buildUserEntity(data)
+            if (userInformation == null) {
+                val response = userApi.getUserInformation()
+                if (response.isSuccessful && response.code() in 200 until 400) {
+                    val body = response.body()
+                    val userEntity = body?.data.let { data ->
+                        responseUtil.buildUserEntity(data)
+                    }
+                    userInformation = BaseResult.Success(userEntity)
+                    emit(userInformation!!)
+                } else {
+                    val type = object : TypeToken<WrappedResponse<UserResponse>>() {}.type
+                    val error =
+                        Gson().fromJson<WrappedResponse<UserResponse>>(response.errorBody()?.charStream(), type)
+                    emit(BaseResult.Error(error))
                 }
-                emit(BaseResult.Success(userEntity))
             } else {
-                val type = object : TypeToken<WrappedResponse<UserResponse>>() {}.type
-                val error =
-                    Gson().fromJson<WrappedResponse<UserResponse>>(response.errorBody()?.charStream(), type)
-                emit(BaseResult.Error(error))
+                delay(500)
+                emit(userInformation!!)
             }
         }
     }
