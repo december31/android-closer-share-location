@@ -3,6 +3,7 @@ package com.harian.closer.share.location.domain.user.entity
 import android.os.Parcelable
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.google.android.gms.maps.model.MarkerOptions
 import com.harian.closer.share.location.utils.Constants
 import com.harian.software.closer.share.location.BuildConfig
 import kotlinx.parcelize.IgnoredOnParcel

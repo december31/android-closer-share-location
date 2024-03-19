@@ -9,6 +9,7 @@ import com.harian.closer.share.location.domain.location.usecase.SubscribeFriends
 import com.harian.closer.share.location.domain.location.usecase.UpdateLocationUseCase
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.utils.extension.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,8 @@ class MapsViewModel @Inject constructor(
     private val subscribeFriendsLocationUpdatesUseCase: SubscribeFriendsLocationUpdatesUseCase,
     private val updateLocationUseCase: UpdateLocationUseCase,
     private val disposeObserverUseCase: DisposeObserverUseCase,
-    private val getUserInformationUseCase: GetUserInformationUseCase
+    private val getUserInformationUseCase: GetUserInformationUseCase,
+    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
     private val _state = MutableStateFlow<NetworkState>(NetworkState.Init)
     val state: StateFlow<NetworkState> get() = _state
