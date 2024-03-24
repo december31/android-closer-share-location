@@ -62,6 +62,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     viewModel.unlikePost(post)
                 }
             }
+            setOnAvatarClickListener {
+                findMainNavController()?.navigateWithAnimation(
+                    MainNavFragmentDirections.actionMainNavFragmentToProfileFragment(it)
+                )
+            }
         }
         binding.rvPost.adapter = adapter
     }

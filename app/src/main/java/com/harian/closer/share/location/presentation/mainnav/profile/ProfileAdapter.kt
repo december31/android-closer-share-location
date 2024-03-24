@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.mainnav.profile
 
+import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileEntity
@@ -20,6 +21,17 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
 
     private val friendAdapter: FriendAdapter = FriendAdapter(bearerToken)
     private val postAdapter: PostAdapter = PostAdapter(bearerToken)
+
+    private var onclickAddFriend: (UserEntity) -> Unit = {}
+    private var onclickMessage: (UserEntity) -> Unit = {}
+
+    fun setOnClickAddFriendListener(onclickAddFriend: (UserEntity) -> Unit) {
+        this.onclickAddFriend = onclickAddFriend
+    }
+
+    fun setOnClickMessageListener(onclickMessage: (UserEntity) -> Unit) {
+        this.onclickMessage = onclickMessage
+    }
 
     override fun getLayoutId(viewType: Int): Int {
         return when (viewType) {
@@ -48,6 +60,16 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
             (item?.data as? UserEntity)?.let { user ->
                 avatar.glideLoadImage(user.getAuthorizedAvatarUrl(bearerToken))
                 username.text = user.name
+                btnAddFriend.isVisible = user.isFriend == false
+                btnMessage.isVisible = user.isFriend == true
+
+                btnAddFriend.setOnClickListener {
+                    onclickAddFriend.invoke(user)
+                }
+
+                btnMessage.setOnClickListener {
+                    onclickMessage.invoke(user)
+                }
             }
         }
     }

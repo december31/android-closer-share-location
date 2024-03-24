@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.country.remote.dto.CountryResponse
-import com.harian.closer.share.location.data.post.remote.dto.PostResponse
-import com.harian.closer.share.location.data.user.remote.dto.UserResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostDTO
+import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.country.usecase.GetCountryUseCase
@@ -46,9 +46,13 @@ class ProfileViewModel @Inject constructor(
     )
     val state: StateFlow<ProfileState> = _state
 
-    fun fetchUserInformation() {
+    /**
+     * fetch user information
+     * @param user: the user from which app will request information to server. if user == null app will request information for current logged in user
+     */
+    fun fetchUserInformation(user: UserEntity? = null) {
         viewModelScope.launch {
-            getUserInformationUseCase.execute()
+            getUserInformationUseCase.execute(user)
                 .onStart {
 
                 }
@@ -60,14 +64,14 @@ class ProfileViewModel @Inject constructor(
                         is BaseResult.Success -> _state.value = ProfileState.SuccessGetUserInformation(baseResult.data)
                         is BaseResult.Error -> _state.value = ProfileState.ErrorGetUserInformation(baseResult.rawResponse)
                     }
-                    fetchFriends()
+                    fetchFriends(user)
                 }
         }
     }
 
-    private fun fetchFriends() {
+    private fun fetchFriends(user: UserEntity?) {
         viewModelScope.launch {
-            getFriendsUseCase.execute()
+            getFriendsUseCase.execute(user)
                 .catch {
                     it.printStackTrace()
                 }
@@ -76,14 +80,14 @@ class ProfileViewModel @Inject constructor(
                         is BaseResult.Error -> _state.value = ProfileState.ErrorGetFriends(baseResult.rawResponse)
                         is BaseResult.Success -> _state.value = ProfileState.SuccessGetFriends(baseResult.data)
                     }
-                    fetchPosts()
+                    fetchPosts(user)
                 }
         }
     }
 
-    private fun fetchPosts() {
+    private fun fetchPosts(user: UserEntity?) {
         viewModelScope.launch {
-            getPostsUseCase.execute()
+            getPostsUseCase.execute(user)
                 .catch {
                     it.printStackTrace()
                 }
@@ -111,14 +115,18 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun addFriend(user: UserEntity) {
+
+    }
+
     sealed class ProfileState {
         data class Init(val defaultData: List<ProfileEntity<Any>>) : ProfileState()
         data class SuccessGetUserInformation(val user: UserEntity) : ProfileState()
-        data class ErrorGetUserInformation(val rawResponse: WrappedResponse<UserResponse>) : ProfileState()
+        data class ErrorGetUserInformation(val rawResponse: WrappedResponse<UserDTO>) : ProfileState()
         data class SuccessGetFriends(val friends: List<UserEntity>) : ProfileState()
-        data class ErrorGetFriends(val rawResponse: WrappedListResponse<UserResponse>) : ProfileState()
+        data class ErrorGetFriends(val rawResponse: WrappedListResponse<UserDTO>) : ProfileState()
         data class SuccessGetPosts(val posts: List<PostEntity>) : ProfileState()
-        data class ErrorGetPosts(val rawResponse: WrappedListResponse<PostResponse>) : ProfileState()
+        data class ErrorGetPosts(val rawResponse: WrappedListResponse<PostDTO>) : ProfileState()
         data class SuccessGetCountry(val country: CountryEntity) : ProfileState()
         data class ErrorGetCountry(val rawResponse: WrappedResponse<CountryResponse>) : ProfileState()
     }

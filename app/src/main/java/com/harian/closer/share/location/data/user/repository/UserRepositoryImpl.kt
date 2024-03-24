@@ -4,9 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
-import com.harian.closer.share.location.data.post.remote.dto.PostResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.api.UserApi
-import com.harian.closer.share.location.data.user.remote.dto.UserResponse
+import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.UserRepository
@@ -20,7 +20,7 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
 
     private var userInformation: BaseResult.Success<UserEntity>? = null
 
-    override suspend fun getUserInformation(): Flow<BaseResult<UserEntity, WrappedResponse<UserResponse>>> {
+    override suspend fun getUserInformation(): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
         return flow {
             if (userInformation == null) {
                 val response = userApi.getUserInformation()
@@ -32,9 +32,9 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
                     userInformation = BaseResult.Success(userEntity)
                     emit(userInformation!!)
                 } else {
-                    val type = object : TypeToken<WrappedResponse<UserResponse>>() {}.type
+                    val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
                     val error =
-                        Gson().fromJson<WrappedResponse<UserResponse>>(response.errorBody()?.charStream(), type)
+                        Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
                     emit(BaseResult.Error(error))
                 }
             } else {
@@ -44,7 +44,25 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
         }
     }
 
-    override suspend fun getFriends(): Flow<BaseResult<List<UserEntity>, WrappedListResponse<UserResponse>>> {
+    override suspend fun getUserInformation(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
+        return flow {
+            val response = userApi.getUserInformation(user.id!!)
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                val userEntity = body?.data.let { data ->
+                    responseUtil.buildUserEntity(data)
+                }
+                emit(BaseResult.Success(userEntity))
+            } else {
+                val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
+                val error =
+                    Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun getFriends(): Flow<BaseResult<List<UserEntity>, WrappedListResponse<UserDTO>>> {
         return flow {
             val response = userApi.getFriends()
             if (response.isSuccessful && response.code() in 200 until 400) {
@@ -56,15 +74,35 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
                 } ?: listOf()
                 emit(BaseResult.Success(friends))
             } else {
-                val type = object : TypeToken<WrappedListResponse<UserResponse>>() {}.type
+                val type = object : TypeToken<WrappedListResponse<UserDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedListResponse<UserResponse>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedListResponse<UserDTO>>(response.errorBody()?.charStream(), type)
                 emit(BaseResult.Error(error))
             }
         }
     }
 
-    override suspend fun getPosts(): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostResponse>>> {
+    override suspend fun getFriends(user: UserEntity): Flow<BaseResult<List<UserEntity>, WrappedListResponse<UserDTO>>> {
+        return flow {
+            val response = userApi.getFriends(user.id!!)
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                val friends = body?.data?.let { data ->
+                    data.map { friend ->
+                        responseUtil.buildUserEntity(friend)
+                    }
+                } ?: listOf()
+                emit(BaseResult.Success(friends))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<UserDTO>>() {}.type
+                val error =
+                    Gson().fromJson<WrappedListResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun getPosts(): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostDTO>>> {
         return flow {
             val response = userApi.getPosts()
             if (response.isSuccessful && response.code() in 200 until 400) {
@@ -74,9 +112,45 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
                 } ?: listOf()
                 emit(BaseResult.Success(posts))
             } else {
-                val type = object : TypeToken<WrappedListResponse<PostResponse>>() {}.type
+                val type = object : TypeToken<WrappedListResponse<PostDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedListResponse<PostResponse>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedListResponse<PostDTO>>(response.errorBody()?.charStream(), type)
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun getPosts(user: UserEntity): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostDTO>>> {
+        return flow {
+            val response = userApi.getPosts(user.id!!)
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                val posts = body?.data?.map { postResponse ->
+                    responseUtil.buildPostEntity(postResponse)
+                } ?: listOf()
+                emit(BaseResult.Success(posts))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<PostDTO>>() {}.type
+                val error =
+                    Gson().fromJson<WrappedListResponse<PostDTO>>(response.errorBody()?.charStream(), type)
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun sendFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
+        return flow {
+            val response = userApi.sendFriendRequest(UserDTO.fromUserEntity(user))
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                val userEntity = body?.data.let {
+                    responseUtil.buildUserEntity(body?.data)
+                }
+                emit(BaseResult.Success(userEntity))
+            } else {
+                val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
+                val error =
+                    Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
                 emit(BaseResult.Error(error))
             }
         }

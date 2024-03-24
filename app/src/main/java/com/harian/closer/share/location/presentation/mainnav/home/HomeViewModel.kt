@@ -3,7 +3,7 @@ package com.harian.closer.share.location.presentation.mainnav.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
-import com.harian.closer.share.location.data.post.remote.dto.PostResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.GetPopularPostsUseCase
@@ -81,7 +81,7 @@ class HomeViewModel @Inject constructor(
     sealed class FunctionState {
         data object Init : FunctionState()
         data class SuccessGetPopularPosts(val posts: List<PostEntity>) : FunctionState()
-        data class ErrorGetPopularPosts(val rawResponse: WrappedListResponse<PostResponse>?) : FunctionState()
+        data class ErrorGetPopularPosts(val rawResponse: WrappedListResponse<PostDTO>?) : FunctionState()
         data class SuccessLikePost(val post: PostEntity) : FunctionState()
         data class ErrorLikePost(val post: PostEntity) : FunctionState()
         data class SuccessUnlikePost(val post: PostEntity) : FunctionState()

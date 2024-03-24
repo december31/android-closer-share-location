@@ -73,12 +73,12 @@ android {
 
     productFlavors {
         create("appDev") {
-            buildConfigField("String", "API_BASE_URL", "\"http://dec31-58884.portmap.io:51147/closer/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://dec31-58884.portmap.io:51147/closer/api/v1\"")
             buildConfigField("String", "WEB_SOCKET_END_POINT", "\"ws://dec31-58884.portmap.io:51147/closer/websocket/v1\"")
         }
 
         create("appProduct") {
-            buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/api/v1\"")
             buildConfigField("String", "WEB_SOCKET_END_POINT", "\"wss://solely-pleased-wallaby.ngrok-free.app/closer/websocket/v1\"")
         }
     }

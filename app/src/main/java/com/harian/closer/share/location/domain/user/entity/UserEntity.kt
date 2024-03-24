@@ -17,8 +17,10 @@ data class UserEntity(
     val avatar: String?,
     val gender: String?,
     val description: String?,
+    val status: String?,
+    val isFriend: Boolean?,
     var latitude: Double?,
-    var longitude: Double?
+    var longitude: Double?,
 ) : Parcelable {
 
     @IgnoredOnParcel

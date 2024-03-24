@@ -71,4 +71,6 @@
     <string name="friends">Friends</string>
     <string name="posts">Posts</string>
     <string name="view_all">View all</string>
+    <string name="add_friend">Add friend</string>
+    <string name="message">Message</string>
 </resources>

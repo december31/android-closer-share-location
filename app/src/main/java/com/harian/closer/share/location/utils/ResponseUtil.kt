@@ -2,8 +2,8 @@ package com.harian.closer.share.location.utils
 
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
 import com.harian.closer.share.location.data.post.remote.dto.ImageResponse
-import com.harian.closer.share.location.data.post.remote.dto.PostResponse
-import com.harian.closer.share.location.data.user.remote.dto.UserResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostDTO
+import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
@@ -13,20 +13,21 @@ import javax.inject.Singleton
 
 @Singleton
 class ResponseUtil @Inject constructor() {
-    fun buildUserEntity(userResponse: UserResponse?): UserEntity {
+    fun buildUserEntity(userResponse: UserDTO?): UserEntity {
         return UserEntity(
             id = userResponse?.id,
             name = userResponse?.name,
             avatar = userResponse?.avatar ?: Constants.DEFAULT_IMAGE_URL,
             email = userResponse?.email,
             gender = userResponse?.gender,
+            isFriend = userResponse?.isFriend,
             description = userResponse?.description,
             latitude = userResponse?.latitude,
             longitude = userResponse?.longitude
         )
     }
 
-    fun buildPostEntity(postResponse: PostResponse?): PostEntity {
+    fun buildPostEntity(postResponse: PostDTO?): PostEntity {
         val postOwner = postResponse?.owner?.let { buildUserEntity(it) }
         val images = postResponse?.images?.map { image ->
             buildImageEntity(image)

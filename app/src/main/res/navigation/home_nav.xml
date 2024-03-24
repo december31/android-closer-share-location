@@ -23,6 +23,13 @@
     <fragment
         android:id="@+id/profile_fragment"
         android:name="com.harian.closer.share.location.presentation.mainnav.profile.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+
+        <argument
+            android:name="user"
+            app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 
 </navigation>

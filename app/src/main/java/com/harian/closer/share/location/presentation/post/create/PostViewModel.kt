@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostRequest
-import com.harian.closer.share.location.data.post.remote.dto.PostResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.CreatePostUseCase
@@ -87,6 +87,6 @@ class PostViewModel @Inject constructor(
         data object Init : FunctionState()
         data class IsLoading(val isLoading: Boolean) : FunctionState()
         data class SuccessCreatePost(val postEntity: PostEntity) : FunctionState()
-        data class ErrorCreatePost(val rawResponse: WrappedResponse<PostResponse>?) : FunctionState()
+        data class ErrorCreatePost(val rawResponse: WrappedResponse<PostDTO>?) : FunctionState()
     }
 }

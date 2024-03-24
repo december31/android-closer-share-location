@@ -7,6 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface CountryApi {
-    @GET("api/v1/country")
+    @GET("country")
     suspend fun getCountry(@Query(value = "country-code") countryCode: String): Response<WrappedResponse<CountryResponse>>
 }

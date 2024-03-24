@@ -7,6 +7,6 @@ import retrofit2.http.Body
 import retrofit2.http.PATCH
 
 interface ResetPasswordApi {
-    @PATCH("api/v1/user/reset-password")
+    @PATCH("user/reset-password")
     suspend fun resetPassword(@Body request: ResetPasswordRequest): Response<WrappedResponse<Unit>>
 }

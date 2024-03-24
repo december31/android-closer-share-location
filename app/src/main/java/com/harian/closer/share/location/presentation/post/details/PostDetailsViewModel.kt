@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.CommentRequest
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
-import com.harian.closer.share.location.data.post.remote.dto.PostResponse
-import com.harian.closer.share.location.data.user.remote.dto.UserResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostDTO
+import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
@@ -113,9 +113,9 @@ class PostDetailsViewModel @Inject constructor(
         data object Init : FunctionState()
         data class IsLoading(val isLoading: Boolean) : FunctionState()
         data class SuccessGetPost(val postDataList: List<Any>) : FunctionState()
-        data class ErrorGetPost(val rawResponse: WrappedResponse<PostResponse>?) : FunctionState()
+        data class ErrorGetPost(val rawResponse: WrappedResponse<PostDTO>?) : FunctionState()
         data class SuccessGetUserUserInfo(val userEntity: UserEntity) : FunctionState()
-        data class ErrorGetUserUserInfo(val rawResponse: WrappedResponse<UserResponse>?) : FunctionState()
+        data class ErrorGetUserUserInfo(val rawResponse: WrappedResponse<UserDTO>?) : FunctionState()
         data class SuccessCreateComment(val commentEntity: CommentEntity) : FunctionState()
         data class ErrorCreateComment(val rawResponse: WrappedResponse<CommentResponse>?) : FunctionState()
     }

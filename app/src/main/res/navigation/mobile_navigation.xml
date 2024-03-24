@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_main_nav_fragment_to_post_details_fragment"
             app:destination="@id/post_details_fragment" />
+        <action
+            android:id="@+id/action_main_nav_fragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
     </fragment>
 
     <fragment
@@ -71,6 +74,18 @@
         <argument
             android:name="images"
             app:argType="com.harian.closer.share.location.domain.post.entity.ImageEntity[]" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="com.harian.closer.share.location.presentation.mainnav.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+
+        <argument
+            android:name="user"
+            app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

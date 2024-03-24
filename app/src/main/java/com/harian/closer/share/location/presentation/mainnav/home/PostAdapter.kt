@@ -4,6 +4,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseRecyclerViewAdapter
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.ItemRecyclerPostHasImagesBinding
@@ -16,12 +17,17 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
 
     private var onItemClickListener: (Int) -> Unit = {}
     private var onLikePostListener: (PostEntity) -> Unit = {}
+    private var onAvatarClickListener: (UserEntity) -> Unit = {}
     fun setOnItemClickListener(onItemClickListener: (Int) -> Unit) {
         this.onItemClickListener = onItemClickListener
     }
 
     fun setOnLikePostListener(onLikePostListener: (PostEntity) -> Unit) {
         this.onLikePostListener = onLikePostListener
+    }
+
+    fun setOnAvatarClickListener(onAvatarClickListener: (UserEntity) -> Unit) {
+        this.onAvatarClickListener = onAvatarClickListener
     }
 
     /**
@@ -46,6 +52,10 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
                 item.isLiked = !item.isLiked
                 notifyItemChanged(holder.adapterPosition, PayLoad.REACTIONS)
                 onLikePostListener.invoke(item)
+            }
+
+            imgAvatar.setOnClickListener {
+                item.owner?.let { owner -> onAvatarClickListener.invoke(owner) }
             }
 
             Glide.with(root).load(item.owner?.getAuthorizedAvatarUrl(bearerToken)).into(imgAvatar)

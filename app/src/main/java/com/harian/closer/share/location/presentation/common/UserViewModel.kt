@@ -3,7 +3,7 @@ package com.harian.closer.share.location.presentation.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
-import com.harian.closer.share.location.data.user.remote.dto.UserResponse
+import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
@@ -45,6 +45,6 @@ class UserViewModel @Inject constructor(
         data object Init : FunctionState()
         data class IsLoading(val isLoading: Boolean) : FunctionState()
         data class SuccessGetUserInfo(val userEntity: UserEntity) : FunctionState()
-        data class ErrorGetUserInfo(val rawResponse: WrappedResponse<UserResponse>?) : FunctionState()
+        data class ErrorGetUserInfo(val rawResponse: WrappedResponse<UserDTO>?) : FunctionState()
     }
 }
