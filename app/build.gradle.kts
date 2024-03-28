@@ -61,7 +61,7 @@ android {
             )
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["firebasePerformanceLogcatEnabled"] = false
-            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
+            manifestPlaceholders["MAPS_API_KEY"] = File("keys.properties").readLines(Charsets.UTF_8)[0]
             signingConfig = signingConfigs.getByName("release")
         }
         debug {
@@ -114,13 +114,12 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
 
-    // crashlytics
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
-
-    // Performance Monitoring
+    implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-perf")
 
     implementation("com.airbnb.android:lottie:6.4.0")
