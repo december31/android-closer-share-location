@@ -16,5 +16,5 @@ interface UserRepository {
     suspend fun getFriends(user: UserEntity): Flow<BaseResult<List<UserEntity>, WrappedListResponse<UserDTO>>>
     suspend fun getPosts(): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostDTO>>>
     suspend fun getPosts(user: UserEntity): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostDTO>>>
-    suspend fun sendFriendRequest(userDTO: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
+    suspend fun sendFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
 }

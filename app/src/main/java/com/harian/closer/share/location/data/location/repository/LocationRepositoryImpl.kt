@@ -71,7 +71,7 @@ class LocationRepositoryImpl(private val stompClient: StompClient, private val s
                     }
                 },
                 {
-                    it.printStackTrace()
+                    Log.e(this.javaClass.simpleName, "error: ${it.message}")
                 }
             )
         )

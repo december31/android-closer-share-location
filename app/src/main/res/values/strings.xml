@@ -73,4 +73,6 @@
     <string name="view_all">View all</string>
     <string name="add_friend">Add friend</string>
     <string name="message">Message</string>
+    <string name="friend_request_sent">Friend request sent</string>
+    <string name="failed_sending_friend_request_please_try_again_later">Failed sending friend request, please try again later</string>
 </resources>

@@ -50,8 +50,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun setupListener() {
         super.setupListener()
-        adapter.setOnClickAddFriendListener {user ->
-            viewModel.addFriend(user)
+        adapter.setOnClickAddFriendListener { user ->
+            viewModel.sendFriendRequest(user)
+            adapter.updateFriendRequestStatus(ProfileAdapter.SendFriendRequestStatus.SENDING_FRIEND_REQUEST)
         }
 
         adapter.setOnClickMessageListener {
@@ -76,8 +77,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 is ProfileViewModel.ProfileState.ErrorGetFriends -> handleErrorGetFriend()
                 is ProfileViewModel.ProfileState.ErrorGetPosts -> Unit
                 is ProfileViewModel.ProfileState.SuccessGetPosts -> handleSuccessGetPosts(it.posts)
+                is ProfileViewModel.ProfileState.ErrorSendFriendRequest -> handleErrorSendFriendRequest()
+                is ProfileViewModel.ProfileState.SuccessSendFriendRequest -> handleSuccessSendFriendRequest()
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun handleSuccessSendFriendRequest() {
+        adapter.updateFriendRequestStatus(ProfileAdapter.SendFriendRequestStatus.FRIEND_REQUEST_SENT)
+        showToast(R.string.friend_request_sent)
+    }
+
+    private fun handleErrorSendFriendRequest() {
+        adapter.updateFriendRequestStatus(ProfileAdapter.SendFriendRequestStatus.FAILED_SENDING_FRIEND_REQUEST)
+        showToast(R.string.failed_sending_friend_request_please_try_again_later)
     }
 
     private fun handleSuccessGetPosts(posts: List<PostEntity>) {

@@ -21,6 +21,7 @@ class ResponseUtil @Inject constructor() {
             email = userResponse?.email,
             gender = userResponse?.gender,
             isFriend = userResponse?.isFriend,
+            status = userResponse?.status,
             description = userResponse?.description,
             latitude = userResponse?.latitude,
             longitude = userResponse?.longitude

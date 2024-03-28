@@ -140,6 +140,7 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
 
     override suspend fun sendFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
         return flow {
+            delay(2000)
             val response = userApi.sendFriendRequest(UserDTO.fromUserEntity(user))
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()

@@ -9,9 +9,9 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthenticateApi {
-    @POST("auth/authenticate")
+    @POST("api/v1/auth/authenticate")
     suspend fun authenticate(@Body request: AuthenticateRequest): Response<WrappedResponse<AuthenticateResponse>>
 
-    @POST("auth/otp-authenticate")
+    @POST("api/v1/auth/otp-authenticate")
     suspend fun authenticate(@Body request: OtpAuthenticateRequest): Response<WrappedResponse<AuthenticateResponse>>
 }

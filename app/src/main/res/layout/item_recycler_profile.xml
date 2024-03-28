@@ -4,10 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:elevation="4dp"
         android:paddingBottom="20dp"
         android:layout_marginBottom="12dp"
+        android:animateLayoutChanges="true"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -18,9 +19,9 @@
             android:outlineProvider="background"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            android:layout_alignParentTop="true"
             android:background="@drawable/bg_profile_wallpaper"
             android:src="@drawable/bg_login"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             tools:ignore="UnusedAttribute" />
@@ -31,8 +32,9 @@
             tools:src="@tools:sample/avatars"
             android:padding="4dp"
             app:strokeWidth="4dp"
-            android:layout_below="@id/wallpaper"
-            android:layout_centerHorizontal="true"
+            app:layout_constraintTop_toBottomOf="@id/wallpaper"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:background="@color/white"
             android:layout_marginTop="-50dp"
             app:strokeColor="@color/white"
@@ -44,8 +46,9 @@
             style="@style/Title1"
             tools:text="@tools:sample/full_names"
             android:layout_marginTop="16dp"
-            android:layout_below="@id/avatar"
-            android:layout_centerHorizontal="true"
+            app:layout_constraintTop_toBottomOf="@id/avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -61,13 +64,31 @@
             android:gravity="center"
             android:textAllCaps="false"
             android:visibility="gone"
-            android:layout_below="@id/username"
+            tools:visibility="visible"
             android:textAlignment="center"
             android:layout_marginTop="8dp"
             android:paddingVertical="8dp"
+            android:translationZ="1dp"
+            app:layout_constraintTop_toBottomOf="@id/username"
             android:layout_marginHorizontal="48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_animation"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:lottie_rawRes="@raw/white_dot_loading"
+            android:scaleType="centerCrop"
+            android:paddingBottom="14dp"
+            android:visibility="gone"
+            android:translationZ="2dp"
+            app:layout_constraintTop_toTopOf="@id/btn_add_friend"
+            app:layout_constraintBottom_toBottomOf="@id/btn_add_friend"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_message"
@@ -80,13 +101,13 @@
             app:iconGravity="textStart"
             android:gravity="center"
             android:textAllCaps="false"
-            android:layout_below="@id/username"
             android:visibility="gone"
             android:textAlignment="center"
             android:layout_marginTop="8dp"
             android:paddingVertical="8dp"
+            app:layout_constraintTop_toBottomOf="@id/username"
             android:layout_marginHorizontal="48dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

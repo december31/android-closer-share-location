@@ -17,6 +17,7 @@ import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetFriendsUseCase
 import com.harian.closer.share.location.domain.user.usecase.GetPostsUseCase
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
+import com.harian.closer.share.location.domain.user.usecase.SendFriendRequestUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +33,7 @@ class ProfileViewModel @Inject constructor(
     private val getCountryUseCase: GetCountryUseCase,
     private val getFriendsUseCase: GetFriendsUseCase,
     private val getPostsUseCase: GetPostsUseCase,
+    private val sendFriendRequestUseCase: SendFriendRequestUseCase,
     val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
@@ -115,8 +117,20 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun addFriend(user: UserEntity) {
-
+    fun sendFriendRequest(user: UserEntity) {
+        viewModelScope.launch {
+            sendFriendRequestUseCase.execute(user)
+                .catch {
+                    it.printStackTrace()
+                    _state.value = ProfileState.ErrorSendFriendRequest(null)
+                }
+                .collect { baseResult ->
+                    when (baseResult) {
+                        is BaseResult.Error -> _state.value = ProfileState.ErrorSendFriendRequest(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.value = ProfileState.SuccessSendFriendRequest(baseResult.data)
+                    }
+                }
+        }
     }
 
     sealed class ProfileState {
@@ -129,5 +143,7 @@ class ProfileViewModel @Inject constructor(
         data class ErrorGetPosts(val rawResponse: WrappedListResponse<PostDTO>) : ProfileState()
         data class SuccessGetCountry(val country: CountryEntity) : ProfileState()
         data class ErrorGetCountry(val rawResponse: WrappedResponse<CountryResponse>) : ProfileState()
+        data class SuccessSendFriendRequest(val user: UserEntity) : ProfileState()
+        data class ErrorSendFriendRequest(val rawResponse: WrappedResponse<UserDTO>?) : ProfileState()
     }
 }
