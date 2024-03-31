@@ -29,8 +29,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     @Inject
     lateinit var appManager: AppManager
 
+    @Inject
+    lateinit var adapter: PostAdapter
+
     private val viewModel by viewModels<HomeViewModel>()
-    private lateinit var adapter: PostAdapter
 
     override fun setupUI() {
         super.setupUI()
@@ -49,7 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun setupRecyclerView() {
-        adapter = PostAdapter(viewModel.sharedPrefs.getToken()).apply {
+        adapter.apply {
             setOnItemClickListener { postId ->
                 findMainNavController()?.navigateWithAnimation(
                     MainNavFragmentDirections.actionMainNavFragmentToPostDetailsFragment(postId)

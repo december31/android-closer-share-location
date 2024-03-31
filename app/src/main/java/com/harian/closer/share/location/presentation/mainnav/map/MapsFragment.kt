@@ -129,11 +129,6 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
                 }
             ).submit()
         }
-        binding.apply {
-            name.text = user.name
-            latitude.text = user.latitude.toString()
-            longitude.text = user.longitude.toString()
-        }
     }
 
     private suspend fun updateFriendMarker(friend: UserEntity, avatar: File) {

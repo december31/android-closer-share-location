@@ -61,13 +61,11 @@ android {
             )
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["firebasePerformanceLogcatEnabled"] = false
-            manifestPlaceholders["MAPS_API_KEY"] = File("keys.properties").readLines(Charsets.UTF_8)[0]
             signingConfig = signingConfigs.getByName("release")
         }
         debug {
             manifestPlaceholders["crashlyticsCollectionEnabled"] = false
             manifestPlaceholders["firebasePerformanceLogcatEnabled"] = true
-            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
         }
     }
 
@@ -81,6 +79,13 @@ android {
             buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
             buildConfigField("String", "WEB_SOCKET_END_POINT", "\"wss://solely-pleased-wallaby.ngrok-free.app/closer/websocket/v1\"")
         }
+    }
+
+    secrets {
+        propertiesFileName = "secrets.properties"
+        defaultPropertiesFileName = "local.defaults.properties"
+        ignoreList.add("keyToIgnore")
+        ignoreList.add("sdk.*")
     }
 
     compileOptions {

@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class FirebaseNotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        Log.d(this.javaClass.simpleName, message.toString())
+        Log.d(this.javaClass.simpleName, message.messageType.toString())
     }
 
     override fun onNewToken(token: String) {

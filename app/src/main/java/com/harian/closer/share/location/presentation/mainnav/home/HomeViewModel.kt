@@ -23,7 +23,6 @@ class HomeViewModel @Inject constructor(
     private val getPopularPostsUseCase: GetPopularPostsUseCase,
     private val likePostUseCase: LikePostUseCase,
     private val unlikePostUseCase: UnlikePostUseCase,
-    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
