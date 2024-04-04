@@ -11,4 +11,5 @@ import kotlinx.coroutines.flow.Flow
 interface AuthenticateRepository {
     suspend fun authenticate(authenticateRequest: AuthenticateRequest): Flow<BaseResult<AuthenticateEntity, WrappedResponse<AuthenticateResponse>>>
     suspend fun authenticate(otpAuthenticateRequest: OtpAuthenticateRequest): Flow<BaseResult<AuthenticateEntity, WrappedResponse<AuthenticateResponse>>>
+    suspend fun authenticate(): Flow<BaseResult<AuthenticateEntity, WrappedResponse<AuthenticateResponse>>>
 }

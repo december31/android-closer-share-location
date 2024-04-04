@@ -1,22 +1,27 @@
 package com.harian.closer.share.location.data.user.repository
 
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.api.UserApi
+import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.UserRepository
+import com.harian.closer.share.location.domain.user.entity.DeviceEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.utils.ResponseUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 
-class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil: ResponseUtil) : UserRepository {
+class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil: ResponseUtil) :
+    UserRepository {
 
     private var userInformation: BaseResult.Success<UserEntity>? = null
 
@@ -34,7 +39,9 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
                 } else {
                     val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
                     val error =
-                        Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                        Gson().fromJson<WrappedResponse<UserDTO>>(
+                            response.errorBody()?.charStream(), type
+                        )
                     emit(BaseResult.Error(error))
                 }
             } else {
@@ -56,7 +63,10 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
             } else {
                 val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedResponse<UserDTO>>(
+                        response.errorBody()?.charStream(),
+                        type
+                    )
                 emit(BaseResult.Error(error))
             }
         }
@@ -76,7 +86,9 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
             } else {
                 val type = object : TypeToken<WrappedListResponse<UserDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedListResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedListResponse<UserDTO>>(
+                        response.errorBody()?.charStream(), type
+                    )
                 emit(BaseResult.Error(error))
             }
         }
@@ -96,7 +108,9 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
             } else {
                 val type = object : TypeToken<WrappedListResponse<UserDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedListResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedListResponse<UserDTO>>(
+                        response.errorBody()?.charStream(), type
+                    )
                 emit(BaseResult.Error(error))
             }
         }
@@ -114,7 +128,9 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
             } else {
                 val type = object : TypeToken<WrappedListResponse<PostDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedListResponse<PostDTO>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedListResponse<PostDTO>>(
+                        response.errorBody()?.charStream(), type
+                    )
                 emit(BaseResult.Error(error))
             }
         }
@@ -132,7 +148,9 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
             } else {
                 val type = object : TypeToken<WrappedListResponse<PostDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedListResponse<PostDTO>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedListResponse<PostDTO>>(
+                        response.errorBody()?.charStream(), type
+                    )
                 emit(BaseResult.Error(error))
             }
         }
@@ -151,7 +169,34 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
             } else {
                 val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
                 val error =
-                    Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                    Gson().fromJson<WrappedResponse<UserDTO>>(
+                        response.errorBody()?.charStream(),
+                        type
+                    )
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun updateDeviceInformation(device: DeviceEntity): Flow<BaseResult<DeviceEntity, WrappedResponse<DeviceDTO>>> {
+        return flow {
+            val firebaseMessagingToken = FirebaseMessaging.getInstance().token.await()
+            val response = userApi.updateDeviceInformation(DeviceDTO.fromDeviceEntity(device.apply {
+                this.firebaseMessagingToken = firebaseMessagingToken
+            }))
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                val userEntity = body?.data.let {
+                    responseUtil.buildDeviceEntity(body?.data)
+                }
+                emit(BaseResult.Success(userEntity))
+            } else {
+                val type = object : TypeToken<WrappedResponse<DeviceDTO>>() {}.type
+                val error =
+                    Gson().fromJson<WrappedResponse<DeviceDTO>>(
+                        response.errorBody()?.charStream(),
+                        type
+                    )
                 emit(BaseResult.Error(error))
             }
         }

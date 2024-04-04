@@ -3,7 +3,8 @@ package com.harian.closer.share.location.presentation.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.domain.common.base.BaseResult
-import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
+import com.harian.closer.share.location.domain.login.usecase.TokenAuthenticateUseCase
+import com.harian.closer.share.location.domain.user.usecase.UpdateDeviceInformationUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val getUserInformationUseCase: GetUserInformationUseCase,
+    private val tokenAuthenticateUseCase: TokenAuthenticateUseCase,
+    private val updateDeviceInformationUseCase: UpdateDeviceInformationUseCase,
     private val sharedPrefs: SharedPrefs
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
@@ -24,7 +26,7 @@ class SplashViewModel @Inject constructor(
     fun verifyToken() {
         viewModelScope.launch {
             delay(2000)
-            getUserInformationUseCase.execute()
+            tokenAuthenticateUseCase.execute()
                 .onStart {
 
                 }
@@ -39,6 +41,7 @@ class SplashViewModel @Inject constructor(
                                 _state.value = FunctionState.NeedResetPassword
                             } else {
                                 _state.value = FunctionState.SuccessVerifyToken
+                                updateDeviceInformationUseCase.execute()
                             }
                         }
 
@@ -52,6 +55,6 @@ class SplashViewModel @Inject constructor(
         data object Init : FunctionState()
         data object SuccessVerifyToken : FunctionState()
         data object ErrorVerifyToken : FunctionState()
-        data object NeedResetPassword: FunctionState()
+        data object NeedResetPassword : FunctionState()
     }
 }

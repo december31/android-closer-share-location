@@ -105,7 +105,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     }
 
-    private fun handleSuccessGetCountry(country: CountryEntity) {
+    private fun handleSuccessGetCountry(@Suppress("UNUSED_PARAMETER") country: CountryEntity) {
 
     }
 

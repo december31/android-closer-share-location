@@ -3,10 +3,12 @@ package com.harian.closer.share.location.utils
 import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
 import com.harian.closer.share.location.data.post.remote.dto.ImageResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostDTO
+import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.domain.user.entity.DeviceEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -76,6 +78,24 @@ class ResponseUtil @Inject constructor() {
             content = commentResponse?.content,
             createdTime = commentResponse?.createdTime,
             owner = owner,
+        )
+    }
+
+    fun buildDeviceEntity(deviceDTO: DeviceDTO?): DeviceEntity {
+        return DeviceEntity(
+            id = deviceDTO?.id,
+            model = deviceDTO?.model,
+            manufacturer = deviceDTO?.manufacturer,
+            brand = deviceDTO?.brand,
+            type = deviceDTO?.type,
+            versionCodeBase = deviceDTO?.versionCodeBase,
+            incremental = deviceDTO?.incremental,
+            sdk = deviceDTO?.sdk,
+            board = deviceDTO?.board,
+            host = deviceDTO?.host,
+            fingerprint = deviceDTO?.fingerprint,
+            versionCode = deviceDTO?.versionCode,
+            firebaseMessagingToken = deviceDTO?.firebaseMessagingToken
         )
     }
 }
