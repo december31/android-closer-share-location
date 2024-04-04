@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.domain.user.usecase
 
+import android.util.Log
 import com.harian.closer.share.location.domain.user.UserRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -15,7 +16,14 @@ class UpdateDeviceInformationUseCase @Inject constructor(
                 it.printStackTrace()
             }
             .collect {
-                userRepository.updateDeviceInformation(it).collect()
+                userRepository.updateDeviceInformation(it)
+                    .catch { exception ->
+                        Log.e(
+                            this@UpdateDeviceInformationUseCase.javaClass.simpleName,
+                            exception.message.toString()
+                        )
+                    }
+                    .collect()
             }
     }
 }
