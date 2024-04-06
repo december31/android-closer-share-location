@@ -1,5 +1,8 @@
 package com.harian.closer.share.location.presentation.mainnav.home
 
+import android.Manifest
+import android.os.Build
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -34,11 +37,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val viewModel by viewModels<HomeViewModel>()
 
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) {}
+
     override fun setupUI() {
         super.setupUI()
         setupRecyclerView()
         handleStateChanges()
         viewModel.fetchPopularPosts()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 
     override fun setupListener() {
@@ -78,7 +88,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             when (it) {
                 is HomeViewModel.FunctionState.Init -> Unit
                 is HomeViewModel.FunctionState.ErrorGetPopularPosts -> handleOnErrorFetchPosts()
-                is HomeViewModel.FunctionState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(it.posts)
+                is HomeViewModel.FunctionState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(
+                    it.posts
+                )
+
                 is HomeViewModel.FunctionState.SuccessLikePost -> Unit
                 is HomeViewModel.FunctionState.ErrorLikePost -> handleOnErrorLikePost(it.post)
                 is HomeViewModel.FunctionState.ErrorUnlikePost -> Unit
@@ -105,6 +118,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun handleOnSuccessFetchPosts(posts: List<PostEntity>) {
         adapter.updateData(posts)
         binding.swipeRefresh.isRefreshing = false
-        binding.rvPost.layoutManager?.smoothScrollToPosition(binding.rvPost, RecyclerView.State(), 0)
+        binding.rvPost.layoutManager?.smoothScrollToPosition(
+            binding.rvPost,
+            RecyclerView.State(),
+            0
+        )
     }
 }
