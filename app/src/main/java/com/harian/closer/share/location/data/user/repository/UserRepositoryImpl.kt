@@ -8,11 +8,13 @@ import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.api.UserApi
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
+import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.UserRepository
 import com.harian.closer.share.location.domain.user.entity.DeviceEntity
+import com.harian.closer.share.location.domain.user.entity.FriendRequestEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.utils.ResponseUtil
 import kotlinx.coroutines.delay
@@ -172,6 +174,26 @@ class UserRepositoryImpl(private val userApi: UserApi, private val responseUtil:
                     Gson().fromJson<WrappedResponse<UserDTO>>(
                         response.errorBody()?.charStream(),
                         type
+                    )
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun getFriendRequest(): Flow<BaseResult<List<FriendRequestEntity>, WrappedListResponse<FriendRequestDTO>>> {
+        return flow {
+            val response = userApi.getFriendRequest()
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                val friendRequests = body?.data?.map { friendRequestResponse ->
+                    responseUtil.buildFriendRequestEntity(friendRequestResponse)
+                } ?: listOf()
+                emit(BaseResult.Success(friendRequests))
+            } else {
+                val type = object : TypeToken<WrappedListResponse<FriendRequestDTO>>() {}.type
+                val error =
+                    Gson().fromJson<WrappedListResponse<FriendRequestDTO>>(
+                        response.errorBody()?.charStream(), type
                     )
                 emit(BaseResult.Error(error))
             }

@@ -4,6 +4,7 @@ import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
+import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import retrofit2.Response
 import retrofit2.http.Body
@@ -32,6 +33,9 @@ interface UserApi {
 
     @POST("api/v1/user/friend/request")
     suspend fun sendFriendRequest(@Body user: UserDTO): Response<WrappedResponse<UserDTO>>
+
+    @GET("api/v1/user/friend/requests")
+    suspend fun getFriendRequest(): Response<WrappedListResponse<FriendRequestDTO>>
 
     @POST("api/v1/user/device/update")
     suspend fun updateDeviceInformation(@Body device: DeviceDTO): Response<WrappedResponse<DeviceDTO>>

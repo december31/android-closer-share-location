@@ -4,11 +4,13 @@ import com.harian.closer.share.location.data.post.remote.dto.CommentResponse
 import com.harian.closer.share.location.data.post.remote.dto.ImageResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
+import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.entity.DeviceEntity
+import com.harian.closer.share.location.domain.user.entity.FriendRequestEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -51,6 +53,14 @@ class ResponseUtil @Inject constructor() {
             owner = postOwner,
             likes = likes,
             comments = comments
+        )
+    }
+
+    fun buildFriendRequestEntity(friendRequestDTO: FriendRequestDTO): FriendRequestEntity {
+        return FriendRequestEntity(
+            requestor = buildUserEntity(friendRequestDTO.requestor),
+            since = friendRequestDTO.since,
+            status = friendRequestDTO.status
         )
     }
 

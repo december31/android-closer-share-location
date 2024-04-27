@@ -100,6 +100,10 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
                 item.id?.let { id -> onItemClickListener.invoke(id) }
             }
 
+            imgAvatar.setOnClickListener {
+                item.owner?.let { owner -> onAvatarClickListener.invoke(owner) }
+            }
+
             Glide.with(root).load(item.owner?.getAuthorizedAvatarUrl(bearerToken)).into(imgAvatar)
             tvUsername.text = item.owner?.name
             item.createdTime?.let {
