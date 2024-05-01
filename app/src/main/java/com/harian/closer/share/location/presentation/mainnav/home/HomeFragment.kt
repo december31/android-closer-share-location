@@ -86,16 +86,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
-                is HomeViewModel.FunctionState.Init -> Unit
-                is HomeViewModel.FunctionState.ErrorGetPopularPosts -> handleOnErrorFetchPosts()
-                is HomeViewModel.FunctionState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(
+                is HomeViewModel.ApiState.Init -> Unit
+                is HomeViewModel.ApiState.ErrorGetPopularPosts -> handleOnErrorFetchPosts()
+                is HomeViewModel.ApiState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(
                     it.posts
                 )
 
-                is HomeViewModel.FunctionState.SuccessLikePost -> Unit
-                is HomeViewModel.FunctionState.ErrorLikePost -> handleOnErrorLikePost(it.post)
-                is HomeViewModel.FunctionState.ErrorUnlikePost -> Unit
-                is HomeViewModel.FunctionState.SuccessUnlikePost -> Unit
+                is HomeViewModel.ApiState.SuccessLikePost -> Unit
+                is HomeViewModel.ApiState.ErrorLikePost -> handleOnErrorLikePost(it.post)
+                is HomeViewModel.ApiState.ErrorUnlikePost -> Unit
+                is HomeViewModel.ApiState.SuccessUnlikePost -> Unit
             }
         }.launchIn(lifecycleScope)
     }

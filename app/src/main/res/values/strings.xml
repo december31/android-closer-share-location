@@ -76,4 +76,5 @@
     <string name="friend_request_sent">Friend request sent</string>
     <string name="failed_sending_friend_request_please_try_again_later">Failed sending friend request, please try again later</string>
     <string name="accept">Accept</string>
+    <string name="deny">deny</string>
 </resources>

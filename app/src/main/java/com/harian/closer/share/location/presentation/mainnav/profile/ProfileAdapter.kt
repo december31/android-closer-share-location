@@ -4,6 +4,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileType
 import com.harian.closer.share.location.domain.user.entity.UserEntity
@@ -125,13 +126,13 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
 
     private fun bindFriends(holder: BaseViewHolder<ViewDataBinding, ProfileEntity<Any>>, item: ProfileEntity<Any>?) {
         (holder.binding as? ItemRecyclerFriendsBinding)?.apply {
-            (item?.data as? List<*>)?.let { friends ->
+            (item?.data as? FriendsEntity)?.let { friendsEntity ->
                 loading.gone()
                 loading.cancelAnimation()
                 rvFriends.visible()
-                tvFriendSize.text = friends.size.toString()
+                tvFriendCount.text = friendsEntity.count.toString()
                 rvFriends.adapter = friendAdapter
-                friendAdapter.updateData(friends.mapNotNull { friend -> friend as UserEntity })
+                friendAdapter.updateData(friendsEntity.friends)
             }
         }
     }
@@ -149,7 +150,7 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
         }
     }
 
-    fun updateFriends(friends: List<UserEntity>) {
+    fun updateFriends(friends: FriendsEntity) {
         items.indexOfFirst { item -> item.type == ProfileType.FRIENDS }.let { index ->
             items.getOrNull(index)?.data = friends
             notifyItemChanged(index)

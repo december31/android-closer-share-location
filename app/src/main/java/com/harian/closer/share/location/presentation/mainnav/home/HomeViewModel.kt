@@ -9,7 +9,6 @@ import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.GetPopularPostsUseCase
 import com.harian.closer.share.location.domain.post.usecase.LikePostUseCase
 import com.harian.closer.share.location.domain.post.usecase.UnlikePostUseCase
-import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,8 +23,8 @@ class HomeViewModel @Inject constructor(
     private val likePostUseCase: LikePostUseCase,
     private val unlikePostUseCase: UnlikePostUseCase,
 ) : ViewModel() {
-    private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
-    val state: StateFlow<FunctionState> = _state
+    private val _state = MutableStateFlow<ApiState>(ApiState.Init)
+    val state: StateFlow<ApiState> = _state
 
     fun fetchPopularPosts() {
         viewModelScope.launch {
@@ -37,12 +36,12 @@ class HomeViewModel @Inject constructor(
                     it.printStackTrace()
                 }
                 .collect { baseResult ->
-                    _state.value = FunctionState.Init
+                    _state.value = ApiState.Init
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessGetPopularPosts(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorGetPopularPosts(baseResult.rawResponse)
+                        is BaseResult.Success -> _state.value = ApiState.SuccessGetPopularPosts(baseResult.data)
+                        is BaseResult.Error -> _state.value = ApiState.ErrorGetPopularPosts(baseResult.rawResponse)
                     }
-                    _state.value = FunctionState.Init
+                    _state.value = ApiState.Init
                 }
         }
     }
@@ -51,12 +50,12 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             likePostUseCase.execute(post)
                 .catch {
-                    _state.value = FunctionState.ErrorLikePost(post)
+                    _state.value = ApiState.ErrorLikePost(post)
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessLikePost(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorLikePost(post)
+                        is BaseResult.Success -> _state.value = ApiState.SuccessLikePost(baseResult.data)
+                        is BaseResult.Error -> _state.value = ApiState.ErrorLikePost(post)
                     }
                 }
         }
@@ -66,24 +65,24 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             unlikePostUseCase.execute(post)
                 .catch {
-                    _state.value = FunctionState.ErrorLikePost(post)
+                    _state.value = ApiState.ErrorLikePost(post)
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = FunctionState.SuccessUnlikePost(baseResult.data)
-                        is BaseResult.Error -> _state.value = FunctionState.ErrorUnlikePost(post)
+                        is BaseResult.Success -> _state.value = ApiState.SuccessUnlikePost(baseResult.data)
+                        is BaseResult.Error -> _state.value = ApiState.ErrorUnlikePost(post)
                     }
                 }
         }
     }
 
-    sealed class FunctionState {
-        data object Init : FunctionState()
-        data class SuccessGetPopularPosts(val posts: List<PostEntity>) : FunctionState()
-        data class ErrorGetPopularPosts(val rawResponse: WrappedListResponse<PostDTO>?) : FunctionState()
-        data class SuccessLikePost(val post: PostEntity) : FunctionState()
-        data class ErrorLikePost(val post: PostEntity) : FunctionState()
-        data class SuccessUnlikePost(val post: PostEntity) : FunctionState()
-        data class ErrorUnlikePost(val post: PostEntity) : FunctionState()
+    sealed class ApiState {
+        data object Init : ApiState()
+        data class SuccessGetPopularPosts(val posts: List<PostEntity>) : ApiState()
+        data class ErrorGetPopularPosts(val rawResponse: WrappedListResponse<PostDTO>?) : ApiState()
+        data class SuccessLikePost(val post: PostEntity) : ApiState()
+        data class ErrorLikePost(val post: PostEntity) : ApiState()
+        data class SuccessUnlikePost(val post: PostEntity) : ApiState()
+        data class ErrorUnlikePost(val post: PostEntity) : ApiState()
     }
 }

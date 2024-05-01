@@ -10,8 +10,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.software.closer.share.location.R
@@ -97,7 +99,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         adapter.updatePosts(posts)
     }
 
-    private fun handleSuccessGetFriend(friends: List<UserEntity>) {
+    private fun handleSuccessGetFriend(friends: FriendsEntity) {
         adapter.updateFriends(friends)
     }
 

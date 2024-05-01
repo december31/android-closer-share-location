@@ -6,11 +6,13 @@ import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.country.remote.dto.CountryResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostDTO
+import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.country.usecase.GetCountryUseCase
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileType
 import com.harian.closer.share.location.domain.user.entity.UserEntity
@@ -137,8 +139,8 @@ class ProfileViewModel @Inject constructor(
         data class Init(val defaultData: List<ProfileEntity<Any>>) : ProfileState()
         data class SuccessGetUserInformation(val user: UserEntity) : ProfileState()
         data class ErrorGetUserInformation(val rawResponse: WrappedResponse<UserDTO>) : ProfileState()
-        data class SuccessGetFriends(val friends: List<UserEntity>) : ProfileState()
-        data class ErrorGetFriends(val rawResponse: WrappedListResponse<UserDTO>) : ProfileState()
+        data class SuccessGetFriends(val friends: FriendsEntity) : ProfileState()
+        data class ErrorGetFriends(val rawResponse: WrappedResponse<FriendsResponse>) : ProfileState()
         data class SuccessGetPosts(val posts: List<PostEntity>) : ProfileState()
         data class ErrorGetPosts(val rawResponse: WrappedListResponse<PostDTO>) : ProfileState()
         data class SuccessGetCountry(val country: CountryEntity) : ProfileState()
