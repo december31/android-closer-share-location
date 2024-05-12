@@ -17,6 +17,7 @@ class FriendAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<F
             val item = items.getOrNull(position) ?: return
             avatar.glideLoadImage(item.information.getAuthorizedAvatarUrl(bearerToken))
             tvName.text = item.information.name
+            tvName.isSelected = true
         }
     }
 }

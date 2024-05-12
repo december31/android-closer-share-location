@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splash_fragment_to_login_fragment"
-            app:popUpTo="@id/splash_fragment"
-            app:destination="@id/login_fragment" />
+            app:destination="@id/login_fragment"
+            app:popUpTo="@id/splash_fragment" />
         <action
             android:id="@+id/action_splash_fragment_to_main_nav_fragment"
             app:destination="@id/main_nav_fragment" />
@@ -40,8 +40,8 @@
         tools:layout="@layout/fragment_login">
         <argument
             android:name="needResetPassword"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
             android:id="@+id/action_login_fragment_to_main_nav_fragment"
             app:destination="@id/main_nav_fragment" />
@@ -83,9 +83,20 @@
 
         <argument
             android:name="user"
+            android:defaultValue="@null"
             app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_profile_fragment_to_message_detail_fragment"
+            app:destination="@id/message_detail_fragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/message_detail_fragment"
+        android:name="com.harian.closer.share.location.presentation.message.MessageDetailFragment"
+        tools:layout="@layout/fragment_message_detail">
+        <argument
+            android:name="user"
+            app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity" />
+    </fragment>
 </navigation>

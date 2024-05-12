@@ -20,7 +20,7 @@ abstract class BaseRecyclerViewAdapter<T, VB : ViewBinding> :
      * @param items is List<T>
      */
     fun updateData(items: List<T>) {
-        val taskDiffCallBack = BaseDiffCallBack<T>(this.items, items)
+        val taskDiffCallBack = BaseDiffCallBack(this.items, items)
         val diffResult = DiffUtil.calculateDiff(taskDiffCallBack)
         diffResult.dispatchUpdatesTo(this)
         this.items.clear()
@@ -29,13 +29,13 @@ abstract class BaseRecyclerViewAdapter<T, VB : ViewBinding> :
 
     override fun getItemCount() = items.size
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseViewHolder<VB,T>(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = BaseViewHolder<VB, T>(
         DataBindingUtil.inflate(
             LayoutInflater.from(parent.context), getLayoutId(viewType), parent, false
         )
     )
 
-    open class BaseViewHolder<VB : ViewBinding,T>(open val binding: VB) :
+    open class BaseViewHolder<VB : ViewBinding, T>(open val binding: VB) :
         RecyclerView.ViewHolder(binding.root) {
         open fun onBind(item: T, position: Int) {}
     }

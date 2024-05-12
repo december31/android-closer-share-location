@@ -7,7 +7,7 @@ import javax.inject.Singleton
 
 @Singleton
 class MarkerManager @Inject constructor() {
-    private val markerMap = HashMap<Int, Marker?>()
+    private val markerMap = HashMap<Long, Marker?>()
 
     /**
      * remove marker from map and save a new one to the markerMap
@@ -16,5 +16,12 @@ class MarkerManager @Inject constructor() {
         user.id ?: return
         markerMap[user.id]?.remove()
         markerMap[user.id] = marker
+    }
+
+    /**
+     * get marker from map
+     */
+    fun getMarker(user: UserEntity): Marker? {
+        return markerMap[user.id]
     }
 }

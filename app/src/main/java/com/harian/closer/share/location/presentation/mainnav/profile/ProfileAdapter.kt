@@ -171,6 +171,10 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
         }
     }
 
+    fun getData(): ArrayList<ProfileEntity<Any>> {
+        return items
+    }
+
     enum class SendFriendRequestStatus {
         SENDING_FRIEND_REQUEST,
         FRIEND_REQUEST_SENT,

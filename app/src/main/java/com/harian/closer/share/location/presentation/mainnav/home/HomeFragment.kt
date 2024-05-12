@@ -88,10 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             when (it) {
                 is HomeViewModel.ApiState.Init -> Unit
                 is HomeViewModel.ApiState.ErrorGetPopularPosts -> handleOnErrorFetchPosts()
-                is HomeViewModel.ApiState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(
-                    it.posts
-                )
-
+                is HomeViewModel.ApiState.SuccessGetPopularPosts -> handleOnSuccessFetchPosts(it.posts)
                 is HomeViewModel.ApiState.SuccessLikePost -> Unit
                 is HomeViewModel.ApiState.ErrorLikePost -> handleOnErrorLikePost(it.post)
                 is HomeViewModel.ApiState.ErrorUnlikePost -> Unit

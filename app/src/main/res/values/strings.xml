@@ -77,4 +77,6 @@
     <string name="failed_sending_friend_request_please_try_again_later">Failed sending friend request, please try again later</string>
     <string name="accept">Accept</string>
     <string name="deny">deny</string>
+    <string name="type_a_message">Type a message...</string>
+    <string name="message_is_empty">Message is empty</string>
 </resources>

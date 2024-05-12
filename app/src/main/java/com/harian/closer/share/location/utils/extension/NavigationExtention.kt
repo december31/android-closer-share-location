@@ -34,8 +34,8 @@ sealed class Animation {
             return navOptions {
                 anim {
                     enter = R.anim.zoom_fade_in
-                    popExit = R.anim.zoom_fade_out
                     exit = R.anim.zoom_fade_out
+                    popExit = R.anim.zoom_fade_out
                     popEnter = R.anim.pop_zoom_fade_in
                 }
             }
@@ -47,9 +47,9 @@ sealed class Animation {
             return navOptions {
                 anim {
                     enter = R.anim.slide_up
-                    popExit = R.anim.slide_down
                     exit = R.anim.zoom_fade_out
                     popEnter = R.anim.pop_slide_down
+                    popExit = R.anim.slide_down
                 }
             }
         }
@@ -60,13 +60,38 @@ sealed class Animation {
             return navOptions {
                 anim {
                     enter = R.anim.fade_in
-                    popExit = R.anim.fade_out
                     exit = R.anim.fade_out
                     popEnter = R.anim.pop_slide_down
+                    popExit = R.anim.fade_out
                 }
             }
         }
+    }
 
+    data object SlideLeft : Animation() {
+        override fun getNavOptions(): NavOptions {
+            return navOptions {
+                anim {
+                    enter = R.anim.slide_left_enter
+                    exit = R.anim.slide_left_exit
+                    popEnter = R.anim.slide_right_enter
+                    popExit = R.anim.slide_right_exit
+                }
+            }
+        }
+    }
+
+    data object SlideRight : Animation() {
+        override fun getNavOptions(): NavOptions {
+            return navOptions {
+                anim {
+                    enter = R.anim.slide_right_enter
+                    exit = R.anim.slide_left_enter
+                    popEnter = R.anim.slide_left_enter
+                    popExit = R.anim.slide_left_enter
+                }
+            }
+        }
     }
 }
 

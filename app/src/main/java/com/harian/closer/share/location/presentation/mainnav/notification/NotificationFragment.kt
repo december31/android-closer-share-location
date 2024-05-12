@@ -1,6 +1,7 @@
 package com.harian.closer.share.location.presentation.mainnav.notification
 
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.harian.closer.share.location.domain.user.entity.FriendRequestEntity
@@ -57,7 +58,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
     }
 
     private fun handleStateChanges() {
-        viewModel.state.flowWithLifecycle(lifecycle).onEach {
+        viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is FriendRequestViewModel.ApiState.Init -> Unit
                 is FriendRequestViewModel.ApiState.ErrorGetFriendRequest -> handleErrorGetFriendRequest()
@@ -69,7 +70,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
             }
         }.launchIn(lifecycleScope)
 
-        viewModel.loadingState.flowWithLifecycle(lifecycle).onEach {
+        viewModel.loadingState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is FriendRequestViewModel.LoadingState.Init -> Unit
                 is FriendRequestViewModel.LoadingState.CancelLoading -> friendRequestAdapter.cancelLoading(it.user)

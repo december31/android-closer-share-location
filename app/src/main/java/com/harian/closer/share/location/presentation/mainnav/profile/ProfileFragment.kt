@@ -10,12 +10,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.utils.extension.Animation
+import com.harian.closer.share.location.utils.extension.findMainNavController
+import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentProfileBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,8 +60,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
 
         adapter.setOnClickMessageListener {
-
+            findMainNavController()?.navigateWithAnimation(
+                ProfileFragmentDirections.actionProfileFragmentToMessageDetailFragment(it),
+                Animation.SlideLeft
+            )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.saveState(adapter.getData())
     }
 
     private fun setupRecyclerView() {

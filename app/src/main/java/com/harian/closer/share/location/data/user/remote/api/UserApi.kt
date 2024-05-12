@@ -18,19 +18,19 @@ interface UserApi {
     suspend fun getUserInformation(): Response<WrappedResponse<UserDTO>>
 
     @GET("api/v1/user/{id}")
-    suspend fun getUserInformation(@Path("id") userId: Int): Response<WrappedResponse<UserDTO>>
+    suspend fun getUserInformation(@Path("id") userId: Long): Response<WrappedResponse<UserDTO>>
 
     @GET("api/v1/user/friends")
     suspend fun getFriends(): Response<WrappedResponse<FriendsResponse>>
 
     @GET("api/v1/user/{id}/friends")
-    suspend fun getFriends(@Path("id") userId: Int): Response<WrappedResponse<FriendsResponse>>
+    suspend fun getFriends(@Path("id") userId: Long): Response<WrappedResponse<FriendsResponse>>
 
     @GET("api/v1/user/posts")
     suspend fun getPosts(): Response<WrappedListResponse<PostDTO>>
 
     @GET("api/v1/user/{id}/posts")
-    suspend fun getPosts(@Path("id") userId: Int): Response<WrappedListResponse<PostDTO>>
+    suspend fun getPosts(@Path("id") userId: Long): Response<WrappedListResponse<PostDTO>>
 
     @POST("api/v1/user/friend/request")
     suspend fun sendFriendRequest(@Body user: UserDTO): Response<WrappedResponse<UserDTO>>

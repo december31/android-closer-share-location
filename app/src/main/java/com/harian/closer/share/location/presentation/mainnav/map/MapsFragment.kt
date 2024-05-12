@@ -1,11 +1,14 @@
 package com.harian.closer.share.location.presentation.mainnav.map
 
 import android.Manifest
+import android.animation.TypeEvaluator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Looper
 import android.util.Log
+import android.view.animation.LinearInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -61,7 +64,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private var locationInterval = 3000L
-    private var marker: Marker? = null
+    private var currentUserMarker: Marker? = null
     private var lastTimeMoveCamera = 0L
     private val cameraMovingInterval = 15000
     private var firstTimeGetLocation = true
@@ -136,19 +139,46 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
             friend.latitude ?: return@withContext
             friend.longitude ?: return@withContext
 
-            val bmOptions = BitmapFactory.Options()
-            var bitmap = BitmapFactory.decodeFile(avatar.absolutePath, bmOptions)
-            bitmap = Bitmap.createScaledBitmap(bitmap, 40.dp, 40.dp, true)
-
-            val marker = MarkerOptions()
-                .position(LatLng(friend.latitude!!, friend.longitude!!))
-                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+            val marker = markerManager.getMarker(friend)
+            if (marker == null) {
+                val bmOptions = BitmapFactory.Options()
+                var bitmap = BitmapFactory.decodeFile(avatar.absolutePath, bmOptions)
+                bitmap = Bitmap.createScaledBitmap(bitmap, 40.dp, 40.dp, true)
+                withContext(Dispatchers.Main) {
+                    markerManager.saveMarker(
+                        friend, googleMap?.addMarker(
+                            MarkerOptions()
+                                .position(LatLng(friend.latitude!!, friend.longitude!!))
+                                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                        )
+                    )
+                }
+            } else {
+                moveMarker(marker, LatLng(friend.latitude!!, friend.longitude!!))
+            }
 
             Log.d(this@MapsFragment.javaClass.simpleName, "updateFriendMarker: ${friend.name}(${friend.latitude}, ${friend.longitude})")
-            withContext(Dispatchers.Main) {
-                markerManager.saveMarker(friend, googleMap?.addMarker(marker))
-            }
         }
+    }
+
+    private fun moveMarker(marker: Marker, toLatLng: LatLng) {
+        val typeEvaluator = TypeEvaluator<LatLng> { fraction, startValue, endValue ->
+            startValue?.let { startLatLng ->
+                endValue?.let { endLatLng ->
+                    LatLng(
+                        startLatLng.latitude + (endLatLng.latitude - startLatLng.latitude) * fraction,
+                        startLatLng.longitude + (endLatLng.longitude - startLatLng.longitude) * fraction
+                    )
+                }
+            } ?: LatLng(0.0, 0.0)
+        }
+        val animator = ValueAnimator.ofObject(typeEvaluator, marker.position, toLatLng)
+        animator?.interpolator = LinearInterpolator()
+        animator?.addUpdateListener {
+            val latLng = it.animatedValue as LatLng
+            marker.position = latLng
+        }
+        animator?.start()
     }
 
     private fun initGoogleMap() {
@@ -171,8 +201,11 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
                 super.onLocationResult(locationResult)
                 locationResult.lastLocation?.let { location ->
                     val currentLocation = LatLng(location.latitude, location.longitude)
-                    marker?.remove()
-                    marker = googleMap.addMarker(MarkerOptions().position(currentLocation))
+                    if (currentUserMarker == null) {
+                        currentUserMarker = googleMap.addMarker(MarkerOptions().position(currentLocation))
+                    } else {
+                        moveMarker(currentUserMarker!!, currentLocation)
+                    }
                     if (System.currentTimeMillis() - lastTimeMoveCamera > cameraMovingInterval) {
                         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
                             currentLocation,

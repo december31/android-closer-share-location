@@ -50,6 +50,10 @@ class ProfileViewModel @Inject constructor(
     )
     val state: StateFlow<ProfileState> = _state
 
+    fun saveState(data: List<ProfileEntity<Any>>) {
+        _state.value = ProfileState.Init(data)
+    }
+
     /**
      * fetch user information
      * @param user: the user from which app will request information to server. if user == null app will request information for current logged in user

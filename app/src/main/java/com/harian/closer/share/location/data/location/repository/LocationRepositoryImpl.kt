@@ -57,6 +57,7 @@ class LocationRepositoryImpl(private val stompClient: StompClient, private val s
     }
 
     private fun initSessionIfNeed() {
+        if (stompClient.isConnected) return
         disposables.add(stompClient.lifecycle()
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())

@@ -23,4 +23,5 @@
     <color name="black_80">#CC000000</color>
     <color name="black_purple">#8F90A7</color>
     <color name="gray_background">#F6F7F9</color>
+    <color name="gray_1">#F0F0F0</color>
 </resources>
