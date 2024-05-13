@@ -79,4 +79,5 @@
     <string name="deny">deny</string>
     <string name="type_a_message">Type a message...</string>
     <string name="message_is_empty">Message is empty</string>
+    <string name="unknown">Unknown</string>
 </resources>

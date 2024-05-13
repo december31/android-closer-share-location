@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.mainnav.home
+package com.harian.closer.share.location.presentation.homenav.home
 
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding

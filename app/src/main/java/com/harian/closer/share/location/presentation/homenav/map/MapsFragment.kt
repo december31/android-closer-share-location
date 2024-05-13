@@ -1,15 +1,20 @@
-package com.harian.closer.share.location.presentation.mainnav.map
+package com.harian.closer.share.location.presentation.homenav.map
 
 import android.Manifest
+import android.animation.LayoutTransition
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
+import android.os.Build
 import android.os.Looper
 import android.util.Log
 import android.view.animation.LinearInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -36,17 +41,23 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.common.MarkerManager
+import com.harian.closer.share.location.presentation.homenav.MainNavSharedViewModel
 import com.harian.closer.share.location.utils.Constants
 import com.harian.closer.share.location.utils.extension.dp
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentMapsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -60,6 +71,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
     lateinit var markerManager: MarkerManager
 
     private val viewModel by viewModels<MapsViewModel>()
+    private val sharedViewModel by activityViewModels<MainNavSharedViewModel>()
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -69,6 +81,9 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
     private val cameraMovingInterval = 15000
     private var firstTimeGetLocation = true
     private var googleMap: GoogleMap? = null
+    private val geocoder: Geocoder? by lazy {
+        context?.let { Geocoder(it, Locale.US) }
+    }
 
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -90,6 +105,8 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
 
     override fun setupUI() {
         super.setupUI()
+        binding.frRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        binding.tvLocation.isSelected = true
         locationPermissionLauncher.launch(
             arrayOf(
                 Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -99,6 +116,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
         handleObserver()
     }
 
+    @SuppressLint("MissingPermission")
     private fun handleObserver() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
@@ -106,6 +124,21 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
                 is MapsViewModel.NetworkState.GotLocationUpdate -> updateFriendsLocation(it.user)
             }
         }.launchIn(lifecycleScope)
+
+        sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
+            if (this::fusedLocationProviderClient.isInitialized) {
+                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                        currentUserMarker?.position ?: LatLng(
+                            location.latitude,
+                            location.longitude
+                        ),
+                        googleMap?.cameraPosition?.zoom ?: Constants.DEFAULT_MAP_ZOOM_LEVEL
+                    )
+                    googleMap?.animateCamera(cameraUpdate, 2000, null)
+                }
+            }
+        }
     }
 
     private fun updateFriendsLocation(user: UserEntity) {
@@ -186,6 +219,23 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
         mapFragment?.getMapAsync { googleMap ->
             this.googleMap = googleMap
             requestLocationUpdates(googleMap)
+            listenCameraIdle()
+        }
+    }
+
+    private fun listenCameraIdle() {
+        googleMap?.setOnCameraIdleListener {
+            lifecycleScope.launch {
+                googleMap?.cameraPosition?.target?.let { latLng ->
+                    getLocationAddress(latLng)
+                        .catch {
+                            Log.e(this.javaClass.simpleName, it.message.toString())
+                        }
+                        .collect {
+                            binding.tvLocation.text = it
+                        }
+                }
+            }
         }
     }
 
@@ -220,6 +270,44 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
             }
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+    }
+
+    private suspend fun getLocationAddress(latLng: LatLng): Flow<String> {
+        val locationDeferred = CompletableDeferred<String>()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            geocoder?.getFromLocation(latLng.latitude, latLng.longitude, 1) { addresses ->
+                locationDeferred.complete(
+                    addresses.firstOrNull()?.let {
+                        return@let buildAddressLine(it)
+                    } ?: getString(R.string.unknown)
+                )
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            val addresses = geocoder?.getFromLocation(latLng.latitude, latLng.longitude, 1)
+            locationDeferred.complete(
+                addresses?.firstOrNull()?.let {
+                    return@let buildAddressLine(it)
+                } ?: getString(R.string.unknown)
+            )
+        }
+        return flow {
+            emit(locationDeferred.await())
+        }
+    }
+
+    private fun buildAddressLine(address: Address): String {
+        val sb = StringBuilder()
+        if (address.subAdminArea != null) {
+            sb.append(address.subAdminArea + ", ")
+        }
+        if (address.adminArea != null) {
+            sb.append(address.adminArea + ", ")
+        }
+        if (address.countryName != null) {
+            sb.append(address.countryName)
+        }
+        return sb.toString()
     }
 
     override fun setupListener() {

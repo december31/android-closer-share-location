@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.mainnav.notification.adapter
+package com.harian.closer.share.location.presentation.homenav.notification.adapter
 
 import com.harian.closer.share.location.domain.user.entity.FriendRequestEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity

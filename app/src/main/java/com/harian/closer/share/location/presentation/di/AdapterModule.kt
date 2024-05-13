@@ -1,8 +1,8 @@
 package com.harian.closer.share.location.presentation.di
 
 import com.harian.closer.share.location.platform.SharedPrefs
-import com.harian.closer.share.location.presentation.mainnav.home.PostAdapter
-import com.harian.closer.share.location.presentation.mainnav.notification.adapter.FriendRequestAdapter
+import com.harian.closer.share.location.presentation.homenav.home.PostAdapter
+import com.harian.closer.share.location.presentation.homenav.notification.adapter.FriendRequestAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

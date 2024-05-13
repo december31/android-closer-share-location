@@ -1,16 +1,38 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
+        android:id="@+id/frRoot"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <fragment
             android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.harian.closer.share.location.presentation.mainnav.map.MapsFragment"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
+            tools:context="com.harian.closer.share.location.presentation.homenav.map.MapsFragment" />
+
+        <View
+            android:layout_gravity="top"
+            android:background="@drawable/bg_gradiant_primary_to_0_alpha"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            style="@style/Title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="40dp"
+            android:singleLine="true"
+            android:textSize="28sp"
+            android:textColor="@color/white"
+            tools:text="@tools:sample/lorem/random" />
+
     </FrameLayout>
 </layout>

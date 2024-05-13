@@ -45,7 +45,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                     }
 
                     SplashViewModel.FunctionState.SuccessVerifyToken -> {
-                        findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToMainNavFragment())
+                        findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToHomeNavFragment())
                     }
 
                     SplashViewModel.FunctionState.NeedResetPassword -> {

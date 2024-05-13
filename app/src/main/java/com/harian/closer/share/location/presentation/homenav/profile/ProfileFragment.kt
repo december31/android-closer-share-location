@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.mainnav.profile
+package com.harian.closer.share.location.presentation.homenav.profile
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -15,8 +15,9 @@ import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
 import com.harian.closer.share.location.utils.extension.Animation
-import com.harian.closer.share.location.utils.extension.findMainNavController
+import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentProfileBinding
@@ -60,10 +61,24 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         }
 
         adapter.setOnClickMessageListener {
-            findMainNavController()?.navigateWithAnimation(
+            findGlobalNavController()?.navigateWithAnimation(
                 ProfileFragmentDirections.actionProfileFragmentToMessageDetailFragment(it),
                 Animation.SlideLeft
             )
+        }
+
+        adapter.setOnClickUserAvatarListener {
+            if (args.user == null) {
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToProfileFragment(it),
+                    Animation.SlideLeft
+                )
+            } else {
+                findGlobalNavController()?.navigateWithAnimation(
+                    ProfileFragmentDirections.actionProfileFragmentSelf(it),
+                    Animation.SlideLeft
+                )
+            }
         }
     }
 

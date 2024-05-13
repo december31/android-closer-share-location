@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.mainnav.notification
+package com.harian.closer.share.location.presentation.homenav.notification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

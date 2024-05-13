@@ -15,22 +15,22 @@
             app:destination="@id/login_fragment"
             app:popUpTo="@id/splash_fragment" />
         <action
-            android:id="@+id/action_splash_fragment_to_main_nav_fragment"
-            app:destination="@id/main_nav_fragment" />
+            android:id="@+id/action_splash_fragment_to_home_nav_fragment"
+            app:destination="@id/home_nav_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/main_nav_fragment"
-        android:name="com.harian.closer.share.location.presentation.mainnav.MainNavFragment"
-        tools:layout="@layout/fragment_main_nav">
+        android:id="@+id/home_nav_fragment"
+        android:name="com.harian.closer.share.location.presentation.homenav.HomeNavFragment"
+        tools:layout="@layout/fragment_home_nav">
         <action
-            android:id="@+id/action_main_nav_fragment_to_create_post_fragment"
+            android:id="@+id/action_home_nav_fragment_to_create_post_fragment"
             app:destination="@id/create_post_fragment" />
         <action
-            android:id="@+id/action_main_nav_fragment_to_post_details_fragment"
+            android:id="@+id/action_home_nav_fragment_to_post_details_fragment"
             app:destination="@id/post_details_fragment" />
         <action
-            android:id="@+id/action_main_nav_fragment_to_profile_fragment"
+            android:id="@+id/action_home_nav_fragment_to_profile_fragment"
             app:destination="@id/profile_fragment" />
     </fragment>
 
@@ -43,8 +43,8 @@
             android:defaultValue="false"
             app:argType="boolean" />
         <action
-            android:id="@+id/action_login_fragment_to_main_nav_fragment"
-            app:destination="@id/main_nav_fragment" />
+            android:id="@+id/action_login_fragment_to_home_nav_fragment"
+            app:destination="@id/home_nav_fragment" />
     </fragment>
 
     <fragment
@@ -78,7 +78,7 @@
 
     <fragment
         android:id="@+id/profile_fragment"
-        android:name="com.harian.closer.share.location.presentation.mainnav.profile.ProfileFragment"
+        android:name="com.harian.closer.share.location.presentation.homenav.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile">
 
         <argument
@@ -89,6 +89,9 @@
         <action
             android:id="@+id/action_profile_fragment_to_message_detail_fragment"
             app:destination="@id/message_detail_fragment" />
+        <action
+            android:id="@+id/action_profile_fragment_self"
+            app:destination="@id/profile_fragment" />
     </fragment>
 
     <fragment

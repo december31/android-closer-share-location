@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.mainnav.notification
+package com.harian.closer.share.location.presentation.homenav.notification
 
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -7,9 +7,9 @@ import androidx.lifecycle.lifecycleScope
 import com.harian.closer.share.location.domain.user.entity.FriendRequestEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.presentation.mainnav.MainNavFragmentDirections
-import com.harian.closer.share.location.presentation.mainnav.notification.adapter.FriendRequestAdapter
-import com.harian.closer.share.location.utils.extension.findMainNavController
+import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
+import com.harian.closer.share.location.presentation.homenav.notification.adapter.FriendRequestAdapter
+import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentNotificationBinding
@@ -38,8 +38,8 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
     private fun setupRecyclerView() {
         friendRequestAdapter.setOnItemClickListener(object : FriendRequestAdapter.OnItemClickListener {
             override fun onClickItem(userEntity: UserEntity) {
-                findMainNavController()?.navigateWithAnimation(
-                    MainNavFragmentDirections.actionMainNavFragmentToProfileFragment(userEntity)
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToProfileFragment(userEntity)
                 )
             }
 

@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.mainnav.profile
+package com.harian.closer.share.location.presentation.homenav.profile
 
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -9,8 +9,8 @@ import com.harian.closer.share.location.domain.user.entity.ProfileEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileType
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseRecyclerViewAdapter
-import com.harian.closer.share.location.presentation.mainnav.friend.FriendAdapter
-import com.harian.closer.share.location.presentation.mainnav.home.PostAdapter
+import com.harian.closer.share.location.presentation.homenav.friend.FriendAdapter
+import com.harian.closer.share.location.presentation.homenav.home.PostAdapter
 import com.harian.closer.share.location.utils.extension.glideLoadImage
 import com.harian.closer.share.location.utils.extension.gone
 import com.harian.closer.share.location.utils.extension.visible
@@ -21,11 +21,19 @@ import com.harian.software.closer.share.location.databinding.ItemRecyclerProfile
 
 class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<ProfileEntity<Any>, ViewDataBinding>() {
 
-    private val friendAdapter: FriendAdapter = FriendAdapter(bearerToken)
+    private val friendAdapter: FriendAdapter = FriendAdapter(bearerToken).apply {
+        setOnItemClick {
+            setOnItemClick {
+                onClickUserAvatar.invoke(it)
+            }
+        }
+    }
+
     private val postAdapter: PostAdapter = PostAdapter(bearerToken)
 
     private var onclickAddFriend: (UserEntity) -> Unit = {}
     private var onclickMessage: (UserEntity) -> Unit = {}
+    private var onClickUserAvatar: (UserEntity) -> Unit = {}
 
     fun setOnClickAddFriendListener(onclickAddFriend: (UserEntity) -> Unit) {
         this.onclickAddFriend = onclickAddFriend
@@ -33,6 +41,10 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
 
     fun setOnClickMessageListener(onclickMessage: (UserEntity) -> Unit) {
         this.onclickMessage = onclickMessage
+    }
+
+    fun setOnClickUserAvatarListener(onClickUserAvatar: (UserEntity) -> Unit) {
+        this.onClickUserAvatar = onClickUserAvatar
     }
 
     override fun getLayoutId(viewType: Int): Int {

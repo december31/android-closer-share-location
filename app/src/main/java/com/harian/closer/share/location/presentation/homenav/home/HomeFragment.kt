@@ -1,8 +1,9 @@
-package com.harian.closer.share.location.presentation.mainnav.home
+package com.harian.closer.share.location.presentation.homenav.home
 
 import android.Manifest
 import android.os.Build
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -11,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
-import com.harian.closer.share.location.presentation.mainnav.MainNavFragmentDirections
-import com.harian.closer.share.location.utils.extension.findMainNavController
+import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
+import com.harian.closer.share.location.presentation.homenav.MainNavSharedViewModel
+import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentHomeBinding
@@ -36,6 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     lateinit var adapter: PostAdapter
 
     private val viewModel by viewModels<HomeViewModel>()
+    private val sharedViewModel by activityViewModels<MainNavSharedViewModel>()
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -63,8 +66,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setupRecyclerView() {
         adapter.apply {
             setOnItemClickListener { postId ->
-                findMainNavController()?.navigateWithAnimation(
-                    MainNavFragmentDirections.actionMainNavFragmentToPostDetailsFragment(postId)
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToPostDetailsFragment(postId)
                 )
             }
             setOnLikePostListener { post ->
@@ -75,8 +78,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 }
             }
             setOnAvatarClickListener {
-                findMainNavController()?.navigateWithAnimation(
-                    MainNavFragmentDirections.actionMainNavFragmentToProfileFragment(it)
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToProfileFragment(it)
                 )
             }
         }
@@ -95,6 +98,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is HomeViewModel.ApiState.SuccessUnlikePost -> Unit
             }
         }.launchIn(lifecycleScope)
+
+        sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
+            findGlobalNavController()?.navigateWithAnimation(HomeNavFragmentDirections.actionHomeNavFragmentToCreatePostFragment())
+        }
     }
 
     private fun handleOnErrorLikePost(post: PostEntity) {

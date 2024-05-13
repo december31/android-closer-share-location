@@ -30,8 +30,8 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         if (message.notification != null) {
             val notificationBuilder: NotificationCompat.Builder =
                 NotificationCompat.Builder(this, Constants.NOTIFICATION_CHANEL_ID)
-                    .setContentTitle(message.notification!!.title)
-                    .setContentText(message.notification!!.body)
+                    .setContentTitle(message.notification?.title ?: "")
+                    .setContentText(message.notification?.body?.replace("\"", "") ?: "")
                     .setPriority(
                         message.notification?.notificationPriority
                             ?: NotificationCompat.PRIORITY_DEFAULT
@@ -44,7 +44,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
             val channel = NotificationChannel(
                 Constants.NOTIFICATION_CHANEL_ID,
                 Constants.NOTIFICATION_CHANEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(channel)
             notificationManager.notify(0, notificationBuilder.build())

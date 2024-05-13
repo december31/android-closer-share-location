@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.presentation.mainnav.profile
+package com.harian.closer.share.location.presentation.homenav.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -95,7 +95,7 @@ sealed class Animation {
     }
 }
 
-fun Fragment.findMainNavController(): NavController? {
+fun Fragment.findGlobalNavController(): NavController? {
     if (activity == null) return null
     return Navigation.findNavController(activity!!, R.id.nav_host_fragment_content_main)
 }
