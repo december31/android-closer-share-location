@@ -5,6 +5,7 @@ import android.os.Build
 import android.view.WindowInsets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -16,6 +17,7 @@ import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
+import com.harian.closer.share.location.presentation.homenav.HomeNavSharedViewModel
 import com.harian.closer.share.location.utils.extension.Animation
 import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
@@ -32,6 +34,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         get() = R.layout.fragment_profile
 
     private val viewModel: ProfileViewModel by viewModels()
+    private val sharedViewModel by activityViewModels<HomeNavSharedViewModel>()
     private val args: ProfileFragmentArgs by navArgs()
     private lateinit var adapter: ProfileAdapter
 
@@ -78,6 +81,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                     ProfileFragmentDirections.actionProfileFragmentSelf(it),
                     Animation.SlideLeft
                 )
+            }
+        }
+
+        sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToScanQrCodeFragment(),
+                    Animation.SlideUp
+                )
+                sharedViewModel.resetCenterActionButtonClick()
             }
         }
     }

@@ -12,4 +12,21 @@ class GetUserInformationUseCase @Inject constructor(private val userRepository: 
     suspend fun execute(user: UserEntity? = null): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
         return if (user != null) userRepository.getUserInformation(user) else userRepository.getUserInformation()
     }
+
+    suspend fun execute(userId: Long): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
+        return userRepository.getUserInformation(
+            UserEntity(
+                id = userId,
+                name = null,
+                email = null,
+                avatar = null,
+                gender = null,
+                description = null,
+                status = null,
+                isFriend = null,
+                latitude = null,
+                longitude = null
+            )
+        )
+    }
 }

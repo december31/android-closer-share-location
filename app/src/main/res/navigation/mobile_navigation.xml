@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_home_nav_fragment_to_profile_fragment"
             app:destination="@id/profile_fragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_scanQrCodeFragment"
+            app:destination="@id/scanQrCodeFragment" />
     </fragment>
 
     <fragment
@@ -102,4 +105,22 @@
             android:name="user"
             app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity" />
     </fragment>
+
+    <fragment
+        android:id="@+id/scanQrCodeFragment"
+        android:name="com.harian.closer.share.location.presentation.addfriend.ScanQrCodeFragment"
+        tools:layout="@layout/fragment_scan_qr_code">
+
+        <action
+            android:id="@+id/action_scanQrCodeFragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
+        <action
+            android:id="@+id/action_scanQrCodeFragment_to_my_qr_code_fragment"
+            app:destination="@id/my_qr_code_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/my_qr_code_fragment"
+        android:name="com.harian.closer.share.location.presentation.addfriend.myqrcode.MyQrCodeFragment"
+        tools:layout="@layout/fragment_my_qr_code" />
 </navigation>

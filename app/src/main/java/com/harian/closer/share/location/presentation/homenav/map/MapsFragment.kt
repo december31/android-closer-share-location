@@ -41,7 +41,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.common.MarkerManager
-import com.harian.closer.share.location.presentation.homenav.MainNavSharedViewModel
+import com.harian.closer.share.location.presentation.homenav.HomeNavSharedViewModel
 import com.harian.closer.share.location.utils.Constants
 import com.harian.closer.share.location.utils.extension.dp
 import com.harian.software.closer.share.location.R
@@ -71,7 +71,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
     lateinit var markerManager: MarkerManager
 
     private val viewModel by viewModels<MapsViewModel>()
-    private val sharedViewModel by activityViewModels<MainNavSharedViewModel>()
+    private val sharedViewModel by activityViewModels<HomeNavSharedViewModel>()
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -126,17 +126,20 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
         }.launchIn(lifecycleScope)
 
         sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
-            if (this::fusedLocationProviderClient.isInitialized) {
-                fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                    val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                        currentUserMarker?.position ?: LatLng(
-                            location.latitude,
-                            location.longitude
-                        ),
-                        googleMap?.cameraPosition?.zoom ?: Constants.DEFAULT_MAP_ZOOM_LEVEL
-                    )
-                    googleMap?.animateCamera(cameraUpdate, 2000, null)
+            if (it) {
+                if (this::fusedLocationProviderClient.isInitialized) {
+                    fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                            currentUserMarker?.position ?: LatLng(
+                                location.latitude,
+                                location.longitude
+                            ),
+                            googleMap?.cameraPosition?.zoom ?: Constants.DEFAULT_MAP_ZOOM_LEVEL
+                        )
+                        googleMap?.animateCamera(cameraUpdate, 2000, null)
+                    }
                 }
+                sharedViewModel.resetCenterActionButtonClick()
             }
         }
     }

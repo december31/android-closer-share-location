@@ -1,8 +1,11 @@
 package com.harian.closer.share.location.platform
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +68,16 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         toast?.cancel()
         toast = Toast.makeText(context, context?.getString(stringRes), length)
         toast?.show()
+    }
+
+    protected fun makeAppDetailsIntent(): Intent? {
+        return context?.let {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", it.packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            return@let intent
+        }
     }
 
     override fun onDestroyView() {

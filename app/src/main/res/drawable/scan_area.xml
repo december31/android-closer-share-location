@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="182dp"
+    android:height="182dp"
+    android:viewportWidth="182"
+    android:viewportHeight="182">
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M7.33 11c0-2.02 1.65-3.67 3.67-3.67h18.33c2.02 0 3.67-1.65 3.67-3.66C33 1.65 31.35 0 29.33 0h-22C3.3 0 0 3.3 0 7.33v22C0 31.35 1.65 33 3.67 33c2.01 0 3.66-1.65 3.66-3.67V11Z"/>
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M7.33 171c0 2.02 1.65 3.67 3.67 3.67h18.33c2.02 0 3.67 1.65 3.67 3.66 0 2.02-1.65 3.67-3.67 3.67h-22C3.3 182 0 178.7 0 174.67v-22c0-2.02 1.65-3.67 3.67-3.67 2.01 0 3.66 1.65 3.66 3.67V171Z"/>
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M174.67 11c0-2.02-1.65-3.67-3.67-3.67h-18.33c-2.02 0-3.67-1.65-3.67-3.66 0-2.02 1.65-3.67 3.67-3.67h22C178.7 0 182 3.3 182 7.33v22c0 2.02-1.65 3.67-3.67 3.67-2.01 0-3.66-1.65-3.66-3.67V11Z"/>
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M174.67 171c0 2.02-1.65 3.67-3.67 3.67h-18.33c-2.02 0-3.67 1.65-3.67 3.66 0 2.02 1.65 3.67 3.67 3.67h22c4.03 0 7.33-3.3 7.33-7.33v-22c0-2.02-1.65-3.67-3.67-3.67-2.01 0-3.66 1.65-3.66 3.67V171Z"/>
+</vector>

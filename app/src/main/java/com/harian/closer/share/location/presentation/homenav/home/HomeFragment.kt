@@ -13,7 +13,7 @@ import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
-import com.harian.closer.share.location.presentation.homenav.MainNavSharedViewModel
+import com.harian.closer.share.location.presentation.homenav.HomeNavSharedViewModel
 import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     lateinit var adapter: PostAdapter
 
     private val viewModel by viewModels<HomeViewModel>()
-    private val sharedViewModel by activityViewModels<MainNavSharedViewModel>()
+    private val sharedViewModel by activityViewModels<HomeNavSharedViewModel>()
 
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -100,7 +100,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }.launchIn(lifecycleScope)
 
         sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
-            findGlobalNavController()?.navigateWithAnimation(HomeNavFragmentDirections.actionHomeNavFragmentToCreatePostFragment())
+            if (it) {
+                findGlobalNavController()?.navigateWithAnimation(HomeNavFragmentDirections.actionHomeNavFragmentToCreatePostFragment())
+                sharedViewModel.resetCenterActionButtonClick()
+            }
         }
     }
 

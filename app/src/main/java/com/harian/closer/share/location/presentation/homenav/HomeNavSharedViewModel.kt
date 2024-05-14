@@ -7,11 +7,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MainNavSharedViewModel @Inject constructor() : ViewModel() {
+class HomeNavSharedViewModel @Inject constructor() : ViewModel() {
     private val _centerActionButtonClickLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val centerActionButtonClickLiveData: LiveData<Boolean> = _centerActionButtonClickLiveData
 
     fun performCenterActionButtonClick() {
         _centerActionButtonClickLiveData.postValue(true)
+    }
+
+    fun resetCenterActionButtonClick() {
+        _centerActionButtonClickLiveData.postValue(false)
     }
 }

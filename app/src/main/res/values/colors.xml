@@ -8,6 +8,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="black_alpha_50">#80000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="field_background">#F3F5F7</color>
     <color name="text_placeholder">#BDBDBD</color>
@@ -25,4 +26,5 @@
     <color name="black_purple">#8F90A7</color>
     <color name="gray_background">#F6F7F9</color>
     <color name="gray_1">#F0F0F0</color>
+    <color name="primary_alpha_60">#995151C6</color>
 </resources>

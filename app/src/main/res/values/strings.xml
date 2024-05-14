@@ -80,4 +80,10 @@
     <string name="type_a_message">Type a message...</string>
     <string name="message_is_empty">Message is empty</string>
     <string name="unknown">Unknown</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="my_qr_code">My QR Code</string>
+    <string name="error_get_user_information">Error get user information</string>
+    <string name="did_not_find_any_qr_code">Did not find any qr code</string>
+    <string name="scan">Scan</string>
+    <string name="share">Share</string>
 </resources>

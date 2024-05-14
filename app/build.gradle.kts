@@ -115,7 +115,16 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
 
+    val cameraxVersion = "1.3.3"
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation("androidx.camera:camera-video:${cameraxVersion}")
+
+    implementation("androidx.camera:camera-view:${cameraxVersion}")
+    implementation("androidx.camera:camera-extensions:${cameraxVersion}")
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -172,4 +181,8 @@ dependencies {
     // stomp client using StompProtocolAndroid (rxAndroid)
     implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
     implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+
+    // qrcode generator
+    implementation("com.google.zxing:core:3.5.1")
+//    implementation("com.wang.avi:library:2.1.3")
 }

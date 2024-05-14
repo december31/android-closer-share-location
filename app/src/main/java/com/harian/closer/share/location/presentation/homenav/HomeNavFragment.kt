@@ -27,7 +27,7 @@ class HomeNavFragment : BaseFragment<FragmentHomeNavBinding>() {
     @Inject
     lateinit var appManager: AppManager
 
-    private val sharedViewModel by activityViewModels<MainNavSharedViewModel>()
+    private val sharedViewModel by activityViewModels<HomeNavSharedViewModel>()
 
     @SuppressLint("WrongConstant")
     override fun setupSystemBarBehavior() {
@@ -70,6 +70,7 @@ class HomeNavFragment : BaseFragment<FragmentHomeNavBinding>() {
                 icMap.setImageResource(R.drawable.ic_map)
                 icNotification.setImageResource(R.drawable.ic_notification)
                 icProfile.setImageResource(R.drawable.ic_profile)
+                sharedViewModel.resetCenterActionButtonClick()
                 when (destination.id) {
                     R.id.home_fragment -> {
                         icHome.setImageResource(R.drawable.ic_home_selected)
@@ -88,7 +89,7 @@ class HomeNavFragment : BaseFragment<FragmentHomeNavBinding>() {
 
                     R.id.profile_fragment -> {
                         icProfile.setImageResource(R.drawable.ic_profile_selected)
-                        floatingActionButton.setImageResource(R.drawable.ic_add)
+                        floatingActionButton.setImageResource(R.drawable.ic_qr_code)
                     }
                 }
             }
