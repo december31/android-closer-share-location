@@ -21,7 +21,9 @@ import com.harian.closer.share.location.domain.user.usecase.GetPostsUseCase
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import com.harian.closer.share.location.domain.user.usecase.SendFriendRequestUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
+import com.harian.closer.share.location.utils.runOnMainThread
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -124,19 +126,28 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun sendFriendRequest(user: UserEntity) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             sendFriendRequestUseCase.execute(user)
                 .catch {
                     it.printStackTrace()
-                    _state.value = ProfileState.ErrorSendFriendRequest(null)
+                    runOnMainThread {
+                        _state.value = ProfileState.ErrorSendFriendRequest(null)
+                    }
                 }
                 .collect { baseResult ->
-                    when (baseResult) {
-                        is BaseResult.Error -> _state.value = ProfileState.ErrorSendFriendRequest(baseResult.rawResponse)
-                        is BaseResult.Success -> _state.value = ProfileState.SuccessSendFriendRequest(baseResult.data)
+                    runOnMainThread {
+                        when (baseResult) {
+                            is BaseResult.Error -> _state.value = ProfileState.ErrorSendFriendRequest(baseResult.rawResponse)
+                            is BaseResult.Success -> _state.value = ProfileState.SuccessSendFriendRequest(baseResult.data)
+                        }
                     }
                 }
         }
+    }
+
+    fun logout() {
+        sharedPrefs.clearTokens()
+        _state.value = ProfileState.SuccessLogout
     }
 
     sealed class ProfileState {
@@ -151,5 +162,6 @@ class ProfileViewModel @Inject constructor(
         data class ErrorGetCountry(val rawResponse: WrappedResponse<CountryResponse>) : ProfileState()
         data class SuccessSendFriendRequest(val user: UserEntity) : ProfileState()
         data class ErrorSendFriendRequest(val rawResponse: WrappedResponse<UserDTO>?) : ProfileState()
+        data object SuccessLogout : ProfileState()
     }
 }

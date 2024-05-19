@@ -129,6 +129,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
             if (it) {
                 if (this::fusedLocationProviderClient.isInitialized) {
                     fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+                        location ?: return@addOnSuccessListener
                         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(
                             currentUserMarker?.position ?: LatLng(
                                 location.latitude,
@@ -190,7 +191,9 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
                     )
                 }
             } else {
-                moveMarker(marker, LatLng(friend.latitude!!, friend.longitude!!))
+                withContext(Dispatchers.Main) {
+                    moveMarker(marker, LatLng(friend.latitude!!, friend.longitude!!))
+                }
             }
 
             Log.d(this@MapsFragment.javaClass.simpleName, "updateFriendMarker: ${friend.name}(${friend.latitude}, ${friend.longitude})")

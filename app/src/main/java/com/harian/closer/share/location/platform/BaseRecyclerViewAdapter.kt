@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.harison.core.app.platform.BaseDiffCallBack
 
 abstract class BaseRecyclerViewAdapter<T, VB : ViewBinding> :
     RecyclerView.Adapter<BaseRecyclerViewAdapter.BaseViewHolder<VB, T>>() {

@@ -46,7 +46,7 @@ class MessageRepositoryImpl(
 
     override suspend fun sendMessage(messageEntity: MessageEntity): Flow<BaseResult<MessageEntity, WrappedResponse<MessageDTO>>> {
         return flow {
-            val response = messageApi.sendMessage(MessageDTO.fromMessageEntity(messageEntity))
+            val response = messageApi.sendMessage(messageEntity.toDTO())
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val message = response.body()?.data?.toEntity()
                 emit(BaseResult.Success(message!!))

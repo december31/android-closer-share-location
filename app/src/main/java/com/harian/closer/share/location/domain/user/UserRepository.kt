@@ -14,6 +14,7 @@ import com.harian.closer.share.location.domain.user.entity.FriendRequestEntity
 import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
 
 interface UserRepository {
     suspend fun getUserInformation(): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
@@ -27,4 +28,6 @@ interface UserRepository {
     suspend fun updateDeviceInformation(device: DeviceEntity): Flow<BaseResult<DeviceEntity, WrappedResponse<DeviceDTO>>>
     suspend fun acceptFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
     suspend fun denyFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
+    suspend fun updateAvatar(part: MultipartBody.Part): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
+    suspend fun updateInformation(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
 }

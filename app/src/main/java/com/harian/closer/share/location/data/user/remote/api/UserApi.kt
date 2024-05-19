@@ -7,10 +7,14 @@ import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 
 interface UserApi {
@@ -43,6 +47,14 @@ interface UserApi {
 
     @POST("api/v1/user/friend/accept")
     suspend fun acceptFriendRequest(@Body user: UserDTO): Response<WrappedResponse<UserDTO>>
+
     @POST("api/v1/user/friend/deny")
     suspend fun denyFriendRequest(@Body user: UserDTO): Response<WrappedResponse<UserDTO>>
+
+    @Multipart
+    @PATCH("api/v1/user/update-avatar")
+    suspend fun updateAvatar(@Part image: MultipartBody.Part): Response<WrappedResponse<UserDTO>>
+
+    @PATCH("api/v1/user/update")
+    suspend fun updateInformation(@Body user: UserDTO): Response<WrappedResponse<UserDTO>>
 }

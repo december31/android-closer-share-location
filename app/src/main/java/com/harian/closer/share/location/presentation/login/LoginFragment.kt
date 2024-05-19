@@ -179,7 +179,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun handleSuccessRegister() {
         showToast(getString(R.string.register_successful))
-        findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToHomeNavFragment())
+        findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToRequestAvatarFragment())
     }
 
     private fun handleErrorRegister(rawResponse: WrappedResponse<RegisterResponse>?) {

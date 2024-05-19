@@ -23,7 +23,9 @@ class SplashViewModel @Inject constructor(
 ) : ViewModel() {
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
     val state: StateFlow<FunctionState> = _state
+
     fun verifyToken() {
+
         viewModelScope.launch {
             delay(2000)
             tokenAuthenticateUseCase.execute()
@@ -49,6 +51,10 @@ class SplashViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun resetState() {
+        _state.value = FunctionState.Init
     }
 
     sealed class FunctionState {

@@ -20,6 +20,8 @@ data class UserEntity(
     val description: String?,
     val status: String?,
     val isFriend: Boolean?,
+    val address: String?,
+    var phoneNumber: String?,
     var latitude: Double?,
     var longitude: Double?,
 ) : Parcelable, BaseEntity<UserDTO> {
@@ -44,6 +46,8 @@ data class UserEntity(
             gender = gender,
             description = description,
             status = status,
+            phoneNumber = phoneNumber,
+            address = address,
             isFriend = isFriend,
             latitude = latitude,
             longitude = longitude

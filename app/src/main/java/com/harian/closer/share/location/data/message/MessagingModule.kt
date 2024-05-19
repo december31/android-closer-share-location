@@ -6,8 +6,6 @@ import com.harian.closer.share.location.data.common.module.StompModule
 import com.harian.closer.share.location.data.message.remote.api.MessageApi
 import com.harian.closer.share.location.data.message.repository.MessageRepositoryImpl
 import com.harian.closer.share.location.domain.message.MessageRepository
-import com.harian.closer.share.location.platform.SharedPrefs
-import com.harian.closer.share.location.utils.ResponseUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

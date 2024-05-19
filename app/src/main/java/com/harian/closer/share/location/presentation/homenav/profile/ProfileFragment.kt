@@ -18,6 +18,7 @@ import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
 import com.harian.closer.share.location.presentation.homenav.HomeNavSharedViewModel
+import com.harian.closer.share.location.utils.clearCache
 import com.harian.closer.share.location.utils.extension.Animation
 import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
@@ -58,29 +59,39 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
     override fun setupListener() {
         super.setupListener()
-        adapter.setOnClickAddFriendListener { user ->
-            viewModel.sendFriendRequest(user)
-            adapter.updateFriendRequestStatus(ProfileAdapter.SendFriendRequestStatus.SENDING_FRIEND_REQUEST)
-        }
+        adapter.apply {
+            setOnClickAddFriendListener { user ->
+                viewModel.sendFriendRequest(user)
+                adapter.updateFriendRequestStatus(ProfileAdapter.SendFriendRequestStatus.SENDING_FRIEND_REQUEST)
+            }
 
-        adapter.setOnClickMessageListener {
-            findGlobalNavController()?.navigateWithAnimation(
-                ProfileFragmentDirections.actionProfileFragmentToMessageDetailFragment(it),
-                Animation.SlideLeft
-            )
-        }
-
-        adapter.setOnClickUserAvatarListener {
-            if (args.user == null) {
+            setOnClickMessageListener {
                 findGlobalNavController()?.navigateWithAnimation(
-                    HomeNavFragmentDirections.actionHomeNavFragmentToProfileFragment(it),
+                    ProfileFragmentDirections.actionProfileFragmentToMessageDetailFragment(it),
                     Animation.SlideLeft
                 )
-            } else {
-                findGlobalNavController()?.navigateWithAnimation(
-                    ProfileFragmentDirections.actionProfileFragmentSelf(it),
-                    Animation.SlideLeft
-                )
+            }
+
+            setOnClickUserAvatarListener {
+                if (args.user == null) {
+                    findGlobalNavController()?.navigateWithAnimation(
+                        HomeNavFragmentDirections.actionHomeNavFragmentToProfileFragment(it),
+                        Animation.SlideLeft
+                    )
+                } else {
+                    findGlobalNavController()?.navigateWithAnimation(
+                        ProfileFragmentDirections.actionProfileFragmentSelf(it),
+                        Animation.SlideLeft
+                    )
+                }
+            }
+
+            setOnClickBackListener {
+                findGlobalNavController()?.popBackStack()
+            }
+
+            setOnClickLogoutListener {
+                viewModel.logout()
             }
         }
 
@@ -119,8 +130,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 is ProfileViewModel.ProfileState.SuccessGetPosts -> handleSuccessGetPosts(it.posts)
                 is ProfileViewModel.ProfileState.ErrorSendFriendRequest -> handleErrorSendFriendRequest()
                 is ProfileViewModel.ProfileState.SuccessSendFriendRequest -> handleSuccessSendFriendRequest()
+                is ProfileViewModel.ProfileState.SuccessLogout -> handleSuccessLogout()
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun handleSuccessLogout() {
+        activity?.apply {
+            finish()
+            startActivity(intent)
+            clearCache()
+        }
     }
 
     private fun handleSuccessSendFriendRequest() {

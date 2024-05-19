@@ -19,22 +19,13 @@ import retrofit2.http.Query
 interface PostApi {
     @Multipart
     @POST("api/v1/post/create")
-    suspend fun createPost(
-        @Part images: List<MultipartBody.Part>?,
-        @Part("post") body: RequestBody
-    ): Response<WrappedResponse<PostDTO>>
+    suspend fun createPost(@Part images: List<MultipartBody.Part>?, @Part("post") body: RequestBody): Response<WrappedResponse<PostDTO>>
 
     @POST("api/v1/post/comment")
-    suspend fun commentPost(
-        @Body commentRequest: CommentRequest?,
-        @Query("id") postId: Int?
-    ): Response<WrappedResponse<CommentResponse>>
+    suspend fun commentPost(@Body commentRequest: CommentRequest?, @Query("id") postId: Int?): Response<WrappedResponse<CommentResponse>>
 
     @GET("api/v1/post/popular")
-    suspend fun getPopularPosts(
-        @Query("page") page: Int? = null,
-        @Query("page-size") pageSize: Int? = null
-    ): Response<WrappedListResponse<PostDTO>>
+    suspend fun getPopularPosts(@Query("page") page: Int? = null, @Query("page-size") pageSize: Int? = null): Response<WrappedListResponse<PostDTO>>
 
     @GET("api/v1/post")
     suspend fun getPostById(@Query("id") postId: Int? = null): Response<WrappedResponse<PostDTO>>

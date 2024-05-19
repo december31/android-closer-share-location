@@ -13,16 +13,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface PostRepository {
-    suspend fun createPost(
-        parts: List<MultipartBody.Part>?,
-        body: RequestBody
-    ): Flow<BaseResult<PostEntity, WrappedResponse<PostDTO>>>
-
-    suspend fun comment(
-        commentRequest: CommentRequest,
-        post: PostEntity?
-    ): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>>
-
+    suspend fun createPost(parts: List<MultipartBody.Part>?, body: RequestBody): Flow<BaseResult<PostEntity, WrappedResponse<PostDTO>>>
+    suspend fun comment(commentRequest: CommentRequest, post: PostEntity?): Flow<BaseResult<CommentEntity, WrappedResponse<CommentResponse>>>
     suspend fun getPopularPosts(page: Int?, pageSize: Int?): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostDTO>>>
     suspend fun getPostById(id: Int?): Flow<BaseResult<PostEntity, WrappedResponse<PostDTO>>>
     suspend fun like(post: PostEntity): Flow<BaseResult<PostEntity, WrappedResponse<PostDTO>>>

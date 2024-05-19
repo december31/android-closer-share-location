@@ -24,6 +24,8 @@ class GetUserInformationUseCase @Inject constructor(private val userRepository: 
                 description = null,
                 status = null,
                 isFriend = null,
+                phoneNumber = null,
+                address = null,
                 latitude = null,
                 longitude = null
             )

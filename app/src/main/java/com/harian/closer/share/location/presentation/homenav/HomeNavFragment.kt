@@ -74,7 +74,7 @@ class HomeNavFragment : BaseFragment<FragmentHomeNavBinding>() {
                 when (destination.id) {
                     R.id.home_fragment -> {
                         icHome.setImageResource(R.drawable.ic_home_selected)
-                        floatingActionButton.setImageResource(R.drawable.ic_add)
+                        floatingActionButton.setImageResource(R.drawable.ic_search)
                     }
 
                     R.id.map_fragment -> {
@@ -84,7 +84,7 @@ class HomeNavFragment : BaseFragment<FragmentHomeNavBinding>() {
 
                     R.id.notification_fragment -> {
                         icNotification.setImageResource(R.drawable.ic_notification_selected)
-                        floatingActionButton.setImageResource(R.drawable.ic_add)
+                        floatingActionButton.setImageResource(R.drawable.ic_search)
                     }
 
                     R.id.profile_fragment -> {

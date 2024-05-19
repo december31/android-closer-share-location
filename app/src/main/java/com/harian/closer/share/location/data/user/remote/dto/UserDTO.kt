@@ -13,26 +13,11 @@ data class UserDTO(
     @SerializedName("description") val description: String?,
     @SerializedName("is-friend") val isFriend: Boolean?,
     @SerializedName("status") val status: String?,
+    @SerializedName("phone-number") val phoneNumber: String?,
+    @SerializedName("address") val address: String?,
     @SerializedName("latitude") val latitude: Double?,
     @SerializedName("longitude") val longitude: Double?,
 ) : BaseDTO<UserEntity> {
-    companion object {
-        fun fromUserEntity(userEntity: UserEntity?): UserDTO {
-            return UserDTO(
-                id = userEntity?.id,
-                name = userEntity?.name,
-                email = userEntity?.email,
-                avatar = userEntity?.avatar,
-                gender = userEntity?.gender,
-                description = userEntity?.description,
-                isFriend = userEntity?.isFriend,
-                status = userEntity?.status,
-                latitude = userEntity?.latitude,
-                longitude = userEntity?.longitude,
-            )
-        }
-    }
-
     override fun toEntity(): UserEntity {
         return UserEntity(
             id = id,
@@ -43,6 +28,8 @@ data class UserDTO(
             description = description,
             isFriend = isFriend,
             status = status,
+            phoneNumber = phoneNumber,
+            address = address,
             latitude = latitude,
             longitude = longitude,
         )

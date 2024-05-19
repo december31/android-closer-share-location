@@ -15,9 +15,9 @@ import com.harian.closer.share.location.utils.extension.glideLoadImage
 import com.harian.closer.share.location.utils.extension.gone
 import com.harian.closer.share.location.utils.extension.visible
 import com.harian.software.closer.share.location.R
-import com.harian.software.closer.share.location.databinding.ItemRecyclerFriendsBinding
-import com.harian.software.closer.share.location.databinding.ItemRecyclerProfileBinding
-import com.harian.software.closer.share.location.databinding.ItemRecyclerProfilePostsBinding
+import com.harian.software.closer.share.location.databinding.ItemProfileBinding
+import com.harian.software.closer.share.location.databinding.ItemProfileFriendsBinding
+import com.harian.software.closer.share.location.databinding.ItemProfilePostsBinding
 
 class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<ProfileEntity<Any>, ViewDataBinding>() {
 
@@ -34,6 +34,8 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
     private var onclickAddFriend: (UserEntity) -> Unit = {}
     private var onclickMessage: (UserEntity) -> Unit = {}
     private var onClickUserAvatar: (UserEntity) -> Unit = {}
+    private var onClickBack: () -> Unit = {}
+    private var onClickLogout: () -> Unit = {}
 
     fun setOnClickAddFriendListener(onclickAddFriend: (UserEntity) -> Unit) {
         this.onclickAddFriend = onclickAddFriend
@@ -47,11 +49,19 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
         this.onClickUserAvatar = onClickUserAvatar
     }
 
+    fun setOnClickBackListener(onClickBack: () -> Unit) {
+        this.onClickBack = onClickBack
+    }
+
+    fun setOnClickLogoutListener(onClickLogout: () -> Unit) {
+        this.onClickLogout = onClickLogout
+    }
+
     override fun getLayoutId(viewType: Int): Int {
         return when (viewType) {
-            ProfileType.PROFILE.viewType -> R.layout.item_recycler_profile
-            ProfileType.FRIENDS.viewType -> R.layout.item_recycler_friends
-            else -> R.layout.item_recycler_profile_posts
+            ProfileType.PROFILE.viewType -> R.layout.item_profile
+            ProfileType.FRIENDS.viewType -> R.layout.item_profile_friends
+            else -> R.layout.item_profile_posts
         }
     }
 
@@ -82,12 +92,14 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
     override fun getItemCount() = items.size
 
     private fun bindProfile(holder: BaseViewHolder<ViewDataBinding, ProfileEntity<Any>>, item: ProfileEntity<Any>?) {
-        (holder.binding as? ItemRecyclerProfileBinding)?.apply {
+        (holder.binding as? ItemProfileBinding)?.apply {
             (item?.data as? UserEntity)?.let { user ->
                 avatar.glideLoadImage(user.getAuthorizedAvatarUrl(bearerToken))
                 username.text = user.name
                 btnAddFriend.isVisible = user.isFriend == false
                 btnMessage.isVisible = user.isFriend == true
+                btnLogout.isVisible = user.isFriend == null
+                btnBack.isVisible = user.isFriend != null
 
                 btnAddFriend.setOnClickListener {
                     onclickAddFriend.invoke(user)
@@ -95,6 +107,14 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
 
                 btnMessage.setOnClickListener {
                     onclickMessage.invoke(user)
+                }
+
+                btnBack.setOnClickListener {
+                    onClickBack.invoke()
+                }
+
+                btnLogout.setOnClickListener {
+                    onClickLogout.invoke()
                 }
             }
         }
@@ -107,7 +127,7 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
     }
 
     private fun updateFriendRequestStatus(holder: BaseViewHolder<ViewDataBinding, ProfileEntity<Any>>, status: SendFriendRequestStatus) {
-        (holder.binding as? ItemRecyclerProfileBinding)?.apply {
+        (holder.binding as? ItemProfileBinding)?.apply {
             when (status) {
                 SendFriendRequestStatus.SENDING_FRIEND_REQUEST -> {
                     loadingAnimation.visible()
@@ -137,7 +157,7 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
     }
 
     private fun bindFriends(holder: BaseViewHolder<ViewDataBinding, ProfileEntity<Any>>, item: ProfileEntity<Any>?) {
-        (holder.binding as? ItemRecyclerFriendsBinding)?.apply {
+        (holder.binding as? ItemProfileFriendsBinding)?.apply {
             (item?.data as? FriendsEntity)?.let { friendsEntity ->
                 loading.gone()
                 loading.cancelAnimation()
@@ -150,7 +170,7 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
     }
 
     private fun bindPosts(holder: BaseViewHolder<ViewDataBinding, ProfileEntity<Any>>, item: ProfileEntity<Any>?) {
-        (holder.binding as? ItemRecyclerProfilePostsBinding)?.apply {
+        (holder.binding as? ItemProfilePostsBinding)?.apply {
             (item?.data as? List<*>)?.let { posts ->
                 loading.gone()
                 loading.cancelAnimation()

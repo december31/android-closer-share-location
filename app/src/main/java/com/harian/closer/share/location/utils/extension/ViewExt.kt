@@ -1,5 +1,7 @@
 package com.harian.closer.share.location.utils.extension
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -57,9 +59,23 @@ fun ImageView.glideLoadImage(resId: Int) {
         .into(this)
 }
 
+fun ImageView.glideLoadImage(uri: Uri?) {
+    Glide.with(this.context)
+        .load(uri)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(this)
+}
+
 fun ImageView.glideLoadImage(url: GlideUrl?) {
     Glide.with(this.context)
         .load(url)
+        .transition(DrawableTransitionOptions.withCrossFade())
+        .into(this)
+}
+
+fun ImageView.glideLoadImage(bitmap: Bitmap?) {
+    Glide.with(this.context)
+        .load(bitmap)
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 }

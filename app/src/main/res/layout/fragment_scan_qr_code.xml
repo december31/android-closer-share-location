@@ -64,11 +64,13 @@
 
         <ImageView
             android:id="@+id/scan_area"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:scaleX="1.03"
             android:scaleY="1.03"
             android:src="@drawable/scan_area"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_marginHorizontal="70dp"
             app:layout_constraintBottom_toTopOf="@id/bottom_controls"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +85,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingTop="30dp"
-            android:paddingBottom="28dp"
+            android:paddingBottom="58dp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <com.google.android.material.button.MaterialButton

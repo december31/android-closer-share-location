@@ -67,9 +67,8 @@ class MyQrCodeFragment : BaseFragment<FragmentMyQrCodeBinding>() {
         viewModel.generateQrCodeState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is MyQrCodeViewModel.GenerateQrCodeState.Init -> Unit
-                is MyQrCodeViewModel.GenerateQrCodeState.Loading -> Unit
-                is MyQrCodeViewModel.GenerateQrCodeState.Success ->
-                    binding.imgQrCode.setImageBitmap(it.qrCode)
+                is MyQrCodeViewModel.GenerateQrCodeState.Loading -> binding.loadingQrCode.isVisible = it.isLoading
+                is MyQrCodeViewModel.GenerateQrCodeState.Success -> binding.imgQrCode.glideLoadImage(it.qrCode)
             }
         }.launchIn(lifecycleScope)
     }

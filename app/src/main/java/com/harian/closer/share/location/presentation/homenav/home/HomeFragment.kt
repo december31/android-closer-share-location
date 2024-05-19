@@ -14,6 +14,8 @@ import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
 import com.harian.closer.share.location.presentation.homenav.HomeNavSharedViewModel
+import com.harian.closer.share.location.presentation.search.SearchFragment
+import com.harian.closer.share.location.utils.extension.Animation
 import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
@@ -60,6 +62,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             swipeRefresh.setOnRefreshListener {
                 viewModel.fetchPopularPosts()
             }
+
+            btnCreateNewPost.setOnClickListener {
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToCreatePostFragment(),
+                    Animation.SlideUp
+                )
+                sharedViewModel.resetCenterActionButtonClick()
+            }
         }
     }
 
@@ -101,7 +111,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
             if (it) {
-                findGlobalNavController()?.navigateWithAnimation(HomeNavFragmentDirections.actionHomeNavFragmentToCreatePostFragment())
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToSearchFragment(SearchFragment.SearchType.POST.name),
+                    Animation.SlideUp
+                )
                 sharedViewModel.resetCenterActionButtonClick()
             }
         }

@@ -12,13 +12,12 @@ import com.harian.closer.share.location.domain.comment.entity.CommentEntity
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.PostRepository
 import com.harian.closer.share.location.domain.post.entity.PostEntity
-import com.harian.closer.share.location.utils.ResponseUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil: ResponseUtil) : PostRepository {
+class PostRepositoryImpl(private val postApi: PostApi) : PostRepository {
     override suspend fun createPost(
         parts: List<MultipartBody.Part>?,
         body: RequestBody
@@ -26,10 +25,9 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         return flow {
             val response = postApi.createPost(parts, body)
             if (response.isSuccessful && response.code() in 200 until 400) {
-                val postEntity = response.body()?.data.let { data ->
-                    responseUtil.buildPostEntity(data)
+                response.body()?.data?.toEntity()?.let {
+                    emit(BaseResult.Success(it))
                 }
-                emit(BaseResult.Success(postEntity))
             } else {
                 val type = object : TypeToken<WrappedResponse<PostDTO>>() {}.type
                 val error: WrappedResponse<PostDTO> =
@@ -48,10 +46,9 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
             val response = postApi.commentPost(commentRequest, post?.id)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
-                val commentEntity = body?.data.let { data ->
-                    responseUtil.buildCommentEntity(data)
+                body?.data?.toEntity()?.let { data ->
+                    emit(BaseResult.Success(data))
                 }
-                emit(BaseResult.Success(commentEntity))
             } else {
                 val type = object : TypeToken<WrappedResponse<CommentResponse>>() {}.type
                 val err = Gson().fromJson<WrappedResponse<CommentResponse>>(response.errorBody()!!.charStream(), type)!!
@@ -69,9 +66,7 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
             val response = postApi.getPopularPosts(page, pageSize)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
-                val posts = body?.data?.map { postResponse ->
-                    responseUtil.buildPostEntity(postResponse)
-                } ?: listOf()
+                val posts = body?.data?.map { it.toEntity() } ?: listOf()
                 emit(BaseResult.Success(posts))
             } else {
                 val type = object : TypeToken<WrappedListResponse<PostDTO>>() {}.type
@@ -86,9 +81,9 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         return flow {
             val response = postApi.getPostById(id)
             if (response.isSuccessful && response.code() in 200 until 400) {
-                val postResponse = response.body()?.data
-                val postEntity = responseUtil.buildPostEntity(postResponse)
-                emit(BaseResult.Success(postEntity))
+                response.body()?.data?.toEntity()?.let {
+                    emit(BaseResult.Success(it))
+                }
             } else {
                 val type = object : TypeToken<WrappedResponse<PostDTO>>() {}.type
                 val err = Gson().fromJson<WrappedResponse<PostDTO>>(response.errorBody()!!.charStream(), type)!!
@@ -102,9 +97,9 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         return flow {
             val response = postApi.likePost(post.id)
             if (response.isSuccessful && response.code() in 200 until 400) {
-                val postResponse = response.body()?.data
-                val postEntity = responseUtil.buildPostEntity(postResponse)
-                emit(BaseResult.Success(postEntity))
+                response.body()?.data?.toEntity()?.let {
+                    emit(BaseResult.Success(it))
+                }
             } else {
                 val type = object : TypeToken<WrappedResponse<PostDTO>>() {}.type
                 val err = Gson().fromJson<WrappedResponse<PostDTO>>(response.errorBody()!!.charStream(), type)!!
@@ -118,9 +113,9 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         return flow {
             val response = postApi.unlikePost(post.id)
             if (response.isSuccessful && response.code() in 200 until 400) {
-                val postResponse = response.body()?.data
-                val postEntity = responseUtil.buildPostEntity(postResponse)
-                emit(BaseResult.Success(postEntity))
+                response.body()?.data?.toEntity()?.let {
+                    emit(BaseResult.Success(it))
+                }
             } else {
                 val type = object : TypeToken<WrappedResponse<PostDTO>>() {}.type
                 val err = Gson().fromJson<WrappedResponse<PostDTO>>(response.errorBody()!!.charStream(), type)!!
@@ -134,9 +129,9 @@ class PostRepositoryImpl(private val postApi: PostApi, private val responseUtil:
         return flow {
             val response = postApi.watchPost(post.id)
             if (response.isSuccessful && response.code() in 200 until 400) {
-                val postResponse = response.body()?.data
-                val postEntity = responseUtil.buildPostEntity(postResponse)
-                emit(BaseResult.Success(postEntity))
+                response.body()?.data?.toEntity()?.let {
+                    emit(BaseResult.Success(it))
+                }
             } else {
                 val type = object : TypeToken<WrappedResponse<PostDTO>>() {}.type
                 val err = Gson().fromJson<WrappedResponse<PostDTO>>(response.errorBody()!!.charStream(), type)!!

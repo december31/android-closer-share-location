@@ -1,4 +1,4 @@
-package com.harison.core.app.platform
+package com.harian.closer.share.location.platform
 
 import androidx.recyclerview.widget.DiffUtil
 

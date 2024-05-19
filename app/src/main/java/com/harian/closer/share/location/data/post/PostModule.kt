@@ -4,7 +4,6 @@ import com.harian.closer.share.location.data.common.module.NetworkModule
 import com.harian.closer.share.location.data.post.remote.api.PostApi
 import com.harian.closer.share.location.data.post.repository.PostRepositoryImpl
 import com.harian.closer.share.location.domain.post.PostRepository
-import com.harian.closer.share.location.utils.ResponseUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +22,7 @@ object PostModule {
 
     @Provides
     @Singleton
-    fun providePostRepository(postApi: PostApi, responseUtil: ResponseUtil): PostRepository {
-        return PostRepositoryImpl(postApi, responseUtil)
+    fun providePostRepository(postApi: PostApi): PostRepository {
+        return PostRepositoryImpl(postApi)
     }
 }

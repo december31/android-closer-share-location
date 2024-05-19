@@ -14,19 +14,6 @@ data class MessageDTO(
     @SerializedName("status") val status: MessageEntity.Status?,
     @SerializedName("type") val type: MessageEntity.Type?
 ) : BaseDTO<MessageEntity> {
-    companion object {
-        fun fromMessageEntity(messageEntity: MessageEntity): MessageDTO {
-            return MessageDTO(
-                receiver = UserDTO.fromUserEntity(messageEntity.receiver),
-                sender = UserDTO.fromUserEntity(messageEntity.sender),
-                message = messageEntity.message,
-                time = messageEntity.time,
-                code = messageEntity.code,
-                status = messageEntity.status,
-                type = messageEntity.type
-            )
-        }
-    }
 
     override fun toEntity(): MessageEntity {
         return MessageEntity(

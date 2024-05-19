@@ -1,6 +1,7 @@
 package com.harian.closer.share.location.data.user.remote.dto
 
 import com.google.gson.annotations.SerializedName
+import com.harian.closer.share.location.data.common.base.BaseDTO
 import com.harian.closer.share.location.domain.user.entity.DeviceEntity
 
 data class DeviceDTO(
@@ -16,25 +17,23 @@ data class DeviceDTO(
     @SerializedName("host") val host: String?,
     @SerializedName("fingerprint") val fingerprint: String?,
     @SerializedName("version-code") val versionCode: String?,
-    @SerializedName("firebase-messaging-token") val firebaseMessagingToken: String?
-) {
-    companion object {
-        fun fromDeviceEntity(deviceEntity: DeviceEntity): DeviceDTO {
-            return DeviceDTO(
-                id = deviceEntity.id,
-                model = deviceEntity.model,
-                manufacturer = deviceEntity.manufacturer,
-                brand = deviceEntity.brand,
-                type = deviceEntity.type,
-                versionCodeBase = deviceEntity.versionCodeBase,
-                incremental = deviceEntity.incremental,
-                sdk = deviceEntity.sdk,
-                board = deviceEntity.board,
-                host = deviceEntity.host,
-                fingerprint = deviceEntity.fingerprint,
-                versionCode = deviceEntity.versionCode,
-                firebaseMessagingToken = deviceEntity.firebaseMessagingToken
-            )
-        }
+    @SerializedName("firebase-messaging-token") var firebaseMessagingToken: String?
+) : BaseDTO<DeviceEntity> {
+    override fun toEntity(): DeviceEntity {
+        return DeviceEntity(
+            id = id,
+            model = model,
+            manufacturer = manufacturer,
+            brand = brand,
+            type = type,
+            versionCodeBase = versionCodeBase,
+            incremental = incremental,
+            sdk = sdk,
+            board = board,
+            host = host,
+            fingerprint = fingerprint,
+            versionCode = versionCode,
+            firebaseMessagingToken = firebaseMessagingToken
+        )
     }
 }

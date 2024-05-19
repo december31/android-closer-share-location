@@ -2,16 +2,15 @@ package com.harian.closer.share.location.presentation.addfriend
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.provider.MediaStore
 import android.view.WindowInsets
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
@@ -54,9 +53,7 @@ class ScanQrCodeFragment : BaseFragment<FragmentScanQrCodeBinding>() {
 
     private lateinit var cameraPermissionActivityResult: ActivityResultLauncher<String>
     private lateinit var cameraPermissionFromSettingActivityResult: ActivityResultLauncher<Intent>
-    private lateinit var galleryPermissionActivityResult: ActivityResultLauncher<String>
-    private lateinit var galleryPermissionFromSettingActivityResult: ActivityResultLauncher<Intent>
-    private lateinit var galleryActivityResult: ActivityResultLauncher<Intent>
+    private lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
 
     private var cameraProvider: ProcessCameraProvider? = null
     private var preview: Preview? = null
@@ -100,33 +97,7 @@ class ScanQrCodeFragment : BaseFragment<FragmentScanQrCodeBinding>() {
                 findGlobalNavController()?.popBackStack()
             }
             btnGallery.setOnClickListener {
-                activity?.let {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        if (context?.checkSelfPermission(Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_MEDIA_IMAGES)) {
-                                galleryPermissionFromSettingActivityResult.launch(
-                                    makeAppDetailsIntent()
-                                )
-                            } else {
-                                galleryPermissionActivityResult.launch(Manifest.permission.READ_MEDIA_IMAGES)
-                            }
-                        } else {
-                            gotoGallery()
-                        }
-                    } else {
-                        if (context?.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                                galleryPermissionFromSettingActivityResult.launch(
-                                    makeAppDetailsIntent()
-                                )
-                            } else {
-                                galleryPermissionActivityResult.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            }
-                        } else {
-                            gotoGallery()
-                        }
-                    }
-                }
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
 
             btnMyQrCode.setOnClickListener {
@@ -195,43 +166,25 @@ class ScanQrCodeFragment : BaseFragment<FragmentScanQrCodeBinding>() {
             }
         }
 
-        galleryPermissionActivityResult = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { result ->
-            if (result == true) {
-                gotoGallery()
-            }
-        }
+        pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            uri ?: return@registerForActivityResult
+            val inputStream = requireContext().contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            val barcodeOption =
+                BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE)
+                    .build()
+            val barcodeScanner = BarcodeScanning.getClient(barcodeOption)
 
-        galleryPermissionFromSettingActivityResult = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {}
-
-        galleryActivityResult = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result?.data?.data?.let { uri ->
-                    val inputStream = requireContext().contentResolver.openInputStream(uri)
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    val barcodeOption =
-                        BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                            .build()
-                    val barcodeScanner = BarcodeScanning.getClient(barcodeOption)
-
-                    barcodeScanner.process(InputImage.fromBitmap(bitmap, 0)).addOnSuccessListener {
-                        if (it.isNotEmpty()) {
-                            viewModel.processQrCodeResult(it.getOrNull(0)?.displayValue)
-                        } else {
-                            showToast(R.string.did_not_find_any_qr_code)
-                        }
-                    }
-                    inputStream?.close()
+            barcodeScanner.process(InputImage.fromBitmap(bitmap, 0)).addOnSuccessListener {
+                if (it.isNotEmpty()) {
+                    viewModel.processQrCodeResult(it.getOrNull(0)?.displayValue)
+                } else {
+                    showToast(R.string.did_not_find_any_qr_code)
                 }
             }
+            inputStream?.close()
         }
     }
-
 
     @SuppressLint("RestrictedApi")
     @ExperimentalGetImage
@@ -294,16 +247,6 @@ class ScanQrCodeFragment : BaseFragment<FragmentScanQrCodeBinding>() {
         imageAnalysis.setAnalyzer(MyExecutor(), analyzer)
 
         return imageAnalysis
-    }
-
-    @SuppressLint("IntentReset")
-    private fun gotoGallery() {
-        val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-        gallery.type = "image/*"
-        gallery.putExtra(
-            Intent.EXTRA_MIME_TYPES, arrayOf("image/png", "image/jpeg", "image/gif")
-        )
-        galleryActivityResult.launch(gallery)
     }
 
     inner class MyExecutor : Executor {

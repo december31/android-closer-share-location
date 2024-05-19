@@ -61,7 +61,7 @@ class SharedPrefs(context: Context) {
         editor.apply()
     }
 
-    fun clear() {
+    fun clearTokens() {
         sharedPref.edit().run {
             remove(PREF_TOKEN)
             remove(PREF_REFRESH_TOKEN)

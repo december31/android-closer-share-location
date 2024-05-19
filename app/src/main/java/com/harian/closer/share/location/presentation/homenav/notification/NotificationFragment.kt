@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.homenav.notification
 
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -8,7 +9,10 @@ import com.harian.closer.share.location.domain.user.entity.FriendRequestEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.homenav.HomeNavFragmentDirections
+import com.harian.closer.share.location.presentation.homenav.HomeNavSharedViewModel
 import com.harian.closer.share.location.presentation.homenav.notification.adapter.FriendRequestAdapter
+import com.harian.closer.share.location.presentation.search.SearchFragment
+import com.harian.closer.share.location.utils.extension.Animation
 import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
@@ -27,6 +31,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
     lateinit var friendRequestAdapter: FriendRequestAdapter
 
     private val viewModel: FriendRequestViewModel by viewModels()
+    private val sharedViewModel by activityViewModels<HomeNavSharedViewModel>()
 
     override fun setupUI() {
         super.setupUI()
@@ -77,6 +82,16 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
                 is FriendRequestViewModel.LoadingState.StartLoading -> friendRequestAdapter.startLoading(it.user)
             }
         }.launchIn(lifecycleScope)
+
+        sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
+            if (it) {
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToSearchFragment(SearchFragment.SearchType.USER.name),
+                    Animation.SlideUp
+                )
+                sharedViewModel.resetCenterActionButtonClick()
+            }
+        }
     }
 
     private fun handleErrorDenyFriendRequest() {

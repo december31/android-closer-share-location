@@ -86,4 +86,17 @@
     <string name="did_not_find_any_qr_code">Did not find any qr code</string>
     <string name="scan">Scan</string>
     <string name="share">Share</string>
+    <string name="type_to_search">Type to search ...</string>
+    <string name="let_s_create_an_avatar">Let\'s create an avatar</string>
+    <string name="the_image_below_is_your_currently_default_avatar">The image below is your currently default avatar</string>
+    <string name="let_s_change_it">let\'s pick a new one</string>
+    <string name="pick_an_image">Pick an image</string>
+    <string name="skip">Skip</string>
+    <string name="may_us_know_your_phone_number">May us know your phone number?</string>
+    <string name="your_phone_number_will_be_use_for_discover_more_connection_from_other_people">Your phone number will be use to discover more connection from other people</string>
+    <string name="your_phone_number">Your phone number</string>
+    <string name="set_phone_number">Set phone number</string>
+    <string name="some_thing_went_wrong_please_try_again_later">Some thing went wrong, please try again later!</string>
+    <string name="upload">Upload</string>
+    <string name="failed_to_update_phone_number_please_try_again_later">Failed to update phone number, please try again later!</string>
 </resources>

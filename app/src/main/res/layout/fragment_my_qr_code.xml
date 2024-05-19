@@ -50,7 +50,7 @@
             android:layout_marginHorizontal="40dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/bg_radius_16"
-            android:backgroundTint="@color/primary_alpha_30"
+            android:backgroundTint="@color/primary_alpha_60"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rltToolbar">
 
@@ -87,15 +87,33 @@
 
             <ImageView
                 android:id="@+id/imgQrCode"
-                android:layout_width="220dp"
-                android:layout_height="220dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="40dp"
                 android:layout_marginVertical="24dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvName"
                 tools:src="@tools:sample/avatars" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loadingQrCode"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:paddingBottom="14dp"
+                android:scaleType="centerCrop"
+                android:translationZ="2dp"
+                app:layout_constraintBottom_toBottomOf="@id/imgQrCode"
+                app:layout_constraintTop_toTopOf="@id/imgQrCode"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/white_dot_loading" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -154,7 +172,6 @@
                 app:iconGravity="textStart" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
 
         <FrameLayout
             android:id="@+id/frLoading"

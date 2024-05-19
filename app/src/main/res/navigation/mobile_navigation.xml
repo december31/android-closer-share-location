@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_home_nav_fragment_to_scanQrCodeFragment"
             app:destination="@id/scanQrCodeFragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
 
     <fragment
@@ -48,6 +51,9 @@
         <action
             android:id="@+id/action_login_fragment_to_home_nav_fragment"
             app:destination="@id/home_nav_fragment" />
+        <action
+            android:id="@+id/action_login_fragment_to_request_avatar_fragment"
+            app:destination="@id/request_avatar_fragment" />
     </fragment>
 
     <fragment
@@ -123,4 +129,37 @@
         android:id="@+id/my_qr_code_fragment"
         android:name="com.harian.closer.share.location.presentation.addfriend.myqrcode.MyQrCodeFragment"
         tools:layout="@layout/fragment_my_qr_code" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.harian.closer.share.location.presentation.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
+        <argument
+            android:name="searchType"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchFragment_to_post_details_fragment"
+            app:destination="@id/post_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/request_avatar_fragment"
+        android:name="com.harian.closer.share.location.presentation.flowregister.avatar.RequestAvatarFragment"
+        tools:layout="@layout/fragment_request_avatar" >
+        <action
+            android:id="@+id/action_request_avatar_fragment_to_request_phone_number_fragment"
+            app:destination="@id/request_phone_number_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/request_phone_number_fragment"
+        android:name="com.harian.closer.share.location.presentation.flowregister.phonenumber.RequestPhoneNumberFragment"
+        tools:layout="@layout/fragment_request_phone_number" >
+        <action
+            android:id="@+id/action_request_phone_number_fragment_to_home_nav_fragment"
+            app:destination="@id/home_nav_fragment" />
+    </fragment>
 </navigation>
