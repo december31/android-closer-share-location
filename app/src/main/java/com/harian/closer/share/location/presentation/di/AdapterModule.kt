@@ -3,6 +3,7 @@ package com.harian.closer.share.location.presentation.di
 import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.presentation.homenav.home.PostAdapter
 import com.harian.closer.share.location.presentation.homenav.notification.adapter.FriendRequestAdapter
+import com.harian.closer.share.location.presentation.post.comment.CommentAdapter
 import com.harian.closer.share.location.presentation.search.UserAdapter
 import dagger.Module
 import dagger.Provides
@@ -26,5 +27,10 @@ object AdapterModule {
     @Provides
     fun provideSearchAdapter(sharedPrefs: SharedPrefs): UserAdapter {
         return UserAdapter(sharedPrefs.getToken())
+    }
+
+    @Provides
+    fun provideCommentAdapter(sharedPrefs: SharedPrefs): CommentAdapter {
+        return CommentAdapter(sharedPrefs.getToken())
     }
 }

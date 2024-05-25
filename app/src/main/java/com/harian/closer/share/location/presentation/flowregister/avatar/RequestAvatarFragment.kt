@@ -70,7 +70,7 @@ class RequestAvatarFragment : BaseFragment<FragmentRequestAvatarBinding>() {
             }
             btnSkip.setOnClickListener {
                 findGlobalNavController()?.navigateWithAnimation(
-                    RequestPhoneNumberFragmentDirections.actionRequestPhoneNumberFragmentToHomeNavFragment(),
+                    RequestAvatarFragmentDirections.actionRequestAvatarFragmentToRequestPhoneNumberFragment(),
                     Animation.SlideLeft
                 )
             }
@@ -113,11 +113,11 @@ class RequestAvatarFragment : BaseFragment<FragmentRequestAvatarBinding>() {
     }
 
     private fun handleSuccessUpdateAvatar() {
+        context?.clearCache()
         findGlobalNavController()?.navigateWithAnimation(
             RequestAvatarFragmentDirections.actionRequestAvatarFragmentToRequestPhoneNumberFragment(),
             Animation.SlideLeft
         )
-        context?.clearCache()
     }
 
     override fun onDestroyView() {

@@ -184,5 +184,4 @@ dependencies {
 
     // qrcode generator
     implementation("com.google.zxing:core:3.5.1")
-//    implementation("com.wang.avi:library:2.1.3")
 }

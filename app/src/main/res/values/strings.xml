@@ -99,4 +99,5 @@
     <string name="some_thing_went_wrong_please_try_again_later">Some thing went wrong, please try again later!</string>
     <string name="upload">Upload</string>
     <string name="failed_to_update_phone_number_please_try_again_later">Failed to update phone number, please try again later!</string>
+    <string name="there_is_no_comment_yet">There is no comment yet</string>
 </resources>

@@ -12,6 +12,7 @@ import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.country.entity.CountryEntity
 import com.harian.closer.share.location.domain.country.usecase.GetCountryUseCase
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.domain.user.UserRepository
 import com.harian.closer.share.location.domain.user.entity.FriendsEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileEntity
 import com.harian.closer.share.location.domain.user.entity.ProfileType
@@ -38,6 +39,7 @@ class ProfileViewModel @Inject constructor(
     private val getFriendsUseCase: GetFriendsUseCase,
     private val getPostsUseCase: GetPostsUseCase,
     private val sendFriendRequestUseCase: SendFriendRequestUseCase,
+    private val userRepository: UserRepository,
     val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
@@ -148,6 +150,7 @@ class ProfileViewModel @Inject constructor(
     fun logout() {
         sharedPrefs.clearTokens()
         _state.value = ProfileState.SuccessLogout
+        userRepository.resetUserInformation()
     }
 
     sealed class ProfileState {

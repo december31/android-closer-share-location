@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.login.usecase.TokenAuthenticateUseCase
+import com.harian.closer.share.location.domain.user.UserRepository
+import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import com.harian.closer.share.location.domain.user.usecase.UpdateDeviceInformationUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel

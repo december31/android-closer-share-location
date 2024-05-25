@@ -30,4 +30,5 @@ interface UserRepository {
     suspend fun denyFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
     suspend fun updateAvatar(part: MultipartBody.Part): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
     suspend fun updateInformation(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
+    fun resetUserInformation()
 }

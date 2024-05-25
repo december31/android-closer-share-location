@@ -261,4 +261,8 @@ class UserRepositoryImpl(private val userApi: UserApi) : UserRepository {
             }
         }
     }
+
+    override fun resetUserInformation() {
+        this.userInformation = null
+    }
 }

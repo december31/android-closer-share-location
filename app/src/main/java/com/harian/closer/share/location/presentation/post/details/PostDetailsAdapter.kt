@@ -18,7 +18,11 @@ import java.util.Locale
  * a adapter for display the post and its images
  */
 class PostDetailsAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Any, ViewDataBinding>() {
-    var onClickImage: (ImageEntity) -> Unit = {}
+
+    private var listener: Listener? = null
+    fun setListener(listener: Listener) {
+        this.listener = listener
+    }
 
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) return PostDetailsItemType.DETAIL.value else PostDetailsItemType.IMAGE.value
@@ -55,6 +59,13 @@ class PostDetailsAdapter(private val bearerToken: String) : BaseRecyclerViewAdap
                 tvCommented.text = "${post.comments?.size ?: 0}"
                 tvLiked.text = "${post.likes?.size ?: 0}"
                 tvWatched.text = "${0}"
+
+                containerComment.setOnClickListener {
+                    listener?.onClickComment(post)
+                }
+                containerLiked.setOnClickListener {
+                    listener?.onClickLike(post)
+                }
             }
         }
     }
@@ -67,10 +78,10 @@ class PostDetailsAdapter(private val bearerToken: String) : BaseRecyclerViewAdap
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .placeholder(R.drawable.empty)
                     .into(this.image)
-                tvCommented.text = (image.comments?.size ?: 0).toString()
-                tvLiked.text = (image.likes?.size ?: 0).toString()
+//                tvCommented.text = (image.comments?.size ?: 0).toString()
+//                tvLiked.text = (image.likes?.size ?: 0).toString()
                 root.setOnClickListener {
-                    onClickImage.invoke(image)
+                    listener?.onClickImage(image)
                 }
             }
         }
@@ -81,5 +92,11 @@ class PostDetailsAdapter(private val bearerToken: String) : BaseRecyclerViewAdap
     private enum class PostDetailsItemType(val value: Int) {
         DETAIL(0),
         IMAGE(1)
+    }
+
+    interface Listener {
+        fun onClickImage(image: ImageEntity)
+        fun onClickComment(postEntity: PostEntity)
+        fun onClickLike(postEntity: PostEntity)
     }
 }
