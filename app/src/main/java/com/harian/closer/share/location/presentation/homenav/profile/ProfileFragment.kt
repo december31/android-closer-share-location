@@ -88,7 +88,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             override fun onClickViewAllFriends() {
                 findGlobalNavController()?.navigateWithAnimation(
                     HomeNavFragmentDirections.actionHomeNavFragmentToViewAllFriendFragment(args.user),
-                    Animation.SlideUp
+                    Animation.SlideLeft
                 )
             }
 
@@ -100,8 +100,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
                 findGlobalNavController()?.popBackStack()
             }
 
-            override fun onClickLogout() {
-                viewModel.logout()
+            override fun onClickSetting() {
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToSettingFragment(),
+                    Animation.SlideUp
+                )
             }
         })
 

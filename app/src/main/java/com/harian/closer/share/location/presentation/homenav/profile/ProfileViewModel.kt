@@ -147,12 +147,6 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun logout() {
-        sharedPrefs.clearTokens()
-        _state.value = ProfileState.SuccessLogout
-        userRepository.resetUserInformation()
-    }
-
     sealed class ProfileState {
         data class Init(val defaultData: List<ProfileEntity<Any>>) : ProfileState()
         data class SuccessGetUserInformation(val user: UserEntity) : ProfileState()

@@ -31,21 +31,26 @@
         <item name="cornerSize">8dp</item>
     </style>
 
-    <style name="Title1">
+    <style name="Title1" parent="DefaultMaterialButton">
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:lineHeight" tools:ignore="NewApi">24sp</item>
     </style>
 
-    <style name="Title2">
+    <style name="Title2" parent="DefaultMaterialButton">
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">18sp</item>
         <item name="android:lineHeight" tools:ignore="NewApi">24sp</item>
     </style>
 
-    <style name="Body3">
+    <style name="Body3" parent="DefaultMaterialButton">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black_purple</item>
+    </style>
+
+    <style name="Body4" parent="DefaultMaterialButton">
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black_purple</item>
     </style>
 

@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_home_nav_fragment_to_view_all_friend_fragment"
             app:destination="@id/view_all_friend_fragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment" />
     </fragment>
 
     <fragment
@@ -182,4 +185,8 @@
             android:id="@+id/action_view_all_friend_fragment_to_profile_fragment"
             app:destination="@id/profile_fragment" />
     </fragment>
+    <fragment
+        android:id="@+id/setting_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.SettingFragment"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

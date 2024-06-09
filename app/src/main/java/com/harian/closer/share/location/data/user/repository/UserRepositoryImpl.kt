@@ -262,7 +262,7 @@ class UserRepositoryImpl(private val userApi: UserApi) : UserRepository {
         }
     }
 
-    override fun resetUserInformation() {
+    override suspend fun logout() {
         this.userInformation = null
     }
 }

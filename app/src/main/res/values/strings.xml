@@ -105,4 +105,22 @@
     <string name="satellite">Satellite</string>
     <string name="normal">Normal</string>
     <string name="your_friends">Your friends</string>
+    <string name="avatar">Avatar</string>
+    <string name="bind">Bind</string>
+    <string name="modify_password">Modify Password</string>
+    <string name="log_out">Log Out</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="user_name">Username</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="camera">Camera</string>
+    <string name="select_from_the_album">Select from the album</string>
+    <string name="cancel">Cancel</string>
+    <string name="use_photo">Use Photo</string>
+    <string name="failed_to_take_picture">Failed to take picture</string>
+    <string name="permission_camera_description">Need to scan the QR Code to connect and bind the device, is it allowed to open the camera.</string>
+    <string name="permission_camera_title">“ Closer ” Would like to access the camera?</string>
+    <string name="allow">Allow</string>
+    <string name="permission_location_title">“ Closer ” Do you want to allow access to your location?</string>
+    <string name="permission_location_description">When to get location permission for your device. Please open it manually. Otherwise. It cannot be used normally.</string>
 </resources>

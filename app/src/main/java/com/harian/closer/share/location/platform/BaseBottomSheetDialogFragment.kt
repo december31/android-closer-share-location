@@ -36,6 +36,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewDataBinding> : BottomSheetD
         return binding.root
     }
 
+    @Suppress("DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setOnShowListener {

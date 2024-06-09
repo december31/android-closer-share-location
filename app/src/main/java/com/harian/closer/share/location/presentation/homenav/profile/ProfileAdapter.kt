@@ -76,7 +76,7 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
                 username.text = user.name
                 btnAddFriend.isVisible = user.isFriend == false
                 btnMessage.isVisible = user.isFriend == true
-                btnLogout.isVisible = user.isFriend == null
+                btnSetting.isVisible = user.isFriend == null
                 btnBack.isVisible = user.isFriend != null
 
                 btnAddFriend.setOnClickListener {
@@ -91,8 +91,8 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
                     listener?.onClickBack()
                 }
 
-                btnLogout.setOnClickListener {
-                    listener?.onClickLogout()
+                btnSetting.setOnClickListener {
+                    listener?.onClickSetting()
                 }
             }
         }
@@ -200,7 +200,7 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
         fun onClickViewAllFriends()
         fun onClickViewAllPosts()
         fun onClickBack()
-        fun onClickLogout()
+        fun onClickSetting()
     }
 
     enum class SendFriendRequestStatus {

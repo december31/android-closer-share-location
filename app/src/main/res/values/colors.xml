@@ -27,4 +27,7 @@
     <color name="gray_background">#F6F7F9</color>
     <color name="gray_1">#F0F0F0</color>
     <color name="primary_alpha_60">#995151C6</color>
+    <color name="neutralBlackAlpha5">#0D161616</color>
+    <color name="secondaryDangerPrimary">#FF3535</color>
+    <color name="secondaryInfoPrimary">#138EFF</color>
 </resources>

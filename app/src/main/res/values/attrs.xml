@@ -5,4 +5,11 @@
         <attr name="spanCount" />
         <attr name="aspectRatio" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="ProfileRow">
+        <attr name="pr_iconStart" format="integer" />
+        <attr name="pr_textStart" format="reference|string" />
+        <attr name="pr_textEnd" format="reference|string" />
+        <attr name="pr_iconEnd" format="reference" />
+    </declare-styleable>
 </resources>

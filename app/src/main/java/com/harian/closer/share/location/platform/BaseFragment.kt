@@ -46,6 +46,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         setupSystemBarBehavior()
         setupData()
         setupUI()
+        setupPermission()
         handleStateChanges()
         setupListener()
         setupLoading()
@@ -56,6 +57,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected val binding: T get() = _binding!!
 
     protected open fun setupUI() {}
+    protected open fun setupPermission() {}
     protected open fun handleStateChanges() {}
     protected open fun setupData() {}
     protected open fun setupListener() {}

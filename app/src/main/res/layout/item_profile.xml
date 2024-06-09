@@ -44,13 +44,13 @@
             app:tint="@color/white" />
 
         <ImageButton
-            android:id="@+id/btnLogout"
+            android:id="@+id/btnSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:background="@color/transparent"
             android:padding="16dp"
-            android:src="@drawable/ic_logout"
+            android:src="@drawable/ic_setting"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white" />

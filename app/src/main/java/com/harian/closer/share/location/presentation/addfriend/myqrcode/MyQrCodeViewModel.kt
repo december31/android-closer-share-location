@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.common.BitMatrix
@@ -77,8 +76,9 @@ class MyQrCodeViewModel @Inject constructor(
     private fun generateQrCode(myCodeText: String?) {
         _generateQrCodeState.value = GenerateQrCodeState.Loading(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val hintMap = Hashtable<EncodeHintType, ErrorCorrectionLevel?>()
+            val hintMap = Hashtable<EncodeHintType, Any?>()
             hintMap[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H // H = 30% damage
+            hintMap[EncodeHintType.MARGIN] = 1
             val qrCodeWriter = QRCodeWriter()
             val size = 512
             val bitMatrix: BitMatrix = qrCodeWriter.encode(myCodeText, BarcodeFormat.QR_CODE, size, size, hintMap)

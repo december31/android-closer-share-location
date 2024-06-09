@@ -185,4 +185,7 @@ dependencies {
 
     // qrcode generator
     implementation("com.google.zxing:core:3.5.1")
+
+    // image cropper
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
 }
