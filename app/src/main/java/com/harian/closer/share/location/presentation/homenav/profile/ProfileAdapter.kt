@@ -20,42 +20,20 @@ import com.harian.software.closer.share.location.databinding.ItemProfileFriendsB
 import com.harian.software.closer.share.location.databinding.ItemProfilePostsBinding
 
 class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<ProfileEntity<Any>, ViewDataBinding>() {
+    private var listener: Listener? = null
+    fun setListener(listener: Listener) {
+        this.listener = listener
+    }
 
     private val friendAdapter: FriendAdapter = FriendAdapter(bearerToken).apply {
         setOnItemClick {
             setOnItemClick {
-                onClickUserAvatar.invoke(it)
+                listener?.onClickUserAvatar(it)
             }
         }
     }
 
     private val postAdapter: PostAdapter = PostAdapter(bearerToken)
-
-    private var onclickAddFriend: (UserEntity) -> Unit = {}
-    private var onclickMessage: (UserEntity) -> Unit = {}
-    private var onClickUserAvatar: (UserEntity) -> Unit = {}
-    private var onClickBack: () -> Unit = {}
-    private var onClickLogout: () -> Unit = {}
-
-    fun setOnClickAddFriendListener(onclickAddFriend: (UserEntity) -> Unit) {
-        this.onclickAddFriend = onclickAddFriend
-    }
-
-    fun setOnClickMessageListener(onclickMessage: (UserEntity) -> Unit) {
-        this.onclickMessage = onclickMessage
-    }
-
-    fun setOnClickUserAvatarListener(onClickUserAvatar: (UserEntity) -> Unit) {
-        this.onClickUserAvatar = onClickUserAvatar
-    }
-
-    fun setOnClickBackListener(onClickBack: () -> Unit) {
-        this.onClickBack = onClickBack
-    }
-
-    fun setOnClickLogoutListener(onClickLogout: () -> Unit) {
-        this.onClickLogout = onClickLogout
-    }
 
     override fun getLayoutId(viewType: Int): Int {
         return when (viewType) {
@@ -102,19 +80,19 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
                 btnBack.isVisible = user.isFriend != null
 
                 btnAddFriend.setOnClickListener {
-                    onclickAddFriend.invoke(user)
+                    listener?.onClickAddFriend(user)
                 }
 
                 btnMessage.setOnClickListener {
-                    onclickMessage.invoke(user)
+                    listener?.onClickMessage(user)
                 }
 
                 btnBack.setOnClickListener {
-                    onClickBack.invoke()
+                    listener?.onClickBack()
                 }
 
                 btnLogout.setOnClickListener {
-                    onClickLogout.invoke()
+                    listener?.onClickLogout()
                 }
             }
         }
@@ -165,6 +143,10 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
                 tvFriendCount.text = friendsEntity.count.toString()
                 rvFriends.adapter = friendAdapter
                 friendAdapter.updateData(friendsEntity.friends)
+
+                tvViewAll.setOnClickListener {
+                    listener?.onClickViewAllFriends()
+                }
             }
         }
     }
@@ -178,6 +160,10 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
                 tvPostsSize.text = posts.size.toString()
                 rvPost.adapter = postAdapter
                 postAdapter.updateData(posts.mapNotNull { post -> post as? PostEntity })
+
+                tvViewAll.setOnClickListener {
+                    listener?.onClickViewAllPosts()
+                }
             }
         }
     }
@@ -205,6 +191,16 @@ class ProfileAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<
 
     fun getData(): ArrayList<ProfileEntity<Any>> {
         return items
+    }
+
+    interface Listener {
+        fun onClickAddFriend(user: UserEntity)
+        fun onClickMessage(user: UserEntity)
+        fun onClickUserAvatar(user: UserEntity)
+        fun onClickViewAllFriends()
+        fun onClickViewAllPosts()
+        fun onClickBack()
+        fun onClickLogout()
     }
 
     enum class SendFriendRequestStatus {

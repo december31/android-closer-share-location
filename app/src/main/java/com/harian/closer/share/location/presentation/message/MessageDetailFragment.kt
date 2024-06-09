@@ -39,7 +39,7 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>() {
             }
         }
         setupRecyclerView()
-        handleStateChanges()
+
         viewmodel.getMessage(args.user)
         viewmodel.subscribeMessage()
     }
@@ -65,7 +65,7 @@ class MessageDetailFragment : BaseFragment<FragmentMessageDetailBinding>() {
         }
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewmodel.messagesLiveData.observe(viewLifecycleOwner) {
             messagesAdapter.updateData(it)
             binding.rvMessages.scrollToPosition(0)

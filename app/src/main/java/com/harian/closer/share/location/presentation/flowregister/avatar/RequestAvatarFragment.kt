@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.platform.SharedPrefs
-import com.harian.closer.share.location.presentation.flowregister.phonenumber.RequestPhoneNumberFragmentDirections
 import com.harian.closer.share.location.utils.FileUtils
 import com.harian.closer.share.location.utils.clearCache
 import com.harian.closer.share.location.utils.extension.Animation
@@ -48,7 +47,6 @@ class RequestAvatarFragment : BaseFragment<FragmentRequestAvatarBinding>() {
 
     override fun setupUI() {
         super.setupUI()
-        handleStateChanges()
         binding.btnPickImage.isSelected = true
         binding.btnUpload.isSelected = true
         viewModel.getUserInformation()
@@ -77,7 +75,7 @@ class RequestAvatarFragment : BaseFragment<FragmentRequestAvatarBinding>() {
         }
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is RequestAvatarViewModel.RequestAvatarState.Init -> Unit

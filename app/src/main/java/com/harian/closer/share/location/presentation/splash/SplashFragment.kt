@@ -31,11 +31,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun setupUI() {
         super.setupUI()
         handleOnBackPressed()
-        handleStateChanges()
+
         viewModel.verifyToken()
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 when (state) {

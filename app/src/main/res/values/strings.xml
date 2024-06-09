@@ -100,4 +100,9 @@
     <string name="upload">Upload</string>
     <string name="failed_to_update_phone_number_please_try_again_later">Failed to update phone number, please try again later!</string>
     <string name="there_is_no_comment_yet">There is no comment yet</string>
+    <string name="map_type">Map Type</string>
+    <string name="terrain">Terrain</string>
+    <string name="satellite">Satellite</string>
+    <string name="normal">Normal</string>
+    <string name="your_friends">Your friends</string>
 </resources>

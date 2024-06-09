@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_home_nav_fragment_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_view_all_friend_fragment"
+            app:destination="@id/view_all_friend_fragment" />
     </fragment>
 
     <fragment
@@ -101,6 +104,9 @@
         <action
             android:id="@+id/action_profile_fragment_self"
             app:destination="@id/profile_fragment" />
+        <action
+            android:id="@+id/action_profile_fragment_to_view_all_friend_fragment"
+            app:destination="@id/view_all_friend_fragment" />
     </fragment>
 
     <fragment
@@ -148,7 +154,7 @@
     <fragment
         android:id="@+id/request_avatar_fragment"
         android:name="com.harian.closer.share.location.presentation.flowregister.avatar.RequestAvatarFragment"
-        tools:layout="@layout/fragment_request_avatar" >
+        tools:layout="@layout/fragment_request_avatar">
         <action
             android:id="@+id/action_request_avatar_fragment_to_request_phone_number_fragment"
             app:destination="@id/request_phone_number_fragment" />
@@ -157,9 +163,23 @@
     <fragment
         android:id="@+id/request_phone_number_fragment"
         android:name="com.harian.closer.share.location.presentation.flowregister.phonenumber.RequestPhoneNumberFragment"
-        tools:layout="@layout/fragment_request_phone_number" >
+        tools:layout="@layout/fragment_request_phone_number">
         <action
             android:id="@+id/action_request_phone_number_fragment_to_home_nav_fragment"
             app:destination="@id/home_nav_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/view_all_friend_fragment"
+        android:name="com.harian.closer.share.location.presentation.viewall.friend.ViewAllFriendFragment"
+        tools:layout="@layout/fragment_view_all_friend">
+
+        <argument
+            android:name="user"
+            android:defaultValue="@null"
+            app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_view_all_friend_fragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
     </fragment>
 </navigation>

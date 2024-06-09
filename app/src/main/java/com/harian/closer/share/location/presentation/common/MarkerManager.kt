@@ -24,4 +24,8 @@ class MarkerManager @Inject constructor() {
     fun getMarker(user: UserEntity): Marker? {
         return markerMap[user.id]
     }
+
+    fun clearMarkers() {
+        markerMap.clear()
+    }
 }

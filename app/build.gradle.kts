@@ -116,6 +116,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-maps:18.2.0")
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
+    implementation("androidx.compose.ui:ui-unit-android:1.6.7")
 
     val cameraxVersion = "1.3.3"
     implementation("androidx.camera:camera-core:${cameraxVersion}")

@@ -16,6 +16,7 @@ import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface UserApi {
     @GET("api/v1/user")
@@ -25,10 +26,10 @@ interface UserApi {
     suspend fun getUserInformation(@Path("id") userId: Long): Response<WrappedResponse<UserDTO>>
 
     @GET("api/v1/user/friends")
-    suspend fun getFriends(): Response<WrappedResponse<FriendsResponse>>
+    suspend fun getFriends(@Query("page") page: Int, @Query("page-size") limit: Int): Response<WrappedResponse<FriendsResponse>>
 
     @GET("api/v1/user/{id}/friends")
-    suspend fun getFriends(@Path("id") userId: Long): Response<WrappedResponse<FriendsResponse>>
+    suspend fun getFriends(@Path("id") userId: Long, @Query("page") page: Int, @Query("page-size") limit: Int): Response<WrappedResponse<FriendsResponse>>
 
     @GET("api/v1/user/posts")
     suspend fun getPosts(): Response<WrappedListResponse<PostDTO>>

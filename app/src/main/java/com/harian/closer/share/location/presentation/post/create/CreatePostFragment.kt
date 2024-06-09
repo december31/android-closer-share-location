@@ -69,7 +69,6 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
 
     override fun setupUI() {
         super.setupUI()
-        handleStateChanges()
         userViewModel.fetchUserInformation()
     }
 
@@ -89,7 +88,7 @@ class CreatePostFragment : BaseFragment<FragmentCreatePostBinding>() {
     }
 
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         userViewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is UserViewModel.FunctionState.Init -> Unit

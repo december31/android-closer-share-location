@@ -53,47 +53,57 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     override fun setupUI() {
         super.setupUI()
         setupRecyclerView()
-        handleStateChanges()
         viewModel.fetchUserInformation(args.user)
     }
 
     override fun setupListener() {
         super.setupListener()
-        adapter.apply {
-            setOnClickAddFriendListener { user ->
+        adapter.setListener(object : ProfileAdapter.Listener {
+            override fun onClickAddFriend(user: UserEntity) {
                 viewModel.sendFriendRequest(user)
                 adapter.updateFriendRequestStatus(ProfileAdapter.SendFriendRequestStatus.SENDING_FRIEND_REQUEST)
             }
 
-            setOnClickMessageListener {
+            override fun onClickMessage(user: UserEntity) {
                 findGlobalNavController()?.navigateWithAnimation(
-                    ProfileFragmentDirections.actionProfileFragmentToMessageDetailFragment(it),
+                    ProfileFragmentDirections.actionProfileFragmentToMessageDetailFragment(user),
                     Animation.SlideLeft
                 )
             }
 
-            setOnClickUserAvatarListener {
+            override fun onClickUserAvatar(user: UserEntity) {
                 if (args.user == null) {
                     findGlobalNavController()?.navigateWithAnimation(
-                        HomeNavFragmentDirections.actionHomeNavFragmentToProfileFragment(it),
+                        HomeNavFragmentDirections.actionHomeNavFragmentToProfileFragment(user),
                         Animation.SlideLeft
                     )
                 } else {
                     findGlobalNavController()?.navigateWithAnimation(
-                        ProfileFragmentDirections.actionProfileFragmentSelf(it),
+                        ProfileFragmentDirections.actionProfileFragmentSelf(user),
                         Animation.SlideLeft
                     )
                 }
             }
 
-            setOnClickBackListener {
+            override fun onClickViewAllFriends() {
+                findGlobalNavController()?.navigateWithAnimation(
+                    HomeNavFragmentDirections.actionHomeNavFragmentToViewAllFriendFragment(args.user),
+                    Animation.SlideUp
+                )
+            }
+
+            override fun onClickViewAllPosts() {
+//                ProfileFragmentDirections.actionProfileFragmentToViewAllPostFragment(it)
+            }
+
+            override fun onClickBack() {
                 findGlobalNavController()?.popBackStack()
             }
 
-            setOnClickLogoutListener {
+            override fun onClickLogout() {
                 viewModel.logout()
             }
-        }
+        })
 
         sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
             if (it) {
@@ -116,7 +126,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         binding.rv.adapter = adapter
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is ProfileViewModel.ProfileState.Init -> adapter.updateData(it.defaultData)

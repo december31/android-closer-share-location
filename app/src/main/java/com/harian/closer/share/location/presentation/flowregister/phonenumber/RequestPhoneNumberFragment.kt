@@ -23,11 +23,6 @@ class RequestPhoneNumberFragment : BaseFragment<FragmentRequestPhoneNumberBindin
 
     private val viewModel: RequestPhoneNumberViewModel by viewModels()
 
-    override fun setupUI() {
-        super.setupUI()
-        handleStateChanges()
-    }
-
     override fun setupListener() {
         super.setupListener()
         binding.apply {
@@ -46,7 +41,7 @@ class RequestPhoneNumberFragment : BaseFragment<FragmentRequestPhoneNumberBindin
         }
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is RequestPhoneNumberViewModel.RequestPhoneNumberState.Init -> Unit

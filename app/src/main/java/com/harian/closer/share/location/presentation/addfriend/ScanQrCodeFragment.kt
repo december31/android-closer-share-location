@@ -87,7 +87,6 @@ class ScanQrCodeFragment : BaseFragment<FragmentScanQrCodeBinding>() {
             btnGallery.isSelected = true
         }
         requestPermission()
-        handleStateChanges()
     }
 
     override fun setupListener() {
@@ -109,7 +108,7 @@ class ScanQrCodeFragment : BaseFragment<FragmentScanQrCodeBinding>() {
         }
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is ScanQrCodeViewModel.GetUserInformationState.Init -> Unit

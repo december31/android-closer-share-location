@@ -5,6 +5,7 @@ import com.harian.closer.share.location.presentation.homenav.home.PostAdapter
 import com.harian.closer.share.location.presentation.homenav.notification.adapter.FriendRequestAdapter
 import com.harian.closer.share.location.presentation.post.comment.CommentAdapter
 import com.harian.closer.share.location.presentation.search.UserAdapter
+import com.harian.closer.share.location.presentation.viewall.friend.FriendAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,5 +33,10 @@ object AdapterModule {
     @Provides
     fun provideCommentAdapter(sharedPrefs: SharedPrefs): CommentAdapter {
         return CommentAdapter(sharedPrefs.getToken())
+    }
+
+    @Provides
+    fun provideFriendAdapter(sharedPrefs: SharedPrefs): FriendAdapter {
+        return FriendAdapter(sharedPrefs.getToken())
     }
 }

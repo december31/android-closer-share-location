@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.presentation.homenav.home.HomeViewModel
 import com.harian.closer.share.location.presentation.post.comment.CommentBottomSheet
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentPostDetailsBinding
@@ -25,13 +26,14 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
         get() = R.layout.fragment_post_details
 
     private val viewModel by viewModels<PostDetailsViewModel>()
+    private val homeViewModel by viewModels<HomeViewModel>()
     private val args by navArgs<PostDetailsFragmentArgs>()
     private lateinit var adapter: PostDetailsAdapter
 
     override fun setupUI() {
         super.setupUI()
         setupRecyclerView()
-        handleStateChanges()
+
         fetchData()
     }
 
@@ -60,7 +62,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
                 }
 
                 override fun onClickLike(postEntity: PostEntity) {
-
+                    homeViewModel.likePost(postEntity)
                 }
             })
         }
@@ -75,13 +77,23 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
         }
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is PostDetailsViewModel.FunctionState.Init -> Unit
                 is PostDetailsViewModel.FunctionState.IsLoading -> handleIsLoading(it.isLoading)
                 is PostDetailsViewModel.FunctionState.ErrorGetPost -> handleErrorGetPost()
                 is PostDetailsViewModel.FunctionState.SuccessGetPost -> handleSuccessGetPost(it.postDataList)
+            }
+        }.launchIn(lifecycleScope)
+
+        homeViewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                is HomeViewModel.ApiState.ErrorUnlikePost -> showToast("Error Unlike Post")
+                is HomeViewModel.ApiState.ErrorLikePost -> showToast("Error Like Post")
+                is HomeViewModel.ApiState.SuccessLikePost -> showToast("Success Like Post")
+                is HomeViewModel.ApiState.SuccessUnlikePost -> showToast("Success Unlike Post")
+                else -> Unit
             }
         }.launchIn(lifecycleScope)
     }

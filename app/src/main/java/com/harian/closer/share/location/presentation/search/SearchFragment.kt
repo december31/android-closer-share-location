@@ -38,10 +38,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
     override fun setupUI() {
         super.setupUI()
         setupRecyclerView()
-        handleStateChanges()
+
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is SearchViewModel.SearchState.Init -> Unit

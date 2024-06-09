@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun setupUI() {
         super.setupUI()
         setupRecyclerView()
-        handleStateChanges()
+
         viewModel.fetchPopularPosts()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -96,7 +96,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.rvPost.adapter = adapter
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is HomeViewModel.ApiState.Init -> Unit

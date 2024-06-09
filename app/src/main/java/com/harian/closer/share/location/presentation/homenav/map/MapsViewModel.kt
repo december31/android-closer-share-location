@@ -8,9 +8,11 @@ import com.harian.closer.share.location.domain.location.usecase.DisposeObserverU
 import com.harian.closer.share.location.domain.location.usecase.SubscribeFriendsLocationUpdatesUseCase
 import com.harian.closer.share.location.domain.location.usecase.UpdateLocationUseCase
 import com.harian.closer.share.location.domain.user.entity.UserEntity
+import com.harian.closer.share.location.domain.user.usecase.GetFriendsUseCase
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.utils.extension.log
+import com.harian.closer.share.location.utils.runOnMainThread
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,10 +28,16 @@ class MapsViewModel @Inject constructor(
     private val updateLocationUseCase: UpdateLocationUseCase,
     private val disposeObserverUseCase: DisposeObserverUseCase,
     private val getUserInformationUseCase: GetUserInformationUseCase,
+    private val getFriendsUseCase: GetFriendsUseCase,
     val sharedPrefs: SharedPrefs
 ) : ViewModel() {
     private val _state = MutableStateFlow<NetworkState>(NetworkState.Init)
     val state: StateFlow<NetworkState> get() = _state
+
+    private val _getFriendsState = MutableStateFlow<NetworkState>(NetworkState.Init)
+    val getFriendsState: StateFlow<NetworkState> by lazy {
+        _getFriendsState
+    }
 
     fun subscribeForFriendsLocationUpdates() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -62,8 +70,30 @@ class MapsViewModel @Inject constructor(
                 .catch { exception ->
                     exception.printStackTrace()
                 }
-                .collect {
+                .collect {}
+        }
+    }
 
+    fun fetchFriends() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getUserInformationUseCase.execute()
+                .catch {
+                    it.printStackTrace()
+                }
+                .collect {
+                    (it as? BaseResult.Success)?.data?.let { userEntity ->
+                        getFriendsUseCase.execute(userEntity)
+                            .catch {
+                                it.printStackTrace()
+                            }
+                            .collect {
+                                (it as? BaseResult.Success)?.data?.let { friendEntity ->
+                                    runOnMainThread {
+                                        _getFriendsState.value = NetworkState.GotFriends(friendEntity.friends.map { it.information })
+                                    }
+                                }
+                            }
+                    }
                 }
         }
     }
@@ -75,5 +105,6 @@ class MapsViewModel @Inject constructor(
     sealed class NetworkState {
         data object Init : NetworkState()
         data class GotLocationUpdate(val user: UserEntity) : NetworkState()
+        data class GotFriends(val friends: List<UserEntity>) : NetworkState()
     }
 }

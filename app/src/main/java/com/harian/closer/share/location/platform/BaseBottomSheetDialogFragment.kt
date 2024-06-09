@@ -49,6 +49,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewDataBinding> : BottomSheetD
         setupSystemBarBehavior()
         setupData()
         setupUI()
+        handleStateChanges()
         setupListener()
     }
 
@@ -57,7 +58,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewDataBinding> : BottomSheetD
     protected val binding: T get() = _binding!!
 
     protected open fun setupUI() {}
-
+    protected open fun handleStateChanges() {}
     protected open fun setupData() {}
     protected open fun setupListener() {}
 

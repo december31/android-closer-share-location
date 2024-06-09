@@ -12,7 +12,9 @@ import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.AcceptFriendRequestUseCase
 import com.harian.closer.share.location.domain.user.usecase.DenyFriendRequestUseCase
 import com.harian.closer.share.location.domain.user.usecase.GetFriendRequestsUseCase
+import com.harian.closer.share.location.utils.runOnMainThread
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -33,17 +35,27 @@ class FriendRequestViewModel @Inject constructor(
     private val _loadingState = MutableStateFlow<LoadingState>(LoadingState.Init)
     val loadingState: StateFlow<LoadingState> get() = _loadingState
 
+    private val _globalLoadingState = MutableStateFlow<Boolean>(false)
+    val globalLoadingState: StateFlow<Boolean> get() = _globalLoadingState
+
     fun fetchFriendRequest() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             getFriendRequestUseCase.execute()
+                .onStart {
+                    runOnMainThread {
+                        _globalLoadingState.value = true
+                    }
+                }
                 .catch {
                     it.printStackTrace()
+                    _globalLoadingState.value = false
                 }
                 .collect { baseResult ->
                     when (baseResult) {
                         is BaseResult.Success -> _state.value = ApiState.SuccessGetFriendRequest(baseResult.data)
                         is BaseResult.Error -> _state.value = ApiState.ErrorGetFriendRequest(baseResult.rawResponse)
                     }
+                    _globalLoadingState.value = false
                 }
         }
     }
@@ -76,7 +88,7 @@ class FriendRequestViewModel @Inject constructor(
                     _loadingState.emit(LoadingState.CancelLoading(user))
                 }
                 .collect {
-                    when(it) {
+                    when (it) {
                         is BaseResult.Error -> _state.emit(ApiState.ErrorDenyFriendRequest(it.rawResponse))
                         is BaseResult.Success -> _state.emit(ApiState.SuccessDenyFriendRequest(user))
                     }

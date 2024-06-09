@@ -67,9 +67,9 @@ class UserRepositoryImpl(private val userApi: UserApi) : UserRepository {
         }
     }
 
-    override suspend fun getFriends(): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>> {
+    override suspend fun getFriends(page: Int, limit: Int): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>> {
         return flow {
-            val response = userApi.getFriends()
+            val response = userApi.getFriends(page, limit)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
                 val friends = body?.data?.let {
@@ -92,9 +92,9 @@ class UserRepositoryImpl(private val userApi: UserApi) : UserRepository {
         }
     }
 
-    override suspend fun getFriends(user: UserEntity): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>> {
+    override suspend fun getFriends(user: UserEntity, page: Int, limit: Int): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>> {
         return flow {
-            val response = userApi.getFriends(user.id!!)
+            val response = userApi.getFriends(user.id!!, page, limit)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
                 val friends = body?.data?.let {

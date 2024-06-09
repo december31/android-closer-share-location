@@ -19,8 +19,8 @@ import okhttp3.MultipartBody
 interface UserRepository {
     suspend fun getUserInformation(): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
     suspend fun getUserInformation(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
-    suspend fun getFriends(): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>>
-    suspend fun getFriends(user: UserEntity): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>>
+    suspend fun getFriends(page: Int, limit: Int): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>>
+    suspend fun getFriends(user: UserEntity, page: Int, limit: Int): Flow<BaseResult<FriendsEntity, WrappedResponse<FriendsResponse>>>
     suspend fun getPosts(): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostDTO>>>
     suspend fun getPosts(user: UserEntity): Flow<BaseResult<List<PostEntity>, WrappedListResponse<PostDTO>>>
     suspend fun sendFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>

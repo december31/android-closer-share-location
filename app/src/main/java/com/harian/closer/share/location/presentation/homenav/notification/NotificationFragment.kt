@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.homenav.notification
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -35,7 +36,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
 
     override fun setupUI() {
         super.setupUI()
-        handleStateChanges()
         setupRecyclerView()
         viewModel.fetchFriendRequest()
     }
@@ -55,14 +55,13 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
             override fun onClickDeny(userEntity: UserEntity) {
                 viewModel.denyFriendRequest(userEntity)
             }
-
         })
         binding.apply {
             rvFriendRequest.adapter = friendRequestAdapter
         }
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is FriendRequestViewModel.ApiState.Init -> Unit
@@ -81,6 +80,10 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
                 is FriendRequestViewModel.LoadingState.CancelLoading -> friendRequestAdapter.cancelLoading(it.user)
                 is FriendRequestViewModel.LoadingState.StartLoading -> friendRequestAdapter.startLoading(it.user)
             }
+        }.launchIn(lifecycleScope)
+
+        viewModel.globalLoadingState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            binding.frLoading.isVisible = it
         }.launchIn(lifecycleScope)
 
         sharedViewModel.centerActionButtonClickLiveData.observe(viewLifecycleOwner) {
@@ -118,5 +121,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
 
     private fun handleSuccessGetFriendRequest(friendRequests: List<FriendRequestEntity>) {
         friendRequestAdapter.updateData(friendRequests)
+        binding.icNoNotification.isVisible = friendRequests.isEmpty()
     }
 }

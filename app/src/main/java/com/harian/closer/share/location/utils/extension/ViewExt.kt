@@ -1,6 +1,10 @@
+@file:Suppress("unused")
+
 package com.harian.closer.share.location.utils.extension
 
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +54,22 @@ fun View.invisibleAllChildViewIf(condition: (View) -> Boolean) {
             it.invisibleAllChildViewIf(condition)
         }
     }
+}
+
+fun View.toBitmap(): Bitmap {
+    this.measure(
+        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+    )
+    this.layout(0, 0, this.measuredWidth, this.measuredHeight);
+
+
+    val returnedBitmap = Bitmap.createBitmap(this.measuredWidth, this.measuredHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(returnedBitmap)
+    val bgDrawable = this.background
+    if (bgDrawable != null) bgDrawable.draw(canvas) else canvas.drawColor(Color.TRANSPARENT)
+    this.draw(canvas)
+    return returnedBitmap
 }
 
 fun ImageView.glideLoadImage(resId: Int) {

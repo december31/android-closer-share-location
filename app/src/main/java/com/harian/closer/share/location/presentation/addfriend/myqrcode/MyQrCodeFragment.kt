@@ -33,7 +33,6 @@ class MyQrCodeFragment : BaseFragment<FragmentMyQrCodeBinding>() {
             btnScan.isSelected = true
             btnShare.isSelected = true
         }
-        handleStateChanges()
         viewModel.fetchUserInformation()
     }
 
@@ -54,7 +53,7 @@ class MyQrCodeFragment : BaseFragment<FragmentMyQrCodeBinding>() {
         viewModel.resetStates()
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is MyQrCodeViewModel.GetUserInformationState.Init -> Unit

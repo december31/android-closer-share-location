@@ -86,7 +86,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             setState(loginState)
         }
         handleOnBackPressed()
-        handleStateChanges()
+
     }
 
     override fun setupListener() {
@@ -132,7 +132,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         })
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 when (state) {

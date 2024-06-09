@@ -40,7 +40,6 @@ class CommentBottomSheet : BaseBottomSheetDialogFragment<BottomSheetCommentBindi
 
     override fun setupUI() {
         super.setupUI()
-        handleStateChanges()
         val postId = getPostId() ?: return
         setupRecyclerView()
         viewModel.fetchPostComments(postId)
@@ -67,7 +66,7 @@ class CommentBottomSheet : BaseBottomSheetDialogFragment<BottomSheetCommentBindi
         }
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
                 is CommentViewModel.State.Init -> Unit

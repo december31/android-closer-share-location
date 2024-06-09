@@ -16,10 +16,21 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.presentation.widget.LoadingDialog
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     private var toast: Toast? = null
+    private var viewModel: BaseViewModel? = null
+    private val loadingDialog by lazy {
+        LoadingDialog()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +46,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         setupSystemBarBehavior()
         setupData()
         setupUI()
+        handleStateChanges()
         setupListener()
+        setupLoading()
     }
 
     protected abstract val layoutId: Int
@@ -43,9 +56,29 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected val binding: T get() = _binding!!
 
     protected open fun setupUI() {}
-
+    protected open fun handleStateChanges() {}
     protected open fun setupData() {}
     protected open fun setupListener() {}
+
+    /**
+     * override this function to setup the loading state
+     */
+    protected open fun getFragmentViewModel(): BaseViewModel? = viewModel
+
+    private fun setupLoading() {
+        this.viewModel = getFragmentViewModel()
+        viewModel?.loadingState?.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)?.onEach { isShowLoading ->
+            if (isShowLoading) {
+                if (!loadingDialog.isAdded) {
+                    loadingDialog.show(childFragmentManager, null)
+                }
+            } else {
+                if (loadingDialog.isAdded) {
+                    loadingDialog.dismiss()
+                }
+            }
+        }?.launchIn(lifecycleScope)
+    }
 
     @SuppressLint("WrongConstant")
     protected open fun setupSystemBarBehavior() {
