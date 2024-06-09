@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UserEntity(
     val id: Long?,
-    val name: String?,
+    var name: String?,
     val email: String?,
     val avatar: String?,
     val gender: String?,

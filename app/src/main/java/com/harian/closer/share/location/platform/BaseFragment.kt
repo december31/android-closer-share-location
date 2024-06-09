@@ -71,8 +71,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         this.viewModel = getFragmentViewModel()
         viewModel?.loadingState?.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)?.onEach { isShowLoading ->
             if (isShowLoading) {
-                if (!loadingDialog.isAdded) {
-                    loadingDialog.show(childFragmentManager, null)
+                if (childFragmentManager.findFragmentByTag(LoadingDialog::class.qualifiedName) != null) {
+                    loadingDialog.show(childFragmentManager, LoadingDialog::class.qualifiedName)
                 }
             } else {
                 if (loadingDialog.isAdded) {

@@ -10,6 +10,7 @@ import com.harian.closer.share.location.data.user.remote.api.UserApi
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
+import com.harian.closer.share.location.data.user.remote.dto.UpdatePasswordRequest
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
@@ -249,6 +250,45 @@ class UserRepositoryImpl(private val userApi: UserApi) : UserRepository {
     override suspend fun updateInformation(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
         return flow {
             val response = userApi.updateInformation(user.toDTO())
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                body?.data?.toEntity()?.let {
+                    emit(BaseResult.Success(it))
+                }
+            } else {
+                val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
+                val error = Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun updateUsername(username: String): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
+        return flow {
+            getUserInformation()
+                .collect { result ->
+                    (result as? BaseResult.Success)?.data?.let {
+                        val user = it.apply { name = username }
+                        val response = userApi.updateInformation(user.toDTO())
+
+                        if (response.isSuccessful && response.code() in 200 until 400) {
+                            val body = response.body()
+                            body?.data?.toEntity()?.let {
+                                emit(BaseResult.Success(it))
+                            }
+                        } else {
+                            val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
+                            val error = Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                            emit(BaseResult.Error(error))
+                        }
+                    }
+                }
+        }
+    }
+
+    override suspend fun updatePassword(request: UpdatePasswordRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
+        return flow {
+            val response = userApi.updatePassword(request)
             if (response.isSuccessful && response.code() in 200 until 400) {
                 val body = response.body()
                 body?.data?.toEntity()?.let {

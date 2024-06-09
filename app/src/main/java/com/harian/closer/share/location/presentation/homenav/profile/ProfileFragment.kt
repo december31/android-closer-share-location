@@ -103,7 +103,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
             override fun onClickSetting() {
                 findGlobalNavController()?.navigateWithAnimation(
                     HomeNavFragmentDirections.actionHomeNavFragmentToSettingFragment(),
-                    Animation.SlideUp
+                    Animation.SlideLeft
                 )
             }
         })

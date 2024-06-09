@@ -14,6 +14,7 @@ import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.presentation.homenav.home.HomeViewModel
 import com.harian.closer.share.location.presentation.post.comment.CommentBottomSheet
+import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentPostDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +52,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
             setListener(object : PostDetailsAdapter.Listener {
                 override fun onClickImage(image: ImageEntity) {
                     viewModel.post?.images?.let {
-                        findNavController().navigate(
+                        findNavController().navigateWithAnimation(
                             PostDetailsFragmentDirections.actionPostDetailsFragmentToImagesViewerFragment(it.toTypedArray())
                         )
                     }

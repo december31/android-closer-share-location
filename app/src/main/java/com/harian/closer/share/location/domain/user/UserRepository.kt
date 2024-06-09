@@ -6,6 +6,7 @@ import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
+import com.harian.closer.share.location.data.user.remote.dto.UpdatePasswordRequest
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
@@ -30,5 +31,7 @@ interface UserRepository {
     suspend fun denyFriendRequest(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
     suspend fun updateAvatar(part: MultipartBody.Part): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
     suspend fun updateInformation(user: UserEntity): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
+    suspend fun updateUsername(username: String): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
+    suspend fun updatePassword(request: UpdatePasswordRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>>
     suspend fun logout()
 }

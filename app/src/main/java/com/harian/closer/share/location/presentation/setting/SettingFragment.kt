@@ -20,7 +20,9 @@ import com.harian.closer.share.location.presentation.permission.PermissionManage
 import com.harian.closer.share.location.presentation.setting.avatar.CropImageDialog
 import com.harian.closer.share.location.presentation.setting.avatar.SelectImageBottomSheet
 import com.harian.closer.share.location.utils.clearCache
+import com.harian.closer.share.location.utils.extension.Animation
 import com.harian.closer.share.location.utils.extension.glideLoadImage
+import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.BuildConfig
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentSettingBinding
@@ -81,8 +83,26 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
                 viewModel.logout()
             }
 
+            icQrCode.setOnClickListener {
+                findNavController().navigateWithAnimation(SettingFragmentDirections.actionSettingFragmentToMyQrCodeFragment(), Animation.SlideUp)
+            }
+
             viewRowAvatar.setOnClickListener {
                 makeUISelectImage()
+            }
+
+            viewRowUserName.setOnClickListener {
+                findNavController().navigateWithAnimation(
+                    SettingFragmentDirections.actionSettingFragmentToUpdateUsernameFragment(),
+                    Animation.SlideLeft
+                )
+            }
+
+            viewRowModifyPassword.setOnClickListener {
+                findNavController().navigateWithAnimation(
+                    SettingFragmentDirections.actionSettingFragmentToUpdatePasswordFragment(),
+                    Animation.SlideLeft
+                )
             }
         }
     }

@@ -123,4 +123,12 @@
     <string name="allow">Allow</string>
     <string name="permission_location_title">“ Closer ” Do you want to allow access to your location?</string>
     <string name="permission_location_description">When to get location permission for your device. Please open it manually. Otherwise. It cannot be used normally.</string>
+    <string name="update_username">Update username</string>
+    <string name="enter_your_new_username">Enter your new username</string>
+    <string name="no_more_than_32_characters_among_chinese_letters_and_symbols">No more than 32 characters among chinese, letters and symbols(_-@).</string>
+    <string name="success_update_username">Success Update Username</string>
+    <string name="update_password">Update Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="success_update_password">Success Update Password</string>
 </resources>

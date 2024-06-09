@@ -6,6 +6,7 @@ import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
+import com.harian.closer.share.location.data.user.remote.dto.UpdatePasswordRequest
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -29,7 +30,11 @@ interface UserApi {
     suspend fun getFriends(@Query("page") page: Int, @Query("page-size") limit: Int): Response<WrappedResponse<FriendsResponse>>
 
     @GET("api/v1/user/{id}/friends")
-    suspend fun getFriends(@Path("id") userId: Long, @Query("page") page: Int, @Query("page-size") limit: Int): Response<WrappedResponse<FriendsResponse>>
+    suspend fun getFriends(
+        @Path("id") userId: Long,
+        @Query("page") page: Int,
+        @Query("page-size") limit: Int
+    ): Response<WrappedResponse<FriendsResponse>>
 
     @GET("api/v1/user/posts")
     suspend fun getPosts(): Response<WrappedListResponse<PostDTO>>
@@ -58,4 +63,7 @@ interface UserApi {
 
     @PATCH("api/v1/user/update")
     suspend fun updateInformation(@Body user: UserDTO): Response<WrappedResponse<UserDTO>>
+
+    @PATCH("api/v1/user/update-password")
+    suspend fun updatePassword(@Body request: UpdatePasswordRequest): Response<WrappedResponse<UserDTO>>
 }

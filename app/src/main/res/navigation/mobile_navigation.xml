@@ -188,5 +188,23 @@
     <fragment
         android:id="@+id/setting_fragment"
         android:name="com.harian.closer.share.location.presentation.setting.SettingFragment"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_setting_fragment_to_update_username_fragment"
+            app:destination="@id/update_username_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_my_qr_code_fragment"
+            app:destination="@id/my_qr_code_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_update_password_fragment"
+            app:destination="@id/update_password_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/update_username_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.username.UpdateUsernameFragment"
+        tools:layout="@layout/fragment_update_username" />
+    <fragment
+        android:id="@+id/update_password_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.password.UpdatePasswordFragment"
+        tools:layout="@layout/fragment_update_password" />
 </navigation>
