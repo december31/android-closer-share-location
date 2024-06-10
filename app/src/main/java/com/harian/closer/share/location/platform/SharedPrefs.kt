@@ -2,6 +2,7 @@ package com.harian.closer.share.location.platform
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.android.gms.maps.GoogleMap
 import com.harian.closer.share.location.data.common.utils.Token
 import com.harian.closer.share.location.utils.extension.toBearerToken
 
@@ -12,6 +13,7 @@ class SharedPrefs(context: Context) {
         private const val PREF_TOKEN = "user_token"
         private const val PREF_REFRESH_TOKEN = "user_refresh_token"
         private const val PREF_IS_RESETTING_PASSWORD = "is_resetting_password"
+        private const val PREF_MAP_TYPE = "map_type"
     }
 
     private val sharedPref: SharedPreferences =
@@ -37,14 +39,14 @@ class SharedPrefs(context: Context) {
         get() = get(PREF_IS_RESETTING_PASSWORD, Boolean::class.java)
         set(value) = put(PREF_IS_RESETTING_PASSWORD, value)
 
-    private fun <T> get(key: String, clazz: Class<T>): T =
+    private fun <T> get(key: String, clazz: Class<T>, default: T? = null): T =
         when (clazz) {
             String::class.java -> sharedPref.getString(key, "")
-            Boolean::class.java -> sharedPref.getBoolean(key, false)
-            Float::class.java -> sharedPref.getFloat(key, -1f)
-            Double::class.java -> sharedPref.getFloat(key, -1f)
-            Int::class.java -> sharedPref.getInt(key, -1)
-            Long::class.java -> sharedPref.getLong(key, -1L)
+            Boolean::class.java -> sharedPref.getBoolean(key, (default ?: false) as Boolean)
+            Float::class.java -> sharedPref.getFloat(key, (default ?: -1f) as Float)
+            Double::class.java -> sharedPref.getFloat(key, (default ?: -1f) as Float)
+            Int::class.java -> sharedPref.getInt(key, (default ?: -1) as Int)
+            Long::class.java -> sharedPref.getLong(key, (default ?: -1L) as Long)
             else -> null
         } as T
 
@@ -61,10 +63,18 @@ class SharedPrefs(context: Context) {
         editor.apply()
     }
 
-    fun clear() {
+    fun clearTokens() {
         sharedPref.edit().run {
             remove(PREF_TOKEN)
             remove(PREF_REFRESH_TOKEN)
         }.apply()
+    }
+
+    fun setMapType(mapType: Int) {
+        put(PREF_MAP_TYPE, mapType)
+    }
+
+    fun getMapType(): Int {
+        return get(PREF_MAP_TYPE, Int::class.java, GoogleMap.MAP_TYPE_NORMAL)
     }
 }

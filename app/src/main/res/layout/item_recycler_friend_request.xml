@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/bg_radius_12"
+        android:backgroundTint="@color/white"
+        android:elevation="4dp"
+        android:padding="12dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerVertical="true"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_toEndOf="@id/avatar"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            tools:text="@tools:sample/full_names" />
+
+        <LinearLayout
+            android:id="@+id/ln_mutual_friends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/avatar"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar_friend_1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:translationZ="1dp"
+                app:shapeAppearanceOverlay="@style/RoundedImageView"
+                tools:src="@tools:sample/avatars" />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar_friend_2"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="-8dp"
+                app:shapeAppearanceOverlay="@style/RoundedImageView"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/text_content"
+                android:textSize="14sp"
+                tools:text="10 mutual friends" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ctl_buttons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ln_mutual_friends"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@id/avatar"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:id="@+id/ln_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_accept"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_gradiant_primary"
+                    android:letterSpacing="0.05"
+                    android:text="@string/accept"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_deny"
+                    android:layout_width="0dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_gradiant_primary"
+                    android:letterSpacing="0.05"
+                    android:text="@string/deny"
+                    android:textColor="@color/text_content"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/bg_grey" />
+
+            </LinearLayout>
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_animation"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingBottom="14dp"
+                android:scaleType="centerCrop"
+                android:translationZ="2dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/ln_buttons"
+                app:layout_constraintTop_toTopOf="@id/ln_buttons"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/white_dot_loading"
+                tools:visibility="visible" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginBottom="8dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:elevation="2dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ImageRadius12"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            style="@style/Body3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="6dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/text_primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/avatar"
+            tools:text="@tools:sample/full_names" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

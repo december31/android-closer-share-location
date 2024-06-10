@@ -86,7 +86,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
             setState(loginState)
         }
         handleOnBackPressed()
-        handleStateChanges()
+
     }
 
     override fun setupListener() {
@@ -132,7 +132,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         })
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 when (state) {
@@ -179,7 +179,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun handleSuccessRegister() {
         showToast(getString(R.string.register_successful))
-        findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToMainNavFragment())
+        findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToRequestAvatarFragment())
     }
 
     private fun handleErrorRegister(rawResponse: WrappedResponse<RegisterResponse>?) {
@@ -217,7 +217,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private fun handleSuccessLogin() {
         showToast(getString(R.string.login_successful))
-        findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToMainNavFragment())
+        findNavController().navigateWithAnimation(LoginFragmentDirections.actionLoginFragmentToHomeNavFragment())
     }
 
     fun authenticate() {

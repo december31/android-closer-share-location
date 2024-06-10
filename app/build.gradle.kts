@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -14,6 +16,7 @@ plugins {
     id("com.google.firebase.appdistribution")
     id("com.google.firebase.firebase-perf")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -58,24 +61,31 @@ android {
             )
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["firebasePerformanceLogcatEnabled"] = false
-            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
             signingConfig = signingConfigs.getByName("release")
         }
         debug {
             manifestPlaceholders["crashlyticsCollectionEnabled"] = false
             manifestPlaceholders["firebasePerformanceLogcatEnabled"] = true
-            manifestPlaceholders["MAPS_API_KEY"] = "AIzaSyCqpHHNZ1jLfRMSO5mpDYn0pfsR96U3gi8"
         }
     }
 
     productFlavors {
         create("appDev") {
-            buildConfigField("String", "API_BASE_URL", "\"http://dec31-58884.portmap.io:51147/closer/\"")
+            buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
+            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"wss://solely-pleased-wallaby.ngrok-free.app/closer/websocket/v1\"")
         }
 
         create("appProduct") {
             buildConfigField("String", "API_BASE_URL", "\"https://solely-pleased-wallaby.ngrok-free.app/closer/\"")
+            buildConfigField("String", "WEB_SOCKET_END_POINT", "\"wss://solely-pleased-wallaby.ngrok-free.app/closer/websocket/v1\"")
         }
+    }
+
+    secrets {
+        propertiesFileName = "secrets.properties"
+        defaultPropertiesFileName = "local.defaults.properties"
+        ignoreList.add("keyToIgnore")
+        ignoreList.add("sdk.*")
     }
 
     compileOptions {
@@ -101,25 +111,37 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
+    implementation("androidx.compose.ui:ui-unit-android:1.6.7")
+
+    val cameraxVersion = "1.3.3"
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation("androidx.camera:camera-video:${cameraxVersion}")
+
+    implementation("androidx.camera:camera-view:${cameraxVersion}")
+    implementation("androidx.camera:camera-extensions:${cameraxVersion}")
+    // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
 
+
+    // firebase
     implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-
-    // crashlytics
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
-
-    // Performance Monitoring
+    implementation("com.google.firebase:firebase-messaging")
     implementation("com.google.firebase:firebase-perf")
 
-    implementation("com.airbnb.android:lottie:6.2.0")
+    implementation("com.airbnb.android:lottie:6.4.0")
 
     implementation("androidx.datastore:datastore-preferences-core:1.0.0")
 
@@ -128,7 +150,7 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 
-    val navVersion = "2.7.6"
+    val navVersion = "2.7.7"
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
@@ -141,14 +163,29 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 
     // coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
-    // https://mvnrepository.com/artifact/com.google.android.material/material
     runtimeOnly("com.google.android.material:material:1.11.0")
+
+    // stomp client using krossbow (flow)
+    implementation("org.hildan.krossbow:krossbow-stomp-core:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-ktor:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-builtin:5.12.0")
+    implementation("org.hildan.krossbow:krossbow-websocket-okhttp:5.12.0")
+
+    // stomp client using StompProtocolAndroid (rxAndroid)
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
+
+    // qrcode generator
+    implementation("com.google.zxing:core:3.5.1")
+
+    // image cropper
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
 }

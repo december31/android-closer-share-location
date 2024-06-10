@@ -5,9 +5,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.harian.closer.share.location.platform.AppManager
 import com.harian.closer.share.location.platform.BaseFragment
+import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentSplashBinding
@@ -31,25 +31,25 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun setupUI() {
         super.setupUI()
         handleOnBackPressed()
-        handleStateChanges()
+
         viewModel.verifyToken()
     }
 
-    private fun handleStateChanges() {
+    override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { state ->
                 when (state) {
                     SplashViewModel.FunctionState.Init -> Unit
                     SplashViewModel.FunctionState.ErrorVerifyToken -> {
-                        findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
+                        findGlobalNavController()?.navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToLoginFragment())
                     }
 
                     SplashViewModel.FunctionState.SuccessVerifyToken -> {
-                        findNavController().navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToMainNavFragment())
+                        findGlobalNavController()?.navigateWithAnimation(SplashFragmentDirections.actionSplashFragmentToHomeNavFragment())
                     }
 
                     SplashViewModel.FunctionState.NeedResetPassword -> {
-                        findNavController().navigateWithAnimation(
+                        findGlobalNavController()?.navigateWithAnimation(
                             SplashFragmentDirections.actionSplashFragmentToLoginFragment(
                                 true
                             )
@@ -58,6 +58,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                 }
             }
             .launchIn(lifecycleScope)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.resetState()
     }
 
     private fun handleOnBackPressed() {

@@ -18,8 +18,7 @@ class ResetPasswordRepositoryImpl(private val resetPasswordApi: ResetPasswordApi
                 emit(BaseResult.Success(Unit))
             } else {
                 val type = object : TypeToken<WrappedResponse<Unit>>() {}.type
-                val error =
-                    Gson().fromJson<WrappedResponse<Unit>>(response.errorBody()?.charStream(), type)
+                val error = Gson().fromJson<WrappedResponse<Unit>>(response.errorBody()?.charStream(), type)
                 emit(BaseResult.Error(error))
             }
         }

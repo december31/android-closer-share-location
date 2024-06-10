@@ -1,0 +1,143 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ic_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:src="@drawable/ic_arrow_right" />
+
+            <TextView
+                style="@style/Title1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/icQrCode"
+                android:layout_toEndOf="@id/ic_back"
+                android:text="@string/update_address"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/icQrCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingVertical="12dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="16dp"
+                android:src="@drawable/ic_qr_code"
+                android:visibility="invisible"
+                app:tint="@color/text_primary" />
+
+        </RelativeLayout>
+
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/lnBottomDetailsLocation"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <ImageView
+            android:id="@+id/imgReticle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_reticle"
+            app:layout_constraintBottom_toBottomOf="@id/map"
+            app:layout_constraintEnd_toEndOf="@id/map"
+            app:layout_constraintStart_toStartOf="@id/map"
+            app:layout_constraintTop_toTopOf="@id/map" />
+
+        <ImageButton
+            android:id="@+id/btnMapType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="@color/white"
+            android:contentDescription="@string/app_name"
+            android:elevation="24dp"
+            android:outlineProvider="paddedBounds"
+            android:padding="8dp"
+            android:src="@drawable/ic_map_type"
+            app:layout_constraintBottom_toTopOf="@id/btnFocusCurrentLocation"
+            app:layout_constraintEnd_toEndOf="@id/map" />
+
+        <ImageButton
+            android:id="@+id/btnFocusCurrentLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="@color/white"
+            android:elevation="24dp"
+            android:outlineProvider="paddedBounds"
+            android:padding="8dp"
+            android:src="@drawable/ic_focus_current_location"
+            app:layout_constraintBottom_toTopOf="@id/lnBottomDetailsLocation"
+            app:layout_constraintEnd_toEndOf="@id/map" />
+
+        <ImageButton
+            android:id="@+id/btnToggleFullScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="@color/white"
+            android:elevation="24dp"
+            android:outlineProvider="paddedBounds"
+            android:padding="8dp"
+            android:src="@drawable/ic_toggle_full_screen"
+            app:layout_constraintBottom_toTopOf="@id/lnBottomDetailsLocation"
+            app:layout_constraintStart_toStartOf="@id/map" />
+
+        <LinearLayout
+            android:id="@+id/lnBottomDetailsLocation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="120dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHeight_percent="0.55">
+
+            <TextView
+                style="@style/Body3"
+                android:layout_width="383dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/address"
+                android:textColor="@color/text_primary" />
+
+            <EditText
+                android:id="@+id/edtAddress"
+                style="@style/CommonEditText"
+                android:layout_marginTop="8dp"
+                android:autofillHints="password"
+                android:hint="@string/enter_address"
+                android:inputType="text" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

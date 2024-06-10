@@ -1,8 +1,8 @@
 package com.harian.closer.share.location.data.authenticate
 
-import com.harian.closer.share.location.data.common.module.NetworkModule
 import com.harian.closer.share.location.data.authenticate.remote.api.AuthenticateApi
 import com.harian.closer.share.location.data.authenticate.repository.AuthenticateRepositoryImpl
+import com.harian.closer.share.location.data.common.module.NetworkModule
 import com.harian.closer.share.location.domain.login.AuthenticateRepository
 import dagger.Module
 import dagger.Provides

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.google.android.gms.maps.GoogleMap" />
+
+        <variable
+            name="mapType"
+            type="Integer" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_radius_top_24"
+        android:backgroundTint="@color/white"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            style="@style/Title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="48dp"
+            android:layout_marginTop="16dp"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:text="@string/map_type"
+            android:textAlignment="center"
+            android:textColor="@color/text_primary" />
+
+        <ImageButton
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/transparent"
+            android:padding="16dp"
+            android:src="@drawable/ic_close" />
+
+        <RelativeLayout
+            android:id="@+id/rltNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitle"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgNormal"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/img_map_type_normal"
+                app:shapeAppearanceOverlay="@style/ImageRadius8" />
+
+            <TextView
+                style="@style/Title2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toStartOf="@id/checkboxNormal"
+                android:layout_toEndOf="@id/imgNormal"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="@string/normal"
+                android:textColor="@color/text_primary" />
+
+            <ImageView
+                android:id="@+id/checkboxNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@{mapType == GoogleMap.MAP_TYPE_NORMAL ?  @drawable/ic_map_type_checked : @drawable/ic_map_type_unchecked, default=@drawable/ic_map_type_unchecked}" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rltSatellite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rltNormal"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgSatellite"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/img_map_type_satellite"
+                app:shapeAppearanceOverlay="@style/ImageRadius8" />
+
+            <TextView
+                style="@style/Title2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toStartOf="@id/checkboxSatellite"
+                android:layout_toEndOf="@id/imgSatellite"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="@string/satellite"
+                android:textColor="@color/text_primary" />
+
+            <ImageView
+                android:id="@+id/checkboxSatellite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@{mapType == GoogleMap.MAP_TYPE_SATELLITE ?  @drawable/ic_map_type_checked : @drawable/ic_map_type_unchecked, default=@drawable/ic_map_type_unchecked}" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rltTerrain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rltSatellite"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgTerrain"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/img_map_type_terrain"
+                app:shapeAppearanceOverlay="@style/ImageRadius8" />
+
+            <TextView
+                style="@style/Title2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="16dp"
+                android:layout_toStartOf="@id/checkboxTerrain"
+                android:layout_toEndOf="@id/imgTerrain"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="@string/terrain"
+                android:textColor="@color/text_primary" />
+
+            <ImageView
+                android:id="@+id/checkboxTerrain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@{mapType == GoogleMap.MAP_TYPE_TERRAIN ?  @drawable/ic_map_type_checked : @drawable/ic_map_type_unchecked, default=@drawable/ic_map_type_unchecked}" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</layout>

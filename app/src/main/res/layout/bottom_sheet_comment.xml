@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        android:background="@drawable/bg_tl_tr_radius_24"
+        android:backgroundTint="@color/white">
+
+        <View
+            android:id="@+id/top_bar"
+            android:layout_width="60dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="@color/text_secondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:clipToPadding="false"
+            android:layout_below="@id/top_bar"
+            android:paddingBottom="16dp"
+            android:layout_above="@id/add_comment_container"
+            app:layout_constrainedHeight="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/add_comment_container"
+            app:layout_constraintTop_toBottomOf="@id/top_bar"
+            tools:listitem="@layout/item_post_comment" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/noCommentAnimation"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:visibility="gone"
+            android:layout_above="@id/tvNoComment"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintBottom_toBottomOf="@id/rvComments"
+            app:layout_constraintEnd_toEndOf="@id/rvComments"
+            app:layout_constraintStart_toStartOf="@id/rvComments"
+            app:layout_constraintTop_toTopOf="@id/rvComments"
+            app:layout_constraintVertical_bias="0.3"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/no_comment" />
+
+        <TextView
+            android:id="@+id/tvNoComment"
+            style="@style/Title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="60dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/there_is_no_comment_yet"
+            android:textAlignment="center"
+            android:textColor="@color/text_primary"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            app:layout_constraintTop_toBottomOf="@id/noCommentAnimation" />
+
+        <RelativeLayout
+            android:id="@+id/add_comment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingHorizontal="16dp"
+            android:layout_alignParentBottom="true"
+            android:elevation="12dp"
+            android:outlineProvider="bounds"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_user_avatar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/RoundedImageView"
+                tools:src="@tools:sample/avatars" />
+
+            <EditText
+                android:id="@+id/edt_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="14dp"
+                android:layout_toStartOf="@id/btn_post_comment"
+                android:layout_toEndOf="@id/img_user_avatar"
+                android:background="@color/white"
+                android:layout_marginVertical="12dp"
+                android:backgroundTint="@color/white"
+                android:hint="@string/add_a_comment"
+                android:paddingVertical="8dp"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_placeholder"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/btn_post_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_rounded_gradient"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="6dp"
+                android:text="@string/post"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/loading_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_80"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_animation"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/uploading" />
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.harian.closer.share.location.data.common.utils.WrappedResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostRequest
-import com.harian.closer.share.location.data.post.remote.dto.PostResponse
+import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.domain.post.usecase.CreatePostUseCase
+import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
-    private val createPostUseCase: CreatePostUseCase
+    private val createPostUseCase: CreatePostUseCase,
+    val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<FunctionState>(FunctionState.Init)
@@ -85,6 +87,6 @@ class PostViewModel @Inject constructor(
         data object Init : FunctionState()
         data class IsLoading(val isLoading: Boolean) : FunctionState()
         data class SuccessCreatePost(val postEntity: PostEntity) : FunctionState()
-        data class ErrorCreatePost(val rawResponse: WrappedResponse<PostResponse>?) : FunctionState()
+        data class ErrorCreatePost(val rawResponse: WrappedResponse<PostDTO>?) : FunctionState()
     }
 }

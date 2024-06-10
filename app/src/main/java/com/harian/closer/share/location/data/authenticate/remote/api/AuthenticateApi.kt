@@ -14,4 +14,7 @@ interface AuthenticateApi {
 
     @POST("api/v1/auth/otp-authenticate")
     suspend fun authenticate(@Body request: OtpAuthenticateRequest): Response<WrappedResponse<AuthenticateResponse>>
+
+    @POST("api/v1/user/token-authenticate")
+    suspend fun authenticate(): Response<WrappedResponse<AuthenticateResponse>>
 }

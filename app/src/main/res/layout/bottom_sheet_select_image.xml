@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:orientation="vertical"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <LinearLayout
+                android:id="@+id/lnContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_radius_top_24"
+                android:backgroundTint="@color/white"
+                android:orientation="vertical">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCamera"
+                    style="@style/Title2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:elevation="0dp"
+                    android:padding="16dp"
+                    android:text="@string/camera"
+                    android:textColor="@color/text_primary"
+                    app:cornerRadius="0dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:background="@color/bg_grey" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSelectFromAlbum"
+                    style="@style/Title2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:elevation="0dp"
+                    android:padding="16dp"
+                    android:text="@string/select_from_the_album"
+                    android:textColor="@color/text_primary"
+                    app:cornerRadius="0dp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Title2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:background="@color/transparent"
+                android:padding="16dp"
+                android:text="@string/cancel"
+                android:textColor="@color/secondaryInfoPrimary"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

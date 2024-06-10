@@ -12,23 +12,38 @@
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_splash_fragment_to_login_fragment"
-            app:popUpTo="@id/splash_fragment"
-            app:destination="@id/login_fragment" />
+            app:destination="@id/login_fragment"
+            app:popUpTo="@id/splash_fragment" />
         <action
-            android:id="@+id/action_splash_fragment_to_main_nav_fragment"
-            app:destination="@id/main_nav_fragment" />
+            android:id="@+id/action_splash_fragment_to_home_nav_fragment"
+            app:destination="@id/home_nav_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/main_nav_fragment"
-        android:name="com.harian.closer.share.location.presentation.mainnav.MainNavFragment"
-        tools:layout="@layout/fragment_main_nav">
+        android:id="@+id/home_nav_fragment"
+        android:name="com.harian.closer.share.location.presentation.homenav.HomeNavFragment"
+        tools:layout="@layout/fragment_home_nav">
         <action
-            android:id="@+id/action_main_nav_fragment_to_create_post_fragment"
+            android:id="@+id/action_home_nav_fragment_to_create_post_fragment"
             app:destination="@id/create_post_fragment" />
         <action
-            android:id="@+id/action_main_nav_fragment_to_post_details_fragment"
+            android:id="@+id/action_home_nav_fragment_to_post_details_fragment"
             app:destination="@id/post_details_fragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_scanQrCodeFragment"
+            app:destination="@id/scanQrCodeFragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_view_all_friend_fragment"
+            app:destination="@id/view_all_friend_fragment" />
+        <action
+            android:id="@+id/action_home_nav_fragment_to_setting_fragment"
+            app:destination="@id/setting_fragment" />
     </fragment>
 
     <fragment
@@ -37,11 +52,14 @@
         tools:layout="@layout/fragment_login">
         <argument
             android:name="needResetPassword"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <action
-            android:id="@+id/action_login_fragment_to_main_nav_fragment"
-            app:destination="@id/main_nav_fragment" />
+            android:id="@+id/action_login_fragment_to_home_nav_fragment"
+            app:destination="@id/home_nav_fragment" />
+        <action
+            android:id="@+id/action_login_fragment_to_request_avatar_fragment"
+            app:destination="@id/request_avatar_fragment" />
     </fragment>
 
     <fragment
@@ -58,7 +76,142 @@
         <argument
             android:name="postId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_post_details_fragment_to_images_viewer_fragment"
+            app:destination="@id/images_viewer_fragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/images_viewer_fragment"
+        android:name="com.harian.closer.share.location.presentation.imagesviewer.ImagesViewerFragment"
+        android:label="image viewer fragment"
+        tools:layout="@layout/fragment_images_viewer">
+        <argument
+            android:name="images"
+            app:argType="com.harian.closer.share.location.domain.post.entity.ImageEntity[]" />
+    </fragment>
 
+    <fragment
+        android:id="@+id/profile_fragment"
+        android:name="com.harian.closer.share.location.presentation.homenav.profile.ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+
+        <argument
+            android:name="user"
+            android:defaultValue="@null"
+            app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_profile_fragment_to_message_detail_fragment"
+            app:destination="@id/message_detail_fragment" />
+        <action
+            android:id="@+id/action_profile_fragment_self"
+            app:destination="@id/profile_fragment" />
+        <action
+            android:id="@+id/action_profile_fragment_to_view_all_friend_fragment"
+            app:destination="@id/view_all_friend_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/message_detail_fragment"
+        android:name="com.harian.closer.share.location.presentation.message.MessageDetailFragment"
+        tools:layout="@layout/fragment_message_detail">
+        <argument
+            android:name="user"
+            app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/scanQrCodeFragment"
+        android:name="com.harian.closer.share.location.presentation.addfriend.ScanQrCodeFragment"
+        tools:layout="@layout/fragment_scan_qr_code">
+
+        <action
+            android:id="@+id/action_scanQrCodeFragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
+        <action
+            android:id="@+id/action_scanQrCodeFragment_to_my_qr_code_fragment"
+            app:destination="@id/my_qr_code_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/my_qr_code_fragment"
+        android:name="com.harian.closer.share.location.presentation.addfriend.myqrcode.MyQrCodeFragment"
+        tools:layout="@layout/fragment_my_qr_code" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.harian.closer.share.location.presentation.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
+        <argument
+            android:name="searchType"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchFragment_to_post_details_fragment"
+            app:destination="@id/post_details_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/request_avatar_fragment"
+        android:name="com.harian.closer.share.location.presentation.flowregister.avatar.RequestAvatarFragment"
+        tools:layout="@layout/fragment_request_avatar">
+        <action
+            android:id="@+id/action_request_avatar_fragment_to_request_phone_number_fragment"
+            app:destination="@id/request_phone_number_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/request_phone_number_fragment"
+        android:name="com.harian.closer.share.location.presentation.flowregister.phonenumber.RequestPhoneNumberFragment"
+        tools:layout="@layout/fragment_request_phone_number">
+        <action
+            android:id="@+id/action_request_phone_number_fragment_to_home_nav_fragment"
+            app:destination="@id/home_nav_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/view_all_friend_fragment"
+        android:name="com.harian.closer.share.location.presentation.viewall.friend.ViewAllFriendFragment"
+        tools:layout="@layout/fragment_view_all_friend">
+
+        <argument
+            android:name="user"
+            android:defaultValue="@null"
+            app:argType="com.harian.closer.share.location.domain.user.entity.UserEntity"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_view_all_friend_fragment_to_profile_fragment"
+            app:destination="@id/profile_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/setting_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.SettingFragment"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_setting_fragment_to_update_username_fragment"
+            app:destination="@id/update_username_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_my_qr_code_fragment"
+            app:destination="@id/my_qr_code_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_update_password_fragment"
+            app:destination="@id/update_password_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_update_address_fragment"
+            app:destination="@id/update_address_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/update_username_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.username.UpdateUsernameFragment"
+        tools:layout="@layout/fragment_update_username" />
+    <fragment
+        android:id="@+id/update_password_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.password.UpdatePasswordFragment"
+        tools:layout="@layout/fragment_update_password" />
+    <fragment
+        android:id="@+id/update_address_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.address.UpdateAddressFragment"
+        tools:layout="@layout/fragment_update_address" />
 </navigation>

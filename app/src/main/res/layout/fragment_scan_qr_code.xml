@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/camera_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <View
+            android:id="@+id/top"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#44000000"
+            app:layout_constraintBottom_toTopOf="@id/scan_area"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#44000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/scan_area" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#44000000"
+            app:layout_constraintBottom_toTopOf="@id/bottom"
+            app:layout_constraintEnd_toStartOf="@id/scan_area"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#44000000"
+            app:layout_constraintBottom_toTopOf="@id/bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/scan_area"
+            app:layout_constraintTop_toBottomOf="@id/top" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="@drawable/bg_gradiant_primary_to_0_alpha"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_back_light"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/scan_area"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleX="1.03"
+            android:scaleY="1.03"
+            android:src="@drawable/scan_area"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_marginHorizontal="70dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_controls"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBack" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/bottom_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_top_white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="30dp"
+            android:paddingBottom="58dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGallery"
+                style="@style/DefaultMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="#995151C6"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingVertical="10dp"
+                android:singleLine="true"
+                android:text="@string/choose_image"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="100dp"
+                app:icon="@drawable/ic_gallery"
+                app:iconGravity="textStart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMyQrCode"
+                style="@style/DefaultMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingVertical="10dp"
+                android:singleLine="true"
+                android:text="@string/my_qr_code"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:cornerRadius="100dp"
+                app:icon="@drawable/ic_qr_code"
+                app:iconGravity="textStart" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <FrameLayout
+            android:id="@+id/frLoading"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_alpha_50">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:scaleX="3.0"
+                android:scaleY="3.0"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

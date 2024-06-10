@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ic_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:src="@drawable/ic_arrow_right" />
+
+            <TextView
+                style="@style/Title1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/icQrCode"
+                android:layout_toEndOf="@id/ic_back"
+                android:text="@string/update_username"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/icQrCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingVertical="12dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="16dp"
+                android:src="@drawable/ic_qr_code"
+                android:visibility="invisible"
+                app:tint="@color/text_primary" />
+
+        </RelativeLayout>
+
+        <TextView
+            style="@style/Body3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/enter_your_new_username"
+            android:textColor="@color/text_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <EditText
+            android:id="@+id/edt_name"
+            style="@style/CommonEditText"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_radius_8"
+            android:hint="@string/your_name"
+            android:inputType="text" />
+
+        <TextView
+            style="@style/Body4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/no_more_than_32_characters_among_chinese_letters_and_symbols"
+            android:textColor="@color/text_secondary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUpdateUsername"
+            style="@style/DefaultMaterialButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_gradiant_primary"
+            android:fontFamily="@font/circular_std_medium"
+            android:paddingVertical="14dp"
+            android:text="@string/update_username"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:backgroundTintMode="multiply"
+            app:cornerRadius="100dp"
+            app:layout_constraintTop_toBottomOf="@+id/edtPhoneNumber" />
+
+    </LinearLayout>
+</layout>

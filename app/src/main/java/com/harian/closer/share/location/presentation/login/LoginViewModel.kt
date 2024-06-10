@@ -18,6 +18,7 @@ import com.harian.closer.share.location.domain.register.entity.RegisterEntity
 import com.harian.closer.share.location.domain.register.usecase.RegisterUseCase
 import com.harian.closer.share.location.domain.request.otp.usecase.RequestOtpUseCase
 import com.harian.closer.share.location.domain.resetpassword.usecase.ResetPasswordUseCase
+import com.harian.closer.share.location.domain.user.usecase.UpdateDeviceInformationUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,6 +35,7 @@ class LoginViewModel @Inject constructor(
     private val requestOtpUseCase: RequestOtpUseCase,
     private val otpAuthenticateUseCase: OtpAuthenticateUseCase,
     private val resetPasswordUseCase: ResetPasswordUseCase,
+    private val updateDeviceInformationUseCase: UpdateDeviceInformationUseCase,
     private val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
@@ -57,6 +59,7 @@ class LoginViewModel @Inject constructor(
                         is BaseResult.Error -> _state.value = FunctionState.ErrorLogin(baseResult.rawResponse)
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
+                            updateDeviceInformationUseCase.execute()
                             _state.value = FunctionState.SuccessLogin(baseResult.data)
                         }
                     }
@@ -81,6 +84,7 @@ class LoginViewModel @Inject constructor(
                         is BaseResult.Error -> _state.value = FunctionState.ErrorOtpAuthenticate(baseResult.rawResponse)
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
+                            updateDeviceInformationUseCase.execute()
                             sharedPrefs.needResetPassword = true
                             _state.value = FunctionState.SuccessOtpAuthenticate(baseResult.data)
                         }
@@ -106,6 +110,7 @@ class LoginViewModel @Inject constructor(
                         is BaseResult.Error -> _state.value = FunctionState.ErrorRegister(baseResult.rawResponse)
                         is BaseResult.Success -> {
                             sharedPrefs.saveToken(baseResult.data.token)
+                            updateDeviceInformationUseCase.execute()
                             _state.value = FunctionState.SuccessRegister(baseResult.data)
                         }
                     }

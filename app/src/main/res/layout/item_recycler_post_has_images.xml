@@ -6,8 +6,9 @@
 
     <RelativeLayout
         android:background="@drawable/bg_radius_12"
-        android:backgroundTint="@color/white"
-        android:layout_marginTop="16dp"
+        android:elevation="4dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

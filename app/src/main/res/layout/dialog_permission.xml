@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="40dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_radius_16"
+            android:backgroundTint="@color/white"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/imgIcon"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toTopOf="@id/tvTitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:src="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                style="@style/Title2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textAlignment="center"
+                android:textColor="@color/text_primary"
+                app:layout_constraintBottom_toTopOf="@id/tvDescription"
+                tools:text="@tools:sample/lorem" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                style="@style/Body3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:textAlignment="center"
+                android:textColor="@color/text_content"
+                app:layout_constraintBottom_toTopOf="@id/lnButtons"
+                tools:text="@tools:sample/lorem" />
+
+            <LinearLayout
+                android:id="@+id/lnButtons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDecline"
+                    style="@style/Body4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/bg_grey"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:padding="12dp"
+                    android:singleLine="true"
+                    android:text="@string/cancel"
+                    android:textColor="@color/text_primary"
+                    app:cornerRadius="12dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAccept"
+                    style="@style/Body4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/primary"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:padding="12dp"
+                    android:singleLine="true"
+                    android:text="@string/allow"
+                    android:textColor="@color/white"
+                    app:cornerRadius="12dp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>

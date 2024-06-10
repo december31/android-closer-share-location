@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dancing_script_bold"
+            android:text="@string/let_s_create_an_avatar"
+            android:textColor="@color/text_primary"
+            android:textSize="38sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvInstructionCurrentAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/circular_std_medium"
+            android:text="@string/the_image_below_is_your_currently_default_avatar"
+            android:textAlignment="center"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAvatar" />
+
+        <TextView
+            android:id="@+id/tvLetChangeIt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/circular_std_medium"
+            android:text="@string/let_s_change_it"
+            android:textColor="@color/primary"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvInstructionCurrentAvatar" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="32dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/lnButtons"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLetChangeIt"
+            app:shapeAppearanceOverlay="@style/RoundedImageView"
+            tools:src="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:id="@+id/lnButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/btnSkip">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPickImage"
+                style="@style/DefaultMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gradiant_primary"
+                android:ellipsize="marquee"
+                android:fontFamily="@font/circular_std_medium"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingVertical="12dp"
+                android:singleLine="true"
+                android:text="@string/pick_an_image"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTintMode="multiply"
+                app:cornerRadius="100dp"
+                app:icon="@drawable/ic_pick_image"
+                app:iconGravity="textStart" />
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="16dp"
+                android:layout_height="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpload"
+                style="@style/DefaultMaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_gradiant_primary"
+                android:ellipsize="marquee"
+                android:fontFamily="@font/circular_std_medium"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingVertical="12dp"
+                android:singleLine="true"
+                android:text="@string/upload"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:backgroundTintMode="multiply"
+                app:cornerRadius="100dp"
+                app:icon="@drawable/ic_upload_image"
+                app:iconGravity="textStart"
+                app:layout_constraintBottom_toTopOf="@id/btnSkip" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPickImageBig"
+            style="@style/DefaultMaterialButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_gradiant_primary"
+            android:ellipsize="marquee"
+            android:fontFamily="@font/circular_std_medium"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingVertical="12dp"
+            android:singleLine="true"
+            android:text="@string/pick_an_image"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTintMode="multiply"
+            app:cornerRadius="100dp"
+            app:icon="@drawable/ic_pick_image"
+            app:iconGravity="textStart"
+            app:layout_constraintBottom_toBottomOf="@id/lnButtons"
+            app:layout_constraintEnd_toEndOf="@id/lnButtons"
+            app:layout_constraintStart_toStartOf="@id/lnButtons"
+            app:layout_constraintTop_toTopOf="@id/lnButtons" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_animation"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="14dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/lnButtons"
+            app:layout_constraintTop_toTopOf="@id/lnButtons"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/white_dot_loading" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSkip"
+            style="@style/DefaultMaterialButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
+            android:elevation="0dp"
+            android:fontFamily="@font/circular_std_medium"
+            android:padding="12dp"
+            android:stateListAnimator="@null"
+            android:text="@string/skip"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

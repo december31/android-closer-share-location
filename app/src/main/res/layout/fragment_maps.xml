@@ -1,16 +1,52 @@
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <FrameLayout
+        android:id="@+id/frRoot"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
         <fragment
             android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.harian.closer.share.location.presentation.mainnav.map.MapsFragment"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
+            tools:context="com.harian.closer.share.location.presentation.homenav.map.MapsFragment" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_gravity="top"
+            android:background="@drawable/bg_gradiant_primary_to_0_alpha" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            style="@style/Title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="40dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            tools:text="@tools:sample/lorem/random" />
+
+        <ImageButton
+            android:id="@+id/btnMapType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:background="@drawable/bg_rounded"
+            android:backgroundTint="@color/white"
+            android:contentDescription="@string/app_name"
+            android:elevation="24dp"
+            android:outlineProvider="paddedBounds"
+            android:padding="8dp"
+            android:layout_marginBottom="100dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_map_type" />
     </FrameLayout>
 </layout>

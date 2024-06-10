@@ -10,7 +10,6 @@ import com.harian.closer.share.location.data.register.remote.dto.RegisterRespons
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.register.RegisterRepository
 import com.harian.closer.share.location.domain.register.entity.RegisterEntity
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

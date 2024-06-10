@@ -1,16 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_centerInParent="true"
-            android:text="@string/notification"
-            android:textSize="30sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_friend_request"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="30dp"
+            android:paddingBottom="120dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_recycler_friend_request" />
 
+        <ImageView
+            android:id="@+id/icNoNotification"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            android:src="@drawable/ic_no_notification"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/frLoading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_alpha_50"
+            android:visibility="gone">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:scaleX="3.0"
+                android:scaleY="3.0"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading" />
+        </FrameLayout>
     </RelativeLayout>
 </layout>

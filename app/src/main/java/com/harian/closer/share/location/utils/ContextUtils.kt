@@ -20,3 +20,11 @@ class ContextUtils(base: Context) : ContextWrapper(base) {
         }
     }
 }
+
+fun Context.clearCache() {
+    try {
+        cacheDir.delete()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
