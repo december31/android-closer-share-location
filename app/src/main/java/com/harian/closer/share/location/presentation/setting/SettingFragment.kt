@@ -104,6 +104,13 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
                     Animation.SlideLeft
                 )
             }
+
+            btnBindAddress.setOnClickListener {
+                findNavController().navigateWithAnimation(
+                    SettingFragmentDirections.actionSettingFragmentToUpdateAddressFragment(),
+                    Animation.SlideLeft
+                )
+            }
         }
     }
 

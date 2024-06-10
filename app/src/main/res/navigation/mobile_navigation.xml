@@ -198,6 +198,9 @@
         <action
             android:id="@+id/action_setting_fragment_to_update_password_fragment"
             app:destination="@id/update_password_fragment" />
+        <action
+            android:id="@+id/action_setting_fragment_to_update_address_fragment"
+            app:destination="@id/update_address_fragment" />
     </fragment>
     <fragment
         android:id="@+id/update_username_fragment"
@@ -207,4 +210,8 @@
         android:id="@+id/update_password_fragment"
         android:name="com.harian.closer.share.location.presentation.setting.password.UpdatePasswordFragment"
         tools:layout="@layout/fragment_update_password" />
+    <fragment
+        android:id="@+id/update_address_fragment"
+        android:name="com.harian.closer.share.location.presentation.setting.address.UpdateAddressFragment"
+        tools:layout="@layout/fragment_update_address" />
 </navigation>

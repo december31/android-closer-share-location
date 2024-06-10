@@ -44,9 +44,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSystemBarBehavior()
+        setupPermission()
         setupData()
         setupUI()
-        setupPermission()
         handleStateChanges()
         setupListener()
         setupLoading()
