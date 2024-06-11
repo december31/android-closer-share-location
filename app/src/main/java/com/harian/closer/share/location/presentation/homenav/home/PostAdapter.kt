@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.homenav.home
 
+import android.annotation.SuppressLint
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
@@ -41,6 +42,7 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
         notifyItemChanged(position, PayLoad.REACTIONS)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindHasImagePost(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
         item ?: return
         (holder.binding as? ItemRecyclerPostHasImagesBinding)?.apply {
@@ -73,10 +75,12 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
             tvLiked.text = "${item.likes?.size ?: 0}"
             tvWatched.text = "${0}"
 
+            icLike.setImageResource(if (item.isLiked) R.drawable.ic_liked else R.drawable.ic_like)
             multipleImagesView.loadImages(item.images?.map { image -> image.getAuthorizeUrl(bearerToken) })
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateReactions(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
         if (item == null) return
         (holder.binding as? ItemRecyclerPostHasImagesBinding)?.apply {
@@ -93,6 +97,7 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindNoImagePost(holder: BaseViewHolder<ViewDataBinding, PostEntity>, item: PostEntity?) {
         if (item == null) return
         (holder.binding as? ItemRecyclerPostNoImageBinding)?.apply {

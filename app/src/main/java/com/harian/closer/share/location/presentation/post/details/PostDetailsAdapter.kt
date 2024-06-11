@@ -1,5 +1,6 @@
 package com.harian.closer.share.location.presentation.post.details
 
+import android.annotation.SuppressLint
 import androidx.core.view.isVisible
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
@@ -43,6 +44,7 @@ class PostDetailsAdapter(private val bearerToken: String) : BaseRecyclerViewAdap
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindPostDetail(holder: BaseViewHolder<ViewDataBinding, Any>, item: Any?) {
         (item as? PostEntity)?.let { post ->
             (holder.binding as ItemRecyclerDetailsPostBinding).apply {

@@ -39,7 +39,6 @@ class ProfileViewModel @Inject constructor(
     private val getFriendsUseCase: GetFriendsUseCase,
     private val getPostsUseCase: GetPostsUseCase,
     private val sendFriendRequestUseCase: SendFriendRequestUseCase,
-    private val userRepository: UserRepository,
     val sharedPrefs: SharedPrefs
 ) : ViewModel() {
 
