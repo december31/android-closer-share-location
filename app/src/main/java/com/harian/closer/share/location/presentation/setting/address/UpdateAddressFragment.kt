@@ -23,6 +23,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -39,6 +42,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.harian.closer.share.location.data.common.BaseViewModel
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.presentation.homenav.map.MapTypeBottomSheetDialog
@@ -53,6 +57,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -65,6 +71,7 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
 
     @Inject
     lateinit var sharedPrefs: SharedPrefs
+    private val viewModel: UpdateAddressViewModel by viewModels()
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -87,7 +94,7 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
     private var lastRotation = 0f
     private var sensorEventListener: SensorEventListener? = null
     private var mapFragment: SupportMapFragment? = null
-    private var locationUpdated: Boolean = false
+    private var isRotating: Boolean = false
     private val geocoder: Geocoder? by lazy {
         context?.let { Geocoder(it, Locale.getDefault()) }
     }
@@ -101,6 +108,8 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
         super.onDestroyView()
         stopSensor()
     }
+
+    override fun getFragmentViewModel(): BaseViewModel = viewModel
 
     override fun setupPermission() {
         super.setupPermission()
@@ -185,11 +194,20 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
     override fun setupUI() {
         super.setupUI()
         PermissionManager.LOCATION.permission.requestPermission(activity)
-        handleObserver()
     }
 
-    private fun handleObserver() {
-
+    override fun handleStateChanges() {
+        super.handleStateChanges()
+        viewModel.updateAddressState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                UpdateAddressViewModel.UpdateAddressState.Init -> Unit
+                is UpdateAddressViewModel.UpdateAddressState.Error -> showToast(R.string.some_thing_went_wrong_please_try_again_later)
+                is UpdateAddressViewModel.UpdateAddressState.Success -> {
+                    showToast(R.string.address_updated)
+                    findNavController().popBackStack()
+                }
+            }
+        }.launchIn(lifecycleScope)
     }
 
     override fun setupListener() {
@@ -228,17 +246,11 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
             icBack.setOnClickListener {
                 findNavController().popBackStack()
             }
-//            btnSave.setOnSingleClickListener {
-//                locationUpdated = false
-//                updateLocationDetails(googleMap?.cameraPosition?.target)
-//                viewModel.performSaveLocationFlow()
-//            }
+            btnSave.setOnClickListener {
+                updateLocationDetails(googleMap?.cameraPosition?.target)
+                viewModel.updateAddress(edtAddress.text.toString())
+            }
         }
-    }
-
-    private fun handleErrorSaveLocation(exception: Throwable) {
-//        toast(getString(R.string.save_location_failed_please_try_again_later))
-//        Timber.e(exception.message)
     }
 
     private fun initGoogleMap() {
@@ -278,28 +290,15 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
 
     private fun listenCameraChanges(googleMap: GoogleMap) {
         googleMap.setOnCameraIdleListener {
-//            binding.btnSave.isVisible = true
+            binding.btnSave.isEnabled = true
+            binding.btnSave.alpha = 1f
             updateLocationDetails(googleMap.cameraPosition.target)
         }
 
         googleMap.setOnCameraMoveStartedListener {
-//            binding.btnSave.isVisible = false
+            binding.btnSave.alpha = 0.5f
+            binding.btnSave.isEnabled = false
         }
-    }
-
-    private fun persistLocationToViewModel(latLng: LatLng?) {
-//        latLng ?: return
-//        viewModel.persistLocationDetail(
-//            LocationDetail(
-//                latitude = latLng.latitude,
-//                longitude = latLng.longitude,
-//                time = System.currentTimeMillis(),
-//                azimuth = marker?.rotation?.toDouble() ?: 0.0,
-//                note = binding.edtNote.text.toString(),
-//                authorName = binding.edtAuthorName.text.toString(),
-//                address = binding.tvLocation.text.toString()
-//            )
-//        )
     }
 
     private fun updateLocationDetails(latLng: LatLng?) {
@@ -311,9 +310,7 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
                         edtAddress.setText(R.string.unknown)
                     }
                     .collectLatest {
-                        if (locationUpdated) binding.edtAddress.setText(it)
-                        else locationUpdated = true
-                        persistLocationToViewModel(latLng)
+                        binding.edtAddress.setText(it)
                     }
             }
         }
@@ -383,9 +380,6 @@ class UpdateAddressFragment : BaseFragment<FragmentUpdateAddressBinding>() {
             googleMap.animateCamera(cameraUpdate)
         }
     }
-
-
-    var isRotating: Boolean = false
 
     /**
      * these logic is referred from this site

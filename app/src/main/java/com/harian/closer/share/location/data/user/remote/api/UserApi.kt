@@ -6,6 +6,7 @@ import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
+import com.harian.closer.share.location.data.user.remote.dto.UpdateAddressRequest
 import com.harian.closer.share.location.data.user.remote.dto.UpdatePasswordRequest
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import okhttp3.MultipartBody
@@ -66,4 +67,7 @@ interface UserApi {
 
     @PATCH("api/v1/user/update-password")
     suspend fun updatePassword(@Body request: UpdatePasswordRequest): Response<WrappedResponse<UserDTO>>
+
+    @PATCH("api/v1/user/update-address")
+    suspend fun updateAddress(@Body request: UpdateAddressRequest): Response<WrappedResponse<UserDTO>>
 }

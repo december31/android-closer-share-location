@@ -105,7 +105,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
                 )
             }
 
-            btnBindAddress.setOnClickListener {
+            viewRowAddress.setOnClickListener {
                 findNavController().navigateWithAnimation(
                     SettingFragmentDirections.actionSettingFragmentToUpdateAddressFragment(),
                     Animation.SlideLeft

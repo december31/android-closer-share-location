@@ -133,4 +133,6 @@
     <string name="success_update_password">Success Update Password</string>
     <string name="enter_address">Enter Address</string>
     <string name="update_address">Update Address</string>
+    <string name="save">Save</string>
+    <string name="address_updated">Address Updated</string>
 </resources>

@@ -10,6 +10,7 @@ import com.harian.closer.share.location.data.user.remote.api.UserApi
 import com.harian.closer.share.location.data.user.remote.dto.DeviceDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendRequestDTO
 import com.harian.closer.share.location.data.user.remote.dto.FriendsResponse
+import com.harian.closer.share.location.data.user.remote.dto.UpdateAddressRequest
 import com.harian.closer.share.location.data.user.remote.dto.UpdatePasswordRequest
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
@@ -302,7 +303,23 @@ class UserRepositoryImpl(private val userApi: UserApi) : UserRepository {
         }
     }
 
-    override suspend fun logout() {
+    override suspend fun updateAddress(request: UpdateAddressRequest): Flow<BaseResult<UserEntity, WrappedResponse<UserDTO>>> {
+        return flow {
+            val response = userApi.updateAddress(request)
+            if (response.isSuccessful && response.code() in 200 until 400) {
+                val body = response.body()
+                body?.data?.toEntity()?.let {
+                    emit(BaseResult.Success(it))
+                }
+            } else {
+                val type = object : TypeToken<WrappedResponse<UserDTO>>() {}.type
+                val error = Gson().fromJson<WrappedResponse<UserDTO>>(response.errorBody()?.charStream(), type)
+                emit(BaseResult.Error(error))
+            }
+        }
+    }
+
+    override suspend fun clearUserDataCache() {
         this.userInformation = null
     }
 }

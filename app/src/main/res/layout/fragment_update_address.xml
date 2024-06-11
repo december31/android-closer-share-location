@@ -26,24 +26,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/icQrCode"
+                android:layout_toStartOf="@id/btnSave"
                 android:layout_toEndOf="@id/ic_back"
                 android:text="@string/update_address"
                 android:textAlignment="center" />
 
-            <ImageView
-                android:id="@+id/icQrCode"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                style="@style/Body4"
+                android:textStyle="bold"
+                android:text="@string/save"
+                android:textColor="@color/secondaryInfoPrimary"
+                android:background="@color/transparent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingVertical="8dp"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:paddingVertical="12dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="16dp"
-                android:src="@drawable/ic_qr_code"
-                android:visibility="invisible"
-                app:tint="@color/text_primary" />
-
+                android:layout_centerVertical="true" />
         </RelativeLayout>
 
 

@@ -15,7 +15,8 @@ data class PostDTO(
     @SerializedName("owner") val owner: UserDTO?,
     @SerializedName("comments") val comments: List<CommentResponse?>?,
     @SerializedName("likes") val likes: List<UserDTO?>?,
-): BaseDTO<PostEntity> {
+    @SerializedName("isLiked") val isLiked: Boolean?,
+) : BaseDTO<PostEntity> {
     override fun toEntity(): PostEntity {
         return PostEntity(
             id = id,
@@ -26,7 +27,8 @@ data class PostDTO(
             lastModified = lastModified,
             owner = owner?.toEntity(),
             comments = comments?.map { it?.toEntity() },
-            likes = likes?.map { it?.toEntity() }
+            likes = likes?.map { it?.toEntity() },
+            isLiked = isLiked ?: false
         )
     }
 }

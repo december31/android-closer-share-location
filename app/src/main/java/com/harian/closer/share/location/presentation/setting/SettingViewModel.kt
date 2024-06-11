@@ -7,7 +7,7 @@ import com.harian.closer.share.location.data.user.remote.dto.UserDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase
-import com.harian.closer.share.location.domain.user.usecase.LogoutUseCase
+import com.harian.closer.share.location.domain.user.usecase.ClearUserDataCacheUseCase
 import com.harian.closer.share.location.domain.user.usecase.UpdateAvatarUseCase
 import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.utils.runOnMainThread
@@ -27,7 +27,7 @@ import javax.inject.Inject
 class SettingViewModel @Inject constructor(
     private val getUserInformationUseCase: GetUserInformationUseCase,
     private val updateAvatarUseCase: UpdateAvatarUseCase,
-    private val logoutUseCase: LogoutUseCase,
+    private val clearUserDataCacheUseCase: ClearUserDataCacheUseCase,
     private val sharedPrefs: SharedPrefs
 ) : BaseViewModel() {
     private val _state = MutableStateFlow<SettingState>(SettingState.Init)
@@ -90,7 +90,7 @@ class SettingViewModel @Inject constructor(
         _state.value = SettingState.SuccessLogout
 
         viewModelScope.launch(Dispatchers.IO) {
-            logoutUseCase.execute()
+            clearUserDataCacheUseCase.execute()
         }
     }
 
