@@ -14,6 +14,7 @@ data class PostDTO(
     @SerializedName("lastModified") val lastModified: Long,
     @SerializedName("owner") val owner: UserDTO?,
     @SerializedName("comments") val comments: List<CommentResponse?>?,
+    @SerializedName("watches") val watches: List<UserDTO?>?,
     @SerializedName("likes") val likes: List<UserDTO?>?,
     @SerializedName("isLiked") val isLiked: Boolean?,
 ) : BaseDTO<PostEntity> {
@@ -27,6 +28,7 @@ data class PostDTO(
             lastModified = lastModified,
             owner = owner?.toEntity(),
             comments = comments?.map { it?.toEntity() },
+            watches = watches?.map { it?.toEntity() },
             likes = likes?.map { it?.toEntity() },
             isLiked = isLiked ?: false
         )

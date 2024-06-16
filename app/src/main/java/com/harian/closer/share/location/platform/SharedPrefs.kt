@@ -2,6 +2,8 @@ package com.harian.closer.share.location.platform
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.google.android.gms.maps.GoogleMap
 import com.harian.closer.share.location.data.common.utils.Token
 import com.harian.closer.share.location.utils.extension.toBearerToken
@@ -16,9 +18,21 @@ class SharedPrefs(context: Context) {
         private const val PREF_MAP_TYPE = "map_type"
     }
 
-    private val sharedPref: SharedPreferences =
-        context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+    private var sharedPref: SharedPreferences
 
+    init {
+        val masterKey: MasterKey = MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        sharedPref = EncryptedSharedPreferences.create(
+            context,
+            "secret_shared_prefs",
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
 
     fun saveToken(token: Token?) {
         if (token != null) {

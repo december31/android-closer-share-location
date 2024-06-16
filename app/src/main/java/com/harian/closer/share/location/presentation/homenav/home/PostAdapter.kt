@@ -105,10 +105,17 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
                 item.id?.let { id -> onItemClickListener.invoke(id) }
             }
 
+            icLike.setOnClickListener {
+                item.isLiked = !item.isLiked
+                notifyItemChanged(holder.adapterPosition, PayLoad.REACTIONS)
+                onLikePostListener.invoke(item)
+            }
+
             imgAvatar.setOnClickListener {
                 item.owner?.let { owner -> onAvatarClickListener.invoke(owner) }
             }
 
+            icLike.setImageResource(if (item.isLiked) R.drawable.ic_liked else R.drawable.ic_like)
             Glide.with(root).load(item.owner?.getAuthorizedAvatarUrl(bearerToken)).into(imgAvatar)
             tvUsername.text = item.owner?.name
             item.createdTime?.let {
@@ -148,7 +155,6 @@ class PostAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<Pos
 
     override fun onBindViewHolder(holder: BaseViewHolder<ViewDataBinding, PostEntity>, position: Int, payloads: MutableList<Any>) {
         if (payloads.contains(PayLoad.REACTIONS)) {
-            updateReactions(holder, items.getOrNull(position))
             updateReactions(holder, items.getOrNull(position))
         } else {
             super.onBindViewHolder(holder, position, payloads)

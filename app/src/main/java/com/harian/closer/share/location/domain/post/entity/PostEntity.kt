@@ -20,6 +20,7 @@ data class PostEntity(
     val lastModified: Long?,
     val owner: UserEntity?,
     val likes: List<UserEntity?>?,
+    val watches: List<UserEntity?>?,
     val comments: List<CommentEntity?>?,
     var isLiked: Boolean = false
 ) : Comparable<PostEntity>, Parcelable {
@@ -32,6 +33,7 @@ data class PostEntity(
             this.createdTime == other.createdTime &&
             this.lastModified == other.lastModified &&
             this.likes == other.likes &&
+            this.watches == other.watches &&
             this.comments == other.comments &&
             this.isLiked == other.isLiked
         ) 0 else 1

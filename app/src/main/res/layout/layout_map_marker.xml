@@ -16,7 +16,9 @@
             android:id="@+id/imgAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:translationZ="10dp"
+            android:padding="0.5dp"
+            android:scaleType="centerCrop"
+            android:translationZ="5dp"
             app:shapeAppearanceOverlay="@style/RoundedImageView"
             tools:src="@tools:sample/avatars" />
 

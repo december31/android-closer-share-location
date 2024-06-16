@@ -11,7 +11,9 @@ import com.harian.closer.share.location.domain.user.entity.FriendEntity
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.platform.SharedPrefs
+import com.harian.closer.share.location.utils.extension.findGlobalNavController
 import com.harian.closer.share.location.utils.extension.glideLoadImage
+import com.harian.closer.share.location.utils.extension.navigateWithAnimation
 import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.FragmentViewAllFriendBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +52,13 @@ class ViewAllFriendFragment : BaseFragment<FragmentViewAllFriendBinding>() {
     }
 
     private fun setupRecyclerView() {
+        friendAdapter.setListener(object : FriendAdapter.Listener {
+            override fun onItemClick(friend: FriendEntity) {
+                findGlobalNavController()?.navigateWithAnimation(ViewAllFriendFragmentDirections.actionViewAllFriendFragmentToProfileFragment(friend.information))
+            }
+        })
         binding.apply {
+
             rvFriends.adapter = friendAdapter
         }
     }
