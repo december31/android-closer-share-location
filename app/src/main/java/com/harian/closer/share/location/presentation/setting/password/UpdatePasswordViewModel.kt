@@ -1,7 +1,7 @@
 package com.harian.closer.share.location.presentation.setting.password
 
 import androidx.lifecycle.viewModelScope
-import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.data.user.remote.dto.UpdatePasswordRequest
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.usecase.UpdatePasswordUseCase

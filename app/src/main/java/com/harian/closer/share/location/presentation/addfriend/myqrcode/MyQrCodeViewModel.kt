@@ -9,7 +9,7 @@ import com.google.zxing.EncodeHintType
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase

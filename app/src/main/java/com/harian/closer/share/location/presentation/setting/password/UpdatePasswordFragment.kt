@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.data.user.remote.dto.UpdatePasswordRequest
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.software.closer.share.location.R

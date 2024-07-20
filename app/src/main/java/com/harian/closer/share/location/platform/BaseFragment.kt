@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.harian.closer.share.location.data.common.BaseViewModel
 import com.harian.closer.share.location.presentation.widget.LoadingDialog
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

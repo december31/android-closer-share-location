@@ -42,7 +42,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.platform.BaseFragment
 import com.harian.closer.share.location.platform.SharedPrefs
 import com.harian.closer.share.location.presentation.homenav.map.MapTypeBottomSheetDialog

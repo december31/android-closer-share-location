@@ -1,7 +1,7 @@
 package com.harian.closer.share.location.presentation.search
 
 import androidx.lifecycle.viewModelScope
-import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.post.remote.dto.PostDTO
 import com.harian.closer.share.location.data.user.remote.dto.UserDTO

@@ -3,7 +3,7 @@ package com.harian.closer.share.location.presentation.message
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.data.common.utils.WrappedListResponse
 import com.harian.closer.share.location.data.message.remote.dto.MessageDTO
 import com.harian.closer.share.location.domain.common.base.BaseResult

@@ -7,13 +7,16 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.harian.closer.share.location.domain.post.entity.PostEntity
+import com.harian.closer.share.location.presentation.addfriend.ScanQrCodeViewModel
 import com.harian.closer.share.location.presentation.notification.FirebaseNotificationService
 import com.harian.closer.share.location.presentation.notification.NotificationModel
 import com.harian.software.closer.share.location.R

@@ -55,7 +55,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
                     )
                     .setStyle(NotificationCompat.BigTextStyle())
                     .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                    .setSmallIcon(R.drawable.ic_launcher_foreground).setAutoCancel(true)
+                    .setSmallIcon(R.mipmap.ic_launcher_foreground).setAutoCancel(true)
                     .setContentIntent(createPendingIntent(notificationModel))
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
