@@ -1,7 +1,6 @@
 package com.harian.closer.share.location.presentation.post.details
 
 import androidx.core.view.WindowCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -9,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.domain.post.entity.ImageEntity
 import com.harian.closer.share.location.domain.post.entity.PostEntity
 import com.harian.closer.share.location.platform.BaseFragment
@@ -31,10 +31,11 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     private val args by navArgs<PostDetailsFragmentArgs>()
     private lateinit var adapter: PostDetailsAdapter
 
+    override fun getFragmentViewModel(): BaseViewModel = viewModel
+
     override fun setupUI() {
         super.setupUI()
         setupRecyclerView()
-
         fetchData()
     }
 
@@ -44,6 +45,10 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
             icBack.setOnClickListener {
                 findNavController().popBackStack()
             }
+
+            icLike.setOnClickListener {
+                viewModel.likeOrUnlikePost()
+            }
         }
     }
 
@@ -51,7 +56,7 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
         adapter = PostDetailsAdapter(viewModel.sharedPrefs.getToken()).apply {
             setListener(object : PostDetailsAdapter.Listener {
                 override fun onClickImage(image: ImageEntity) {
-                    viewModel.post?.images?.let {
+                    viewModel.postLiveData.value?.images?.let {
                         findNavController().navigateWithAnimation(
                             PostDetailsFragmentDirections.actionPostDetailsFragmentToImagesViewerFragment(it.toTypedArray())
                         )
@@ -81,10 +86,9 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
     override fun handleStateChanges() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
-                is PostDetailsViewModel.FunctionState.Init -> Unit
-                is PostDetailsViewModel.FunctionState.IsLoading -> handleIsLoading(it.isLoading)
-                is PostDetailsViewModel.FunctionState.ErrorGetPost -> handleErrorGetPost()
-                is PostDetailsViewModel.FunctionState.SuccessGetPost -> handleSuccessGetPost(it.postDataList)
+                is PostDetailsViewModel.FetchPostState.Init -> Unit
+                is PostDetailsViewModel.FetchPostState.ErrorGetPost -> handleErrorGetPost()
+                is PostDetailsViewModel.FetchPostState.SuccessGetPost -> handleSuccessGetPost(it.postDataList)
             }
         }.launchIn(lifecycleScope)
 
@@ -97,14 +101,9 @@ class PostDetailsFragment : BaseFragment<FragmentPostDetailsBinding>() {
                 else -> Unit
             }
         }.launchIn(lifecycleScope)
-    }
 
-    private fun handleIsLoading(isLoading: Boolean) {
-        binding.loadingContainer.isVisible = isLoading
-        if (isLoading) {
-            binding.loadingAnimation.playAnimation()
-        } else {
-            binding.loadingAnimation.cancelAnimation()
+        viewModel.postLiveData.observe(viewLifecycleOwner) {
+            binding.icLike.setImageResource(if (it.isLiked) R.drawable.ic_liked else R.drawable.ic_like)
         }
     }
 

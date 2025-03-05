@@ -8,6 +8,11 @@ import com.harian.software.closer.share.location.R
 import com.harian.software.closer.share.location.databinding.ItemUserBinding
 
 class FriendAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<FriendEntity, ItemUserBinding>() {
+    private var listener: Listener? = null
+    fun setListener(listener: Listener) {
+        this.listener = listener
+    }
+
     override fun getLayoutId(viewType: Int): Int {
         return R.layout.item_user
     }
@@ -19,6 +24,14 @@ class FriendAdapter(private val bearerToken: String) : BaseRecyclerViewAdapter<F
             tvName.text = item.information.name
             tvAddress.text = item.information.address
             imgAvatar.glideLoadImage(item.information.getAuthorizedAvatarUrl(bearerToken))
+
+            root.setOnClickListener {
+                listener?.onItemClick(item)
+            }
         }
+    }
+
+    interface Listener {
+        fun onItemClick(friend: FriendEntity)
     }
 }

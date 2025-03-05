@@ -188,7 +188,7 @@
     <fragment
         android:id="@+id/setting_fragment"
         android:name="com.harian.closer.share.location.presentation.setting.SettingFragment"
-        tools:layout="@layout/fragment_setting" >
+        tools:layout="@layout/fragment_setting">
         <action
             android:id="@+id/action_setting_fragment_to_update_username_fragment"
             app:destination="@id/update_username_fragment" />
@@ -214,4 +214,9 @@
         android:id="@+id/update_address_fragment"
         android:name="com.harian.closer.share.location.presentation.setting.address.UpdateAddressFragment"
         tools:layout="@layout/fragment_update_address" />
+
+
+    <action
+        android:id="@+id/action_main_activity_to_post_details_fragment"
+        app:destination="@id/post_details_fragment" />
 </navigation>

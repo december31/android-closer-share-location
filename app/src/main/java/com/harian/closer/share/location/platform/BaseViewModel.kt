@@ -1,4 +1,4 @@
-package com.harian.closer.share.location.data.common
+package com.harian.closer.share.location.platform
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -107,16 +107,17 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.core:core-ktx:1.13.1")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.1")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.1")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
-    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("com.google.android.gms:play-services-mlkit-barcode-scanning:18.3.0")
     implementation("androidx.compose.ui:ui-unit-android:1.6.7")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     val cameraxVersion = "1.3.3"
     implementation("androidx.camera:camera-core:${cameraxVersion}")
@@ -126,6 +127,7 @@ dependencies {
 
     implementation("androidx.camera:camera-view:${cameraxVersion}")
     implementation("androidx.camera:camera-extensions:${cameraxVersion}")
+
     // test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -135,7 +137,7 @@ dependencies {
 
 
     // firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
@@ -143,7 +145,7 @@ dependencies {
 
     implementation("com.airbnb.android:lottie:6.4.0")
 
-    implementation("androidx.datastore:datastore-preferences-core:1.0.0")
+    implementation("androidx.datastore:datastore-preferences-core:1.1.1")
 
     // dagger hilt
     implementation("com.google.dagger:hilt-android:2.48")
@@ -171,7 +173,7 @@ dependencies {
 
     implementation("com.facebook.shimmer:shimmer:0.5.0")
 
-    runtimeOnly("com.google.android.material:material:1.11.0")
+    runtimeOnly("com.google.android.material:material:1.12.0")
 
     // stomp client using krossbow (flow)
     implementation("org.hildan.krossbow:krossbow-stomp-core:5.12.0")

@@ -60,7 +60,7 @@ class PostDetailsAdapter(private val bearerToken: String) : BaseRecyclerViewAdap
 
                 tvCommented.text = "${post.comments?.size ?: 0}"
                 tvLiked.text = "${post.likes?.size ?: 0}"
-                tvWatched.text = "${0}"
+                tvWatched.text = "${post.watches?.size ?: 0}"
 
                 containerComment.setOnClickListener {
                     listener?.onClickComment(post)

@@ -54,7 +54,11 @@ class HomeViewModel @Inject constructor(
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = ApiState.SuccessLikePost(baseResult.data)
+                        is BaseResult.Success -> {
+                            _state.value = ApiState.SuccessLikePost(baseResult.data)
+                            fetchPopularPosts()
+                        }
+
                         is BaseResult.Error -> _state.value = ApiState.ErrorLikePost(post)
                     }
                 }
@@ -69,7 +73,11 @@ class HomeViewModel @Inject constructor(
                 }
                 .collect { baseResult ->
                     when (baseResult) {
-                        is BaseResult.Success -> _state.value = ApiState.SuccessUnlikePost(baseResult.data)
+                        is BaseResult.Success -> {
+                            _state.value = ApiState.SuccessUnlikePost(baseResult.data)
+                            fetchPopularPosts()
+                        }
+
                         is BaseResult.Error -> _state.value = ApiState.ErrorUnlikePost(post)
                     }
                 }

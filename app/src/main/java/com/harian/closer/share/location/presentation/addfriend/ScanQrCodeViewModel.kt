@@ -2,7 +2,7 @@ package com.harian.closer.share.location.presentation.addfriend
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
-import com.harian.closer.share.location.data.common.BaseViewModel
+import com.harian.closer.share.location.platform.BaseViewModel
 import com.harian.closer.share.location.domain.common.base.BaseResult
 import com.harian.closer.share.location.domain.user.entity.UserEntity
 import com.harian.closer.share.location.domain.user.usecase.GetUserInformationUseCase

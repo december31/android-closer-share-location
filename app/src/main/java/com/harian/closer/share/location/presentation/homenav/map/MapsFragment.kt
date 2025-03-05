@@ -151,7 +151,6 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
             )
         )
         handleObserver()
-        viewModel.fetchFriends()
     }
 
     @SuppressLint("MissingPermission")
@@ -319,6 +318,7 @@ class MapsFragment : BaseFragment<FragmentMapsBinding>() {
             requestLocationUpdates(googleMap)
             listenCameraIdle()
             startSensors()
+            viewModel.fetchFriends()
         }
     }
 
